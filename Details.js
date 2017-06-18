@@ -5,7 +5,8 @@ import { List, ListItem } from 'react-native-elements';
 export default class DetailsScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
-    const { name, who, what, when, where } = this.props.navigation.state.params;
+    const { name, who, what, when, where, RSVP } =
+     this.props.navigation.state.params;
     return (
       <View style={{flex: 1}}>
         <View style={styles.header}>
@@ -33,11 +34,18 @@ export default class DetailsScreen extends Component {
           </List>
           <List>
             <ListItem rightTitleStyle={styles.right}
-              containerStyle={{paddingBottom: 80}}
+              rightTitleNumberOfLines={5}
               title="What:"
               rightTitle={what}
               hideChevron
             />
+          </List>
+          <List>
+          <ListItem rightTitleStyle={styles.right}
+            title="RSVP Required:"
+            rightTitle={RSVP}
+            hideChevron
+          />
           </List>
         </View>
        <View style={styles.footer}>
