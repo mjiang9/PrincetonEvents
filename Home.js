@@ -9,6 +9,7 @@ export default class HomeScreen extends Component {
     this.props.navigation.navigate('Details', { ...item });
   };
   render() {
+    var styles = require('./Styles');
     const { navigate } = this.props.navigation;
     return (
       <View style={{flex: 1}}>
@@ -31,7 +32,7 @@ export default class HomeScreen extends Component {
         <View style={styles.footer}>
          <TouchableHighlight style={styles.button}
          onPress={() => navigate('Input')} underlayColor='#ffd199'>
-          <Text style={styles.buttonText}>+</Text>
+          <Text style={{color: 'white', fontSize: 28}}>+</Text>
          </TouchableHighlight>
         </View>
       </View>
@@ -39,46 +40,5 @@ export default class HomeScreen extends Component {
   }
 }
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 20,
-    flex: 1,
-    backgroundColor: 'darkorange',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  body: {
-    flex: 10,
-    backgroundColor: 'white',
-  },
-  item: {
-    padding: 10,
-  },
-  sectionHeader: {
-    color: 'white',
-    fontWeight: 'bold',
-    backgroundColor: '#ffd199',
-    fontSize: 16,
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-  },
-  footer: {
-    flex: 1,
-  },
-  button: {
-    backgroundColor: 'darkorange',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 28,
-  }
+
 })
