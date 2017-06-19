@@ -10,7 +10,12 @@ export default class HomeScreen extends Component {
     });
   };
   render() {
+<<<<<<< HEAD
     const {navigate} = this.props.navigation;
+=======
+    var styles = require('./Styles');
+    const { navigate } = this.props.navigation;
+>>>>>>> 006ecddef76278fb8fbcb56f72276fd669b345ec
     return (
       <View style={{
         flex: 1
@@ -33,18 +38,26 @@ export default class HomeScreen extends Component {
           ]} keyExtractor={(item, index) => index}/>
         </View>
         <View style={styles.footer}>
+<<<<<<< HEAD
           <TouchableHighlight style={styles.button} onPress={() => navigate('Input')} underlayColor='#ffd199'>
             <Text style={styles.buttonText}>+</Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
             <Text style={styles.buttonText}>My Events</Text>
           </TouchableHighlight>
+=======
+         <TouchableHighlight style={styles.button}
+         onPress={() => navigate('Input')} underlayColor='#ffd199'>
+          <Text style={{color: 'white', fontSize: 28}}>+</Text>
+         </TouchableHighlight>
+>>>>>>> 006ecddef76278fb8fbcb56f72276fd669b345ec
         </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   header: {
     paddingTop: 20,
     flex: 1,
@@ -88,4 +101,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 28
   }
+=======
+
+>>>>>>> 006ecddef76278fb8fbcb56f72276fd669b345ec
 })

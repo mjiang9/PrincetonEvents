@@ -5,68 +5,62 @@ import { View, Text, StyleSheet, TouchableHighlight,
 export default class InputScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
+    var styles = require('./Styles');
     return (
-      /*<View style={{flex: 1}}>
-        <View style={styles.header} >
-         <Text style={styles.title}>Add Event</Text>
-        </View>*/
-      <KeyboardAvoidingView behavior="padding">
-        <View style={styles.taskbar}>
-          <Text style={styles.headingText}>ENTER INFO</Text>
+      <KeyboardAvoidingView /*behavior="padding"*/ style={{flex: 1}}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Enter Info</Text>
         </View>
-        <View style={styles.container}>
-          <View >
-            <Text style={styles.inputText}>Title</Text>
+        <View style={{flex: 9}}>
+          <View style={styles.container}>
+            <View >
+              <Text style={styles.inputText}>Title</Text>
+            </View>
+            <TextInput
+              style={styles.normInput}
+            />
           </View>
-          <TextInput
-            style={styles.normInput}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <View >
-            <Text style={styles.inputText}>Who</Text>
+          <View style={styles.container}>
+            <View >
+              <Text style={styles.inputText}>Who</Text>
+            </View>
+            <TextInput
+              style={styles.normInput}
+            />
           </View>
-          <TextInput
-            style={styles.normInput}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <View >
-            <Text style={styles.inputText}>Place</Text>
+          <View style={styles.container}>
+            <View >
+              <Text style={styles.inputText}>Place</Text>
+            </View>
+            <TextInput
+              style={styles.normInput}
+            />
           </View>
-          <TextInput
-            style={styles.normInput}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <View >
-            <Text style={styles.inputText}>Description</Text>
+          <View style={styles.container}>
+            <View >
+              <Text style={styles.inputText}>Description</Text>
+            </View>
+            <TextInput
+              multiline
+              style={styles.descriptionInput}
+            />
           </View>
-          <TextInput
-            multiline
-            style={styles.descriptionInput}
-          />
         </View>
-
         <TouchableHighlight style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>SUBMIT</Text>
+          <Text style={{color: 'white', fontSize: 20,
+             textAlign: 'center'}}>Submit</Text>
         </TouchableHighlight>
-
         <View style={styles.footer}>
-         <TouchableHighlight style={styles.buttonContainer}
+         <TouchableHighlight style={styles.button}
          onPress={() => navigate('Home')} underlayColor='#ffd199'>
-          <Text style={styles.buttonText}>Back</Text>
+          <Text style={{color: 'white', fontSize: 20}}>Back</Text>
          </TouchableHighlight>
         </View>
-
       </KeyboardAvoidingView>
-
     );
   }
 }
+<<<<<<< HEAD
 
 const styles = StyleSheet.create({
   taskbar:{
@@ -157,3 +151,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   }
 })*/
+=======
+>>>>>>> 006ecddef76278fb8fbcb56f72276fd669b345ec
