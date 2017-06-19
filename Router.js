@@ -1,17 +1,18 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import {StackNavigator} from 'react-navigation';
 
 import InputScreen from './Input';
 import HomeScreen from './Home';
 import DetailsScreen from './Details';
+import MyEventsScreen from './MyEvents';
 
 export const EventsStack = StackNavigator({
   Home: {
-     screen: HomeScreen,
-     navigationOptions: {
-       header: null,
-     },
-   },
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
   Details: {
     screen: DetailsScreen,
     navigationOptions: {
@@ -19,30 +20,33 @@ export const EventsStack = StackNavigator({
       /*navigation: ({ navigation }) => ({
       title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
     }),*/
-    },
-  },
+    }
+  }
 });
 
 export const HomeStack = StackNavigator({
   Home: {
-     screen: EventsStack,
-     navigationOptions: {
-       header: null,
-     },
-   },
+    screen: EventsStack,
+    navigationOptions: {
+      header: null
+    }
+  },
+  MyEvents: {
+    screen: MyEventsScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
   Input: {
     screen: InputScreen,
     navigationOptions: {
-      header: null,
-    },
-  },
+      header: null
+    }
+  }
 });
-
 
 export const Root = StackNavigator({
   HomeStack: {
-    screen: HomeStack,
-  },
-}, {
-  headerMode: 'none',
-});
+    screen: HomeStack
+  }
+}, {headerMode: 'none'});
