@@ -75,8 +75,10 @@ descriptionInput:{
 },
 buttonContainer:{
   backgroundColor:'#f9a56a',
-  padding:10,
-  marginTop: 20
+  marginTop: 20,
+  marginBottom: 10,
+  flex: 1,
+  justifyContent: 'center'
 },
 
 });
