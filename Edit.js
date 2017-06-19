@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     color:'white',
     fontSize:30,
     fontWeight:'500',
-    //fontFamily:'AvenirNext-Regular'
+    fontFamily:'AvenirNext-Regular'
   },
   container:{
     marginTop:20,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   inputText:{
     fontSize:15,
-    //fontFamily:'AvenirNext-Regular',
+    fontFamily:'AvenirNext-Regular',
     color:'white'
   },
   normInput:{
