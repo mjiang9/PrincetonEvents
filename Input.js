@@ -15,7 +15,7 @@ export default class InputScreen extends Component {
     var styles = require('./Styles');
     return (
       <View style={{flex: 1}}>
-        <KeyboardAvoidingView behavior='padding' style = {{flex: 10}}>
+        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset = {20} style = {styles.body}>
           <ScrollView>
             <View style={styles.header}>
               <Text style={styles.title}>Enter Info</Text>
@@ -34,7 +34,7 @@ export default class InputScreen extends Component {
           </View>
           <View style={styles.container}>
             <Text style={styles.inputText}>Description</Text>
-            <TextInput multiline = {true} style={styles.descriptionInput} placeholder = "Include additional details here (e.g RSVP, cost, food...)"/>
+            <TextInput multiline = {true} numberOfLines = {4} style={styles.descriptionInput} placeholder = "Include additional details here (e.g RSVP, cost, food...)"/>
           </View>
           </ScrollView>
         </KeyboardAvoidingView>

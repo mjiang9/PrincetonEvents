@@ -69,13 +69,11 @@ inputText:{
   textAlign: 'center',
 },
 normInput:{
-  height:40,
   backgroundColor:'white',
   padding:5,
   fontSize:15,
 },
 descriptionInput:{
-  height:100,
   backgroundColor:'white',
   padding:5,
   fontSize:15,

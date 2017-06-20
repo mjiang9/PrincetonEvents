@@ -13,9 +13,7 @@ export default class HomeScreen extends Component {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
     return (
-      <View style={{
-        flex: 1
-      }}>
+      <View style={{flex: 1}}>
         <View style={styles.header}>
           <Text style={styles.title}>Princeton Events</Text>
         </View>
