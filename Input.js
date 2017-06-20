@@ -1,62 +1,52 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight,
-  TextInput, KeyboardAvoidingView } from 'react-native';
+import React, {Component} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView
+} from 'react-native';
 
 export default class InputScreen extends Component {
   render() {
-    const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
     var styles = require('./Styles');
     return (
-      <KeyboardAvoidingView /*behavior="padding"*/ style={{flex: 1}}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Enter Info</Text>
-        </View>
-        <View style={{flex: 9}}>
-          <View style={styles.container}>
-            <View >
-              <Text style={styles.inputText}>Title</Text>
+      <View style={{flex: 1}}>
+        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset = {20} style = {styles.body}>
+          <ScrollView>
+            <View style={styles.header}>
+              <Text style={styles.title}>Enter Info</Text>
             </View>
-            <TextInput
-              style={styles.normInput}
-            />
+          <View style={styles.container}>
+            <Text style={styles.inputText}>Title</Text>
+            <TextInput style={styles.normInput} placeholder = "What's the name of your event?"/>
           </View>
           <View style={styles.container}>
-            <View >
-              <Text style={styles.inputText}>Who</Text>
-            </View>
-            <TextInput
-              style={styles.normInput}
-            />
+            <Text style={styles.inputText}>Who</Text>
+            <TextInput style={styles.normInput} placeholder = "Who is the host of the event?"/>
           </View>
           <View style={styles.container}>
-            <View >
-              <Text style={styles.inputText}>Place</Text>
-            </View>
-            <TextInput
-              style={styles.normInput}
-            />
+            <Text style={styles.inputText}>Place</Text>
+            <TextInput style={styles.normInput} placeholder = "Where is the event taking place?"/>
           </View>
           <View style={styles.container}>
-            <View >
-              <Text style={styles.inputText}>Description</Text>
-            </View>
-            <TextInput
-              multiline
-              style={styles.descriptionInput}
-            />
+            <Text style={styles.inputText}>Description</Text>
+            <TextInput multiline = {true} numberOfLines = {4} style={styles.descriptionInput} placeholder = "Include additional details here (e.g RSVP, cost, food...)"/>
           </View>
-        </View>
-        <TouchableHighlight style={styles.buttonContainer}>
-          <Text style={{color: 'white', fontSize: 20,
-             textAlign: 'center'}}>Submit</Text>
-        </TouchableHighlight>
+          </ScrollView>
+        </KeyboardAvoidingView>
         <View style={styles.footer}>
-         <TouchableHighlight style={styles.button}
-         onPress={() => navigate('Home')} underlayColor='#ffd199'>
-          <Text style={{color: 'white', fontSize: 20}}>Back</Text>
-         </TouchableHighlight>
+          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableHighlight>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

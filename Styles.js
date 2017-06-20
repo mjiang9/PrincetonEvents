@@ -41,6 +41,7 @@ sectionHeader: {
 },
 footer: {
   flex: 1,
+  flexDirection: 'row',
 },
 button: {
   backgroundColor: '#f9a56a',
@@ -48,30 +49,34 @@ button: {
   justifyContent: 'center',
   alignItems: 'center',
 },
+buttonText: {
+    color: 'white',
+    fontSize: 20,
+},
 container:{
   marginTop:20,
   marginBottom:0,
   marginLeft:15,
   marginRight:15,
   padding:10,
-  backgroundColor:'#f9a56a'
+  backgroundColor:'#f9a56a',
 },
 inputText:{
-  fontSize:15,
+  fontSize:18,
   fontFamily:'AvenirNext-Regular',
   color:'white',
   fontWeight: '500',
   textAlign: 'center',
 },
 normInput:{
-  height:40,
-  backgroundColor:'white',
-  padding:5
-},
-descriptionInput:{
-  height:100,
   backgroundColor:'white',
   padding:5,
+  fontSize:15,
+},
+descriptionInput:{
+  backgroundColor:'white',
+  padding:5,
+  fontSize:15,
 },
 buttonContainer:{
   backgroundColor:'#f9a56a',
