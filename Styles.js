@@ -19,7 +19,7 @@ title: {
   fontSize: 28,
   fontWeight: '500',
   color: 'white',
-  fontFamily:'AvenirNext-Regular'
+  //fontFamily:'AvenirNext-Regular'
 },
 body: {
   flex: 10,
@@ -30,7 +30,7 @@ item: {
 },
 sectionHeader: {
   color: 'white',
-  fontFamily:'AvenirNext-Regular',
+  //fontFamily:'AvenirNext-Regular',
   fontWeight: '500',
   backgroundColor: '#ffd199',
   fontSize: 16,
@@ -63,7 +63,7 @@ container:{
 },
 inputText:{
   fontSize:18,
-  fontFamily:'AvenirNext-Regular',
+  //fontFamily:'AvenirNext-Regular',
   color:'white',
   fontWeight: '500',
   textAlign: 'center',
@@ -72,11 +72,14 @@ normInput:{
   backgroundColor:'white',
   padding:5,
   fontSize:15,
+  height: 40,
 },
 descriptionInput:{
   backgroundColor:'white',
   padding:5,
   fontSize:15,
+  height: 100,
+
 },
 buttonContainer:{
   backgroundColor:'#f9a56a',
