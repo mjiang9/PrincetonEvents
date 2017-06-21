@@ -1,7 +1,7 @@
 import React from 'react';
 import {StackNavigator} from 'react-navigation';
 
-import InputScreen from './Input';
+import InputScreen from './InputPage';
 import HomeScreen from './Home';
 import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
