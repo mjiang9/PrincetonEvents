@@ -31,15 +31,27 @@ export default class HomeScreen extends Component {
           ]} keyExtractor={(item, index) => index}/>
         </View>
         <View style={styles.footer}>
+
+          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
+            <Text style={styles.buttonText}>H</Text>
+          </TouchableHighlight>
+
           <TouchableHighlight style={styles.button} onPress={() => navigate('Input')} underlayColor='#ffd199'>
             <Text style={{
               color: 'white',
               fontSize: 28
             }}>+</Text>
           </TouchableHighlight>
+
           <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>My Events</Text>
+            <Text style={styles.buttonText}>M</Text>
           </TouchableHighlight>
+
+
+          <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
+            <Text style={styles.buttonText}>E</Text>
+          </TouchableHighlight>
+
         </View>
       </View>
     );
