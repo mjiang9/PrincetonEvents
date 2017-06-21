@@ -72,13 +72,14 @@ normInput:{
   backgroundColor:'white',
   padding:5,
   fontSize:15,
-  height: 40
-
+  height: 40,
 },
 descriptionInput:{
   backgroundColor:'white',
   padding:5,
   fontSize:15,
+  height: 100,
+
 },
 buttonContainer:{
   backgroundColor:'#f9a56a',
