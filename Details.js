@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
+import MapView from 'react-native-maps';
 
 export default class DetailsScreen extends Component {
   render() {
@@ -41,13 +42,9 @@ export default class DetailsScreen extends Component {
               hideChevron
             />
           </List>
-          <List>
-          <ListItem rightTitleStyle={s.right}
-            title="RSVP Required:"
-            rightTitle={RSVP}
-            hideChevron
-          />
-          </List>
+          <MapView style={{height: 180, margin: 20 }}
+            initialRegion={{ latitude: 40.346695, longitude: -74.657995,
+            latitudeDelta: .01, longitudeDelta: .012 }} />
         </View>
        <View style={styles.footer}>
         <TouchableHighlight style={styles.button}

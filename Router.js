@@ -5,6 +5,7 @@ import InputScreen from './Input';
 import HomeScreen from './Home';
 import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
+import MapScreen from './Map';
 
 export const EventsStack = StackNavigator({
   Home: {
@@ -42,7 +43,13 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       header: null
     }
-  }
+  },
+  Map: {
+    screen: MapScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
 });
 
 export const Root = StackNavigator({
