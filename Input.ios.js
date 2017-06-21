@@ -1,24 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableHighlight,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from 'react-native';
 
-export default class InputScreen extends Component {
+
+export default class Input extends Component {
   render() {
-    const {navigate} = this.props.navigation;
-    var styles = require('./Styles');
-    return (
-      <View style={{
-        flex: 1
-      }}>
-        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={20} style={styles.body}>
-          <KeyboardAwareScrollView>
+      var styles = require('./Styles');
+      return (
+        <KeyboardAwareScrollView style={styles.body}>
             <View style={styles.header}>
               <Text style={styles.title}>Enter Info</Text>
             </View>
@@ -36,19 +30,12 @@ export default class InputScreen extends Component {
             </View>
             <View style={styles.container}>
               <Text style={styles.inputText}>Description</Text>
-              <TextInput multiline={true} style={styles.descriptionInput} placeholder="Include additional details here (e.g RSVP, cost, food...)"/>
+              <TextInput multiline={true} style={styles.descriptionInput}
+                 placeholder="Include additional details here (e.g RSVP, cost, food...)"
+                 placeholderTextColor = 'grey'
+                 textAlignVertical={'top'}/>
             </View>
-          </KeyboardAwareScrollView>
-        </KeyboardAvoidingView>
-        <View style={styles.footer}>
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
+        </KeyboardAwareScrollView>
     );
   }
 }

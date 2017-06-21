@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Input from './Input';
 
-export default class EditScreen extends Component {
+export default class InputScreen extends Component {
   render() {
     const {navigate} = this.props.navigation;
     var styles = require('./Styles');
@@ -22,7 +22,7 @@ export default class EditScreen extends Component {
             <Text style={styles.buttonText}>Back</Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.button}>
-            <Text style={styles.buttonText}>Save</Text>
+            <Text style={styles.buttonText}>Submit</Text>
           </TouchableHighlight>
         </View>
       </View>
