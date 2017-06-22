@@ -6,7 +6,7 @@ import MapView from 'react-native-maps';
 export default class DetailsScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
-    const { name, who, what, when, where, RSVP } =
+    const { name, who, what, when, where } =
      this.props.navigation.state.params;
     var styles = require('./Styles');
     return (
