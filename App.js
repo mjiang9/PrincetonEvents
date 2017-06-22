@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Root } from './Router';
 import * as firebase  from 'firebase';
+import {Tabs} from './Router';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbdjQNZ9IpoOmc5gWAVI4Doq224_JWUg",

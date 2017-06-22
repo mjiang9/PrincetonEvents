@@ -9,6 +9,18 @@ export default class MyEventsScreen extends Component {
       ...item
     });
   };
+
+  static navigationOptions = {
+      tabBarLabel: 'MyEvents',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name = {'account circle'}
+          size = {26}
+          style = {{color: tintColor}} />
+      )
+
+  }
+
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;

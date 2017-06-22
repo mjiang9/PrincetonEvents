@@ -7,6 +7,18 @@ import {
 import Input from './Input';
 
 export default class InputScreen extends Component {
+
+  static navigationOptions = {
+      tabBarLabel: 'Input',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name = {'add circle '}
+          size = {26}
+          style = {{color: tintColor}} />
+      )
+
+  }
+
   render() {
     const {navigate} = this.props.navigation;
     var styles = require('./Styles');
