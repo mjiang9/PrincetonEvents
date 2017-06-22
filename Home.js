@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {View, Text, TouchableHighlight,  SectionList} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {today, tomorrow} from './Data';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {StackNavigator, TabNavigator} from 'react-navigation';
+import {Tabs} from './Router';
+
 
 export default class HomeScreen extends Component {
   onLearnMore = (item) => {
@@ -9,6 +13,18 @@ export default class HomeScreen extends Component {
       ...item
     });
   };
+
+  static navigationOptions = {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name = {'Home'}
+          size = {26}
+          style = {{color: tintColor}} />
+      )
+
+  }
+
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
@@ -30,29 +46,7 @@ export default class HomeScreen extends Component {
             }
           ]} keyExtractor={(item, index) => index}/>
         </View>
-        <View style={styles.footer}>
 
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>H</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Input')} underlayColor='#ffd199'>
-            <Text style={{
-              color: 'white',
-              fontSize: 28
-            }}>+</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Map')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>M</Text>
-          </TouchableHighlight>
-
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>E</Text>
-          </TouchableHighlight>
-
-        </View>
       </View>
     );
   }

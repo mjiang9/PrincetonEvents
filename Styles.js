@@ -89,4 +89,9 @@ buttonContainer:{
   justifyContent: 'center'
 },
 
+icon:{
+  width: 26,
+  height: 26
+},
+
 });
