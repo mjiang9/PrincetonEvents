@@ -43,7 +43,7 @@ export default class HomeScreen extends Component {
             }}>+</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
+          <TouchableHighlight style={styles.button} onPress={() => navigate('Map')} underlayColor='#ffd199'>
             <Text style={styles.buttonText}>M</Text>
           </TouchableHighlight>
 
