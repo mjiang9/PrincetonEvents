@@ -5,6 +5,7 @@ import InputScreen from './InputPage';
 import HomeScreen from './Home';
 import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
+import EditScreen from './EditPage';
 
 export const EventsStack = StackNavigator({
   Home: {
@@ -39,6 +40,12 @@ export const HomeStack = StackNavigator({
   },
   Input: {
     screen: InputScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Edit: {
+    screen: EditScreen,
     navigationOptions: {
       header: null
     }
