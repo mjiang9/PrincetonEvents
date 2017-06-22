@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
+
 export default class Edit extends Component {
   render() {
     var styles = require('./Styles');
