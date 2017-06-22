@@ -1,10 +1,13 @@
 import React from 'react';
 import {StackNavigator} from 'react-navigation';
 
-import InputScreen from './Input';
+import InputScreen from './InputPage';
 import HomeScreen from './Home';
 import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
+import EditScreen from './EditPage';
+import MapScreen from './Map';
+
 
 export const EventsStack = StackNavigator({
   Home: {
@@ -39,6 +42,18 @@ export const HomeStack = StackNavigator({
   },
   Input: {
     screen: InputScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Edit: {
+    screen: EditScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Map: {
+    screen: MapScreen,
     navigationOptions: {
       header: null
     }

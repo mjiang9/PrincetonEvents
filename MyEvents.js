@@ -5,7 +5,7 @@ import {ListItem, List} from 'react-native-elements';
 
 export default class MyEventsScreen extends Component {
   onViewMyEvent = (item) => {
-    this.props.navigation.navigate('Details', {
+    this.props.navigation.navigate('Edit', {
       ...item
     });
   };
