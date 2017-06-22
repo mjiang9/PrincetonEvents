@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import MapView from 'react-native-maps';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 export default class Map extends Component {
 
@@ -14,7 +16,7 @@ export default class Map extends Component {
       )
 
   }
-  
+
   render() {
     const { navigate } = this.props.navigation;
     var styles = require('./Styles');

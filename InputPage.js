@@ -5,6 +5,8 @@ import {
   TouchableHighlight
 } from 'react-native';
 import Input from './Input';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 export default class InputScreen extends Component {
 

@@ -11,7 +11,7 @@ import MapScreen from './Map';
 
 export const Tabs = TabNavigator({
   Home: {screen: HomeScreen},
-  EventMap: {screen: Map},
+  EventMap: {screen: MapScreen},
   Input: {screen: InputScreen},
   MyEvents:{screen: MyEventsScreen},
 },{
@@ -74,6 +74,7 @@ export const HomeStack = StackNavigator({
 
 export const Root = StackNavigator({
   HomeStack: {
-    screen: HomeStack
+    screen: HomeStack,
+    screen: Tabs
   }
 }, {headerMode: 'none'});
