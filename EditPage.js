@@ -5,29 +5,43 @@ import {
   TouchableHighlight
 } from 'react-native';
 import Edit from './Edit';
+import EditingButtons from './EditingButtons';
+import NormalButtons from './NormalButtons';
 
 export default class EditScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      editing: false
+    }
+  }
+
+  onEdit = () => {
+    this.setState({editing: true});
+  };
+
+  onSave = () => {
+    this.setState({editing: false});
+  };
+
+
   render() {
     const {navigate} = this.props.navigation;
     var styles = require('./Styles');
     const { name, who, what, when, where } =
      this.props.navigation.state.params;
-    return (
-      <View style={{
-        flex: 1
-      }}>
-        <View style={styles.body}>
-          <Edit name={name} who={who} what={what} when={when} where={where} />
-        </View>
-        <View style={styles.footer}>
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.button}>
-            <Text style={styles.buttonText}>Edit</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
+     return (
+       <View style={{
+         flex: 1
+       }}>
+         <View style={styles.body}>
+           <Edit name={name} who={who} what={what} when={when} where={where} />
+         </View>
+         <View style= {{flex: 1}}>
+           {this.state.editing && <EditingButtons save={this.onSave}/>}
+           {!this.state.editing && <NormalButtons edit={this.onEdit}/>}
+         </View>
+       </View>
+     );
   }
 }
