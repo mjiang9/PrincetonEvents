@@ -21,8 +21,6 @@ export default class DetailsScreen extends Component {
               rightTitle={who}
               hideChevron
             />
-          </List>
-          <List>
             <ListItem rightTitleStyle={s.right}
               title="When:"
               rightTitle={when}
@@ -33,11 +31,9 @@ export default class DetailsScreen extends Component {
               rightTitle={where}
               hideChevron
             />
-          </List>
-          <List>
             <ListItem rightTitleStyle={s.right}
               rightTitleNumberOfLines={5}
-              title="What:"
+              title="Description:"
               rightTitle={what}
               hideChevron
             />

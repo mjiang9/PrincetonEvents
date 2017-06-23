@@ -24,6 +24,10 @@ export default class EditScreen extends Component {
     this.setState({editing: false});
   };
 
+  onCancel = () => {
+    this.setState({editing: false});
+  };
+
 
   render() {
     const {navigate} = this.props.navigation;
@@ -35,10 +39,10 @@ export default class EditScreen extends Component {
          flex: 1
        }}>
          <View style={styles.body}>
-           <Edit name={name} who={who} what={what} when={when} where={where} />
+           <Edit name={name} who={who} what={what} when={when} where={where} editing={this.state.editing}/>
          </View>
          <View style= {{flex: 1}}>
-           {this.state.editing && <EditingButtons save={this.onSave}/>}
+           {this.state.editing && <EditingButtons save={this.onSave} cancel={this.onCancel}/>}
            {!this.state.editing && <NormalButtons edit={this.onEdit}/>}
          </View>
        </View>

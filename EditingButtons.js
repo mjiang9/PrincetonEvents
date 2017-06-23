@@ -6,7 +6,7 @@ export default class MyComponent extends Component {
     var styles = require('./Styles');
     return (
       <View style={styles.footer}>
-        <TouchableHighlight style={styles.button} underlayColor='#ffd199'>
+        <TouchableHighlight style={styles.button} onPress= {() => this.props.cancel()} underlayColor='#ffd199'>
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableHighlight>
         <TouchableHighlight style={styles.button} onPress={() => this.props.save()}>

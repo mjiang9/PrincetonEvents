@@ -75,6 +75,6 @@ export const HomeStack = StackNavigator({
 export const Root = StackNavigator({
   HomeStack: {
     screen: HomeStack,
-    screen: Tabs
+    //screen: Tabs
   }
 }, {headerMode: 'none'});
