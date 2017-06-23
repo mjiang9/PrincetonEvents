@@ -8,22 +8,13 @@ import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
 
-
-export const Tabs = TabNavigator({
-  Home: {screen: HomeScreen},
-  EventMap: {screen: MapScreen},
-  Input: {screen: InputScreen},
-  MyEvents:{screen: MyEventsScreen},
-},{
-    tabBarOptions: {
-      activeTintColors: '#e91e63',
-      //swipeEnabled: true,
-    }
-});
+const BottomNavigation = require('react-native-bottom-navigation');
 
 export const EventsStack = StackNavigator({
+
   Home: {
     screen: HomeScreen,
+
     navigationOptions: {
       header: null
     }
@@ -35,11 +26,24 @@ export const EventsStack = StackNavigator({
       /*navigation: ({ navigation }) => ({
       title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
     }),*/
-    }
-  }
+    },
+  },
+
 });
 
-export const HomeStack = StackNavigator({
+export const Tabs = TabNavigator({
+  Home: {screen: EventsStack},
+  EventMap: {screen: MapScreen},
+  Input: {screen: InputScreen},
+  MyEvents:{screen: MyEventsScreen},
+},{
+    tabBarOptions: {
+      activeTintColors: '#e91e63',
+      //swipeEnabled: true,
+    }
+});
+
+/*export const HomeStack = StackNavigator({
   Home: {
     screen: EventsStack,
     navigationOptions: {
@@ -69,12 +73,16 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  TabNav: {
+    screen: Tabs,
   }
-});
+});*/
 
 export const Root = StackNavigator({
-  HomeStack: {
-    screen: HomeStack,
-    screen: Tabs
-  }
+  TabNav: {
+    screen: Tabs,
+  },
+
+
 }, {headerMode: 'none'});
