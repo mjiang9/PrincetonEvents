@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import MapView from 'react-native-maps';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 export default class Map extends Component {
+
+  static navigationOptions = {
+      tabBarLabel: 'Location',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name = {'location on'}
+          size = {26}
+          style = {{color: tintColor}} />
+      )
+
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     var styles = require('./Styles');
