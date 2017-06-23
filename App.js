@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "princetonevents-3aeed.appspot.com",
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 class App extends Component {
   render() {
