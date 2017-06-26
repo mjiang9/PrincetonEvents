@@ -8,8 +8,6 @@ import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
 
-const BottomNavigation = require('react-native-bottom-navigation');
-
 export const EventsStack = StackNavigator({
 
   Home: {
