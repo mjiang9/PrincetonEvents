@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight} from 'react-native';
 
-export default class MyComponent extends Component {
+export default class EditingButtons extends Component {
   render() {
     var styles = require('./Styles');
     return (

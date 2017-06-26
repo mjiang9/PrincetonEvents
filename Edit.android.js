@@ -12,13 +12,28 @@ export default class Edit extends Component {
   constructor(props){
     super(props);
     this.state = {
-      titleInput: this.props.name,
+      titleInput: this.props.title,
       whoInput: this.props.who,
       whereInput: this.props.where,
-      descriptionInput: this.props.what,
-      whenInput: this.props.when
+      whenInput: this.props.when,
+      descriptionInput: this.props.description
     }
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.saving) {
+    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.whenInput, this.state.descriptionInput);
+    }
+    else if(nextProps.cancel != this.props.cancel) {
+      this.setState({
+        titleInput: this.props.title,
+        whoInput: this.props.who,
+        whereInput: this.props.where,
+        whenInput: this.props.when,
+        descriptionInput: this.props.description
+      });
+    }
+};
 
   render() {
     var styles = require('./Styles');
