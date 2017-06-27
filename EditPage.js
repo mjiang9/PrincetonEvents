@@ -20,7 +20,7 @@ export default class EditScreen extends Component {
           <Edit name={name} who={who} what={what} when={when} where={where} />
         </View>
         <View style={styles.footer}>
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
+          <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
             <Text style={styles.buttonText}>Back</Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.button}>
