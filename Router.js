@@ -12,7 +12,6 @@ export const MyEventsStack = StackNavigator({
 
   MyEvents: {
     screen: MyEventsScreen,
-
     navigationOptions: {
       header: null
     }
