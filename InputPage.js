@@ -30,7 +30,7 @@ export default class InputScreen extends Component {
 
   }
 
-  submitData = (inputName, inputWho, inputWhere, inputWhen, inputWhat) => {
+  submitData = (inputName, inputWho, inputWhere, inputDate, inputTime, inputWhat) => {
     if(inputName == '')
     inputName = 'TBD';
 
@@ -40,8 +40,11 @@ export default class InputScreen extends Component {
     if(inputWhere == '')
     inputWhere = 'TBD';
 
-    if(inputWhen == '')
-    inputWhen = 'TBD';
+    if(inputDate == '')
+    inputDate = 'TBD';
+
+    if (inputTime == '')
+    inputTime = 'TBD';
 
     if(inputWhat == '')
     inputWhat = 'N/A';
@@ -49,11 +52,11 @@ export default class InputScreen extends Component {
     let data = {
       name: inputName,
       what: inputWhat,
-      when: inputWhen,
+      when: inputTime,
       where: inputWhere,
       who: inputWho
     }
-    let ref = firebaseApp.database().ref('items/today');
+    let ref = firebaseApp.database().ref('items/' + inputDate);
     ref.push(data);
     this.props.navigation.navigate('Home');
   };

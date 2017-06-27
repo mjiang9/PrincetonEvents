@@ -15,14 +15,24 @@ export default class Input extends Component {
       titleInput: '',
       whoInput: '',
       whereInput: '',
-      whenInput: '',
+      dateInput: '',
+      timeInput: '',
       descriptionInput: ''
     }
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.submit) {
-    this.props.submitData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.whenInput, this.state.descriptionInput);
+    this.props.submitData(this.state.titleInput, this.state.whoInput,
+      this.state.whereInput, this.state.dateInput, this.state.timeInput, this.state.descriptionInput);
+    this.setState({
+      titleInput: '',
+      whoInput: '',
+      whereInput: '',
+      dateInput: '',
+      timeInput: '',
+      descriptionInput: ''
+    });
     }
 };
 
@@ -30,7 +40,7 @@ export default class Input extends Component {
   render() {
     var styles = require('./Styles');
     return (
-      <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={30}>
+      <KeyboardAvoidingView behavior='padding'>
         <ScrollView>
           <View style={styles.header}>
             <Text style={styles.title}>Enter Info</Text>
@@ -58,14 +68,25 @@ export default class Input extends Component {
             underlineColorAndroid = 'white'/>
           </View>
           <View style={styles.container}>
-            <Text style={styles.inputText}>When</Text>
+            <Text style={styles.inputText}>Date</Text>
             <TextInput
-            placeholder={'When is your event?'}
+            placeholder={'What is the date of the event?'}
             style={styles.normInput}
             autoCapitalize={'sentences'}
-            value={this.state.whenInput}
+            value={this.state.dateInput}
             returnKeyType={'done'}
-            onChangeText={(whenInput) => this.setState({whenInput})}
+            onChangeText={(dateInput) => this.setState({dateInput})}
+            underlineColorAndroid='white'/>
+          </View>
+          <View style={styles.container}>
+            <Text style={styles.inputText}>Time</Text>
+            <TextInput
+            placeholder={'What time is the event?'}
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.timeInput}
+            returnKeyType={'done'}
+            onChangeText={(timeInput) => this.setState({timeInput})}
             underlineColorAndroid='white'/>
           </View>
           <View style={styles.container}>
