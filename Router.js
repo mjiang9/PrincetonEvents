@@ -8,19 +8,17 @@ import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
 
-const BottomNavigation = require('react-native-bottom-navigation');
+export const MyEventsStack = StackNavigator({
 
-export const EventsStack = StackNavigator({
-
-  Home: {
-    screen: HomeScreen,
+  MyEvents: {
+    screen: MyEventsScreen,
 
     navigationOptions: {
       header: null
     }
   },
-  Details: {
-    screen: DetailsScreen,
+  MyEventsDetails: {
+    screen: EditScreen,
     navigationOptions: {
       header: null,
       /*navigation: ({ navigation }) => ({
@@ -31,11 +29,31 @@ export const EventsStack = StackNavigator({
 
 });
 
+
+export const EventsStack = StackNavigator({
+
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+
+    },
+  },
+  Details: {
+    screen: DetailsScreen,
+    navigationOptions: {
+      header: null,
+
+    },
+  },
+
+});
+
 export const Tabs = TabNavigator({
   Home: {screen: EventsStack},
   EventMap: {screen: MapScreen},
   Input: {screen: InputScreen},
-  MyEvents:{screen: MyEventsScreen},
+  MyEvents:{screen: MyEventsStack},
 },{
     tabBarOptions: {
       activeTintColors: '#e91e63',
@@ -82,7 +100,7 @@ export const Tabs = TabNavigator({
 export const Root = StackNavigator({
   TabNav: {
     screen: Tabs,
-  },
+  }
 
 
 }, {headerMode: 'none'});

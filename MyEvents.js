@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, FlatList} from 'react-native';
 import {ListItem, List} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Tabs} from './Router';
+
 
 
 export default class MyEventsScreen extends Component {
@@ -10,6 +12,8 @@ export default class MyEventsScreen extends Component {
       ...item
     });
   };
+
+
 
   static navigationOptions = {
       tabBarLabel: 'MyEvents',
