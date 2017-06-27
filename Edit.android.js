@@ -15,21 +15,24 @@ export default class Edit extends Component {
       titleInput: this.props.title,
       whoInput: this.props.who,
       whereInput: this.props.where,
-      whenInput: this.props.when,
+      dateInput: this.props.date,
+      timeInput: this.props.time,
       descriptionInput: this.props.description
     }
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.saving) {
-    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.whenInput, this.state.descriptionInput);
+    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.timeInput, this.state.dateInput,
+      this.state.descriptionInput);
     }
     else if(nextProps.cancel != this.props.cancel) {
       this.setState({
         titleInput: this.props.title,
         whoInput: this.props.who,
         whereInput: this.props.where,
-        whenInput: this.props.when,
+        timeInput: this.props.time,
+        dateInput: this.props.date,
         descriptionInput: this.props.description
       });
     }
@@ -47,7 +50,6 @@ export default class Edit extends Component {
             <Text style={styles.inputText}>Title</Text>
             <TextInput
               autoCapitalize={'sentences'}
-              editable={this.props.editing}
               style={styles.normInput}
               value={this.state.titleInput}
               returnKeyType={'done'}
@@ -58,7 +60,6 @@ export default class Edit extends Component {
             <Text style={styles.inputText}>Who</Text>
             <TextInput
             autoCapitalize={'sentences'}
-            editable={this.props.editing}
             style={styles.normInput}
             value={this.state.whoInput}
             returnKeyType={'done'}
@@ -66,14 +67,23 @@ export default class Edit extends Component {
             underlineColorAndroid='white'/>
           </View>
           <View style={styles.container}>
-            <Text style={styles.inputText}>When</Text>
+            <Text style={styles.inputText}>Date</Text>
             <TextInput
-            autoCapitalize={'sentences'}
-            editable={this.props.editing}
             style={styles.normInput}
-            value={this.state.whenInput}
+            autoCapitalize={'sentences'}
+            value={this.state.dateInput}
             returnKeyType={'done'}
-            onChangeText={(whenInput) => this.setState({whenInput})}
+            onChangeText={(dateInput) => this.setState({dateInput})}
+            underlineColorAndroid='white'/>
+          </View>
+          <View style={styles.container}>
+            <Text style={styles.inputText}>Time</Text>
+            <TextInput
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.timeInput}
+            returnKeyType={'done'}
+            onChangeText={(timeInput) => this.setState({timeInput})}
             underlineColorAndroid='white'/>
           </View>
           <View style={styles.container}>

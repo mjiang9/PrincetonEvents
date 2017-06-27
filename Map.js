@@ -7,13 +7,13 @@ import Geocoder from 'react-native-geocoding';
 
 Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
-export default class Map extends Component {
+export default class MapScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       markers: []
     };
-    this.itemsRef = firebaseApp.database().ref().child('items');
+    this.itemsRef = firebaseApp.database().ref('items');
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
@@ -27,6 +27,7 @@ export default class Map extends Component {
           style = {{color: tintColor}} />
       )
   }
+
   listenForItems(itemsRef) {
     itemsRef.on('value', (snap) => {
       // get children as an array
@@ -41,9 +42,14 @@ export default class Map extends Component {
                   longitude: location.lng
                 };
                 items.push({
+                  "name": child.val().name,
+                  "time": child.val().when, //change eventually to time
+                  "date": parent.key,
+                  "who": child.val().who,
+                  "where": child.val().where,
+                  "what": child.val().what,
                   "key": child.key,
-                  "title": child.val().name,
-                  "description": child.val().when + " @ " + child.val().where,
+                  "description": parent.key + " " + child.val().when + " @ " + child.val().where,
                   "latlng": coords,
                 });
                 this.setState({
@@ -57,10 +63,18 @@ export default class Map extends Component {
       });
     });
     });
-  }
+  };
+
+  onLearnMore = (item) => {
+    this.props.navigation.navigate('Details', {
+      ...item
+    });
+  };
+
   componentDidMount() {
     this.listenForItems(this.itemsRef);
-  }
+  };
+
   render() {
     const { navigate } = this.props.navigation;
     var styles = require('./Styles');
@@ -73,11 +87,13 @@ export default class Map extends Component {
           initialRegion={{ latitude: 40.347695, longitude: -74.657995,
           latitudeDelta: .012, longitudeDelta: .012 }} >
           {this.state.markers.map(marker => (
-          <MapView.Marker key={marker.key}
+          <MapView.Marker
+            key={marker.key}
             coordinate={marker.latlng}
-            title={marker.title}
-            description={marker.description}
-          /> ))}
+            title={marker.name}
+            description={marker.description}>
+            <MapView.Callout onPress={() => this.onLearnMore(marker)}/>
+          </MapView.Marker> ))}
         </MapView>
         <View style={styles.footer}>
           <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>

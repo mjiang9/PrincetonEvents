@@ -17,6 +17,7 @@ export const MyEventsStack = StackNavigator({
       header: null
     }
   },
+
   Edit: {
     screen: EditScreen,
     navigationOptions: {
@@ -27,6 +28,25 @@ export const MyEventsStack = StackNavigator({
 
 });
 
+export const MapStack = StackNavigator({
+
+EventMap: {
+  screen: MapScreen,
+  navigationOptions: {
+    header: null
+
+  },
+},
+
+Details: {
+  screen: DetailsScreen,
+  navigationOptions: {
+    header: null,
+
+  },
+},
+
+});
 
 export const EventsStack = StackNavigator({
 
@@ -37,6 +57,7 @@ export const EventsStack = StackNavigator({
 
     },
   },
+
   Details: {
     screen: DetailsScreen,
     navigationOptions: {
@@ -49,7 +70,7 @@ export const EventsStack = StackNavigator({
 
 export const Tabs = TabNavigator({
   Home: {screen: EventsStack},
-  EventMap: {screen: MapScreen},
+  Location: {screen: MapStack},
   Input: {screen: InputScreen},
   MyEvents:{screen: MyEventsStack},
 },

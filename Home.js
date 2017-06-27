@@ -22,6 +22,7 @@ export default class HomeScreen extends Component {
       ...item
     });
   };
+
   static navigationOptions = {
       tabBarLabel: 'Home',
       tabBarIcon: ({tintColor}) => (
@@ -31,6 +32,7 @@ export default class HomeScreen extends Component {
           style = {{color: tintColor}} />
       )
   }
+
   listenForItems(itemsRef) {
     itemsRef.on('value', (snap) => {
       // get children as an array
@@ -41,7 +43,8 @@ export default class HomeScreen extends Component {
         children.push({
           "key": child.key,
           "name": child.val().name,
-          "when": child.val().when,
+          "time": child.val().when, //change eventually to time
+          "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
           "what": child.val().what
@@ -72,7 +75,7 @@ export default class HomeScreen extends Component {
         </View>
         <View style={styles.body}>
         <SectionList renderItem={({item}) => <ListItem style={styles.item}
-            title={item.name} subtitle={item.when}
+            title={item.name} subtitle={item.time}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}

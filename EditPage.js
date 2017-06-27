@@ -12,33 +12,35 @@ export default class EditScreen extends Component {
   constructor(props){
     super(props);
     const {navigate} = this.props.navigation;
-    const { name, who, what, when, where } = this.props.navigation.state.params;
+    const { name, who, what, time, date, where } = this.props.navigation.state.params;
     this.state = {
       editing: false,
       saving: false,
       cancel: false,
       curTitle: name,
       curWho: who,
-      curWhere: where,
+      curTime: time,
+      curDate: date,
       curDescription: what,
-      curWhen: when
+      curWhere: where
     }
   }
 
   componentWillUnmount() {
     console.log("" + this.state.saving);
-    console.log("" + this.state.curTitle + " " + this.state.curWho + " " + this.state.curWhen
-  + " " + this.state.curWhen + " " + this.state.curDescription);
+    console.log("" + this.state.curTitle + " " + this.state.curWho + " " + this.state.curTime
+     + " " + this.state.curDescription);
   }
 
-  pushNewData = (newName, newWho, newWhere, newWhen, newWhat) => {
+  pushNewData = (newName, newWho, newWhere, newTime, newDate, newWhat) => {
     this.setState({
       saving: false,
       curTitle: newName,
       curWho: newWho,
       curWhere: newWhere,
       curDescription: newWhat,
-      curWhen: newWhen
+      curTime: newTime,
+      curDate: newDate
     });
   };
 
@@ -70,7 +72,7 @@ export default class EditScreen extends Component {
        }}>
          <View style={styles.body}>
            <Edit title={this.state.curTitle} who={this.state.curWho} description={this.state.curDescription}
-             when={this.state.curWhen} where={this.state.curWhere} editing={this.state.editing}
+             time={this.state.curTime} date={this.state.curDate} where={this.state.curWhere} editing={this.state.editing}
              saving={this.state.saving} cancel={this.state.cancel} pushData={this.pushNewData}/>
          </View>
          <View style= {{flex: 1}}>
