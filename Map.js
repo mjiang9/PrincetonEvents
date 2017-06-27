@@ -41,6 +41,7 @@ export default class Map extends Component {
                   longitude: location.lng
                 };
                 items.push({
+                  "key": child.key,
                   "title": child.val().name,
                   "description": child.val().when + " @ " + child.val().where,
                   "latlng": coords,
@@ -72,7 +73,7 @@ export default class Map extends Component {
           initialRegion={{ latitude: 40.347695, longitude: -74.657995,
           latitudeDelta: .012, longitudeDelta: .012 }} >
           {this.state.markers.map(marker => (
-          <MapView.Marker key={marker.title}
+          <MapView.Marker key={marker.key}
             coordinate={marker.latlng}
             title={marker.title}
             description={marker.description}

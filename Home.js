@@ -39,6 +39,7 @@ export default class HomeScreen extends Component {
         var children = [];
         parent.forEach((child) => {
         children.push({
+          "key": child.key,
           "name": child.val().name,
           "when": child.val().when,
           "who": child.val().who,
@@ -73,7 +74,7 @@ export default class HomeScreen extends Component {
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
-            sections={this.state.data} keyExtractor={(item) => item.name}/>
+            sections={this.state.data} keyExtractor={(item) => item.key}/>
         </View>
       </View>
     );
