@@ -44,7 +44,7 @@ export default class InputScreen extends Component {
     inputWhen = 'TBD';
 
     if(inputWhat == '')
-    inputWhat = 'TBD';
+    inputWhat = 'N/A';
 
     let data = {
       name: inputName,

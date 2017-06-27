@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, FlatList} from 'react-native';
-import {ListItem, List} from 'react-native-elements';
+import {ListItem, List, ListView} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
-
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
@@ -11,10 +10,8 @@ export default class MyEventsScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref().child('items/today');
-    console.ignoredYellowBox = [
-         'Setting a timer'
-     ];
+    this.itemsRef = firebaseApp.database().ref('items/today');
+    console.ignoredYellowBox = ['Setting a timer'];
   }
 
   onViewMyEvent = (item) => {
@@ -27,10 +24,9 @@ export default class MyEventsScreen extends Component {
     itemsRef.on('value', (snap) => {
       // get children as an array
       var items = [];
-      snap.forEach((parent) => {
-        var children = [];
-        parent.forEach((child) => {
-        children.push({
+      snap.forEach((child) => {
+        items.push({
+          "key": child.key,
           "name": child.val().name,
           "when": child.val().when,
           "who": child.val().who,
@@ -38,13 +34,11 @@ export default class MyEventsScreen extends Component {
           "what": child.val().what
         });
       });
-      items.push({
-        data: children,
-      })
-      });
+
       this.setState({
         data: items
       });
+
     });
   }
 
@@ -53,15 +47,13 @@ export default class MyEventsScreen extends Component {
   }
 
   static navigationOptions = {
-      tabBarLabel: 'MyEvents',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name = {'account circle'}
-          size = {26}
-          style = {{color: tintColor}} />
-      )
+    tabBarLabel: 'MyEvents',
+    tabBarIcon: ({tintColor}) => (<Icon name={'account circle'} size={26} style={{
+      color: tintColor
+    }}/>)
 
   }
+
 
   render() {
     var styles = require('./Styles');
@@ -81,7 +73,7 @@ export default class MyEventsScreen extends Component {
             <FlatList data={this.state.data} renderItem={({item}) =>
               <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
               borderBottomWidth: 0
-            }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item, index) => index}/>
+            }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>
           </List>
         </View>
         <View style={styles.footer}>

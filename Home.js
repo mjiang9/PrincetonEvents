@@ -12,7 +12,7 @@ export default class HomeScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref().child('items');
+    this.itemsRef = firebaseApp.database().ref('items');
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
@@ -57,9 +57,11 @@ export default class HomeScreen extends Component {
       });
     });
   }
+
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
+
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
@@ -75,29 +77,6 @@ export default class HomeScreen extends Component {
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>
-        </View>
-        <View style={styles.footer}>
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>H</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Input')} underlayColor='#ffd199'>
-            <Text style={{
-              color: 'white',
-              fontSize: 28
-            }}>+</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Map')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>M</Text>
-          </TouchableHighlight>
-
-
-          <TouchableHighlight style={styles.button} onPress={() => navigate('MyEvents')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>E</Text>
-          </TouchableHighlight>
-
         </View>
       </View>
     );
