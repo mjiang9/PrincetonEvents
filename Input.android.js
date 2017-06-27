@@ -9,6 +9,24 @@ import {
 } from 'react-native';
 
 export default class Input extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      titleInput: '',
+      whoInput: '',
+      whereInput: '',
+      whenInput: '',
+      descriptionInput: ''
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.submit) {
+    this.props.submitData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.whenInput, this.state.descriptionInput);
+    }
+};
+
+
   render() {
     var styles = require('./Styles');
     return (
@@ -19,25 +37,60 @@ export default class Input extends Component {
           </View>
           <View style={styles.container}>
             <Text style={styles.inputText}>Title</Text>
-            <TextInput style={styles.normInput} placeholder="What's the name of your event?"
-            underlineColorAndroid = 'white'/>
+            <TextInput
+            placeholder="What's the name of your event?"
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.titleInput}
+            returnKeyType={'done'}
+            onChangeText={(titleInput) => this.setState({titleInput})}
+            underlineColorAndroid='white'/>
           </View>
           <View style={styles.container}>
             <Text style={styles.inputText}>Who</Text>
-            <TextInput style={styles.normInput} placeholder="Who is the host of the event?"
+            <TextInput
+            placeholder='Who is the host of the event?'
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.whoInput}
+            returnKeyType={'done'}
+            onChangeText={(whoInput) => this.setState({whoInput})}
             underlineColorAndroid = 'white'/>
           </View>
           <View style={styles.container}>
+            <Text style={styles.inputText}>When</Text>
+            <TextInput
+            placeholder={'When is your event?'}
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.whenInput}
+            returnKeyType={'done'}
+            onChangeText={(whenInput) => this.setState({whenInput})}
+            underlineColorAndroid='white'/>
+          </View>
+          <View style={styles.container}>
             <Text style={styles.inputText}>Place</Text>
-            <TextInput style={styles.normInput} placeholder="Where is the event taking place?"
+            <TextInput
+            placeholder='Where is the event taking place?'
+            style={styles.normInput}
+            autoCapitalize={'sentences'}
+            value={this.state.whereInput}
+            returnKeyType={'done'}
+            onChangeText={(whereInput) => this.setState({whereInput})}
             underlineColorAndroid = 'white'/>
           </View>
           <View style={styles.container}>
             <Text style={styles.inputText}>Description</Text>
-            <TextInput multiline={true} style={styles.descriptionInput}
-              placeholder="Include additional details here (e.g RSVP, cost, food...)"
-              textAlignVertical={'top'}
-            underlineColorAndroid = 'white'/>
+            <TextInput
+              multiline={true}
+              style={styles.descriptionInput}
+              placeholder='Include additional details here (e.g RSVP, cost, food...)'
+              autoCapitalize={'sentences'}
+              value={this.state.descriptionInput}
+              returnKeyType={'done'}
+              onChangeText={(descriptionInput) => this.setState({descriptionInput})}
+              underlineColorAndroid = 'white'
+              textAlignVertical={'top'}/>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

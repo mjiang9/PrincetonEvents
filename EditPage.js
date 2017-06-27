@@ -30,6 +30,7 @@ export default class EditScreen extends Component {
     console.log("" + this.state.curTitle + " " + this.state.curWho + " " + this.state.curWhen
   + " " + this.state.curWhen + " " + this.state.curDescription);
   }
+
   pushNewData = (newName, newWho, newWhere, newWhen, newWhat) => {
     this.setState({
       saving: false,
@@ -39,7 +40,7 @@ export default class EditScreen extends Component {
       curDescription: newWhat,
       curWhen: newWhen
     });
-    };
+  };
 
   onEdit = () => {
       this.setState({editing: true});

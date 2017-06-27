@@ -6,9 +6,18 @@ import {
 } from 'react-native';
 import Input from './Input';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {firebaseApp} from './App';
 
 
 export default class InputScreen extends Component {
+  constructor(props){
+    super(props);
+    const {navigate} = this.props.navigation;
+    this.state = {
+      submit: false
+    }
+  }
+
 
   static navigationOptions = {
       tabBarLabel: 'Input',
@@ -21,21 +30,54 @@ export default class InputScreen extends Component {
 
   }
 
+  submitData = (inputName, inputWho, inputWhere, inputWhen, inputWhat) => {
+    if(inputName == '')
+    inputName = 'TBD';
+
+    if(inputWho == '')
+    inputWho = 'TBD';
+
+    if(inputWhere == '')
+    inputWhere = 'TBD';
+
+    if(inputWhen == '')
+    inputWhen = 'TBD';
+
+    if(inputWhat == '')
+    inputWhat = 'TBD';
+
+    let data = {
+      name: inputName,
+      what: inputWhat,
+      when: inputWhen,
+      where: inputWhere,
+      who: inputWho
+    }
+    let ref = firebaseApp.database().ref('items/today');
+    ref.push(data);
+    this.props.navigation.navigate('Home');
+  };
+
+  _submit = () => {
+    this.setState({
+      submit: true
+    });
+  };
+
   render() {
-    const {navigate} = this.props.navigation;
     var styles = require('./Styles');
     return (
       <View style={{
         flex: 1
       }}>
         <View style={styles.body}>
-          <Input/>
+          <Input submitData={this.submitData} submit={this.state.submit}/>
         </View>
         <View style={styles.footer}>
           <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
             <Text style={styles.buttonText}>Back</Text>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.button}>
+          <TouchableHighlight style={styles.button} onPress={() => this._submit()}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableHighlight>
         </View>

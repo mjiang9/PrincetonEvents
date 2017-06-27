@@ -2,14 +2,55 @@ import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, FlatList} from 'react-native';
 import {ListItem, List} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {firebaseApp} from './App';
 
 
 export default class MyEventsScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+    this.itemsRef = firebaseApp.database().ref().child('items/today');
+    console.ignoredYellowBox = [
+         'Setting a timer'
+     ];
+  }
+
   onViewMyEvent = (item) => {
     this.props.navigation.navigate('Edit', {
       ...item
     });
   };
+
+  listenForItems(itemsRef) {
+    itemsRef.on('value', (snap) => {
+      // get children as an array
+      var items = [];
+      snap.forEach((parent) => {
+        var children = [];
+        parent.forEach((child) => {
+        children.push({
+          "name": child.val().name,
+          "when": child.val().when,
+          "who": child.val().who,
+          "where": child.val().where,
+          "what": child.val().what
+        });
+      });
+      items.push({
+        data: children,
+      })
+      });
+      this.setState({
+        data: items
+      });
+    });
+  }
+
+  componentDidMount() {
+    this.listenForItems(this.itemsRef);
+  }
 
   static navigationOptions = {
       tabBarLabel: 'MyEvents',
@@ -37,23 +78,7 @@ export default class MyEventsScreen extends Component {
             borderTopWidth: 0,
             borderBottomWidth: 0
           }}>
-            <FlatList data={[
-              {
-                "name": "Event 1",
-                "who": "E-Club",
-                "what": "description goes here description goes here description goes here",
-                "when": "1:00",
-                "where": "Ehub",
-                "RSVP": "yes"
-              }, {
-                "name": "Event 2",
-                "who": "Club 2",
-                "what": "description goes here",
-                "when": "2:00",
-                "where": "Location 2",
-                "RSVP": "no"
-              }
-            ]} renderItem={({item}) => <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
+            <FlatList data={this.state.data} renderItem={({item}) => <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item, index) => index}/>
           </List>
