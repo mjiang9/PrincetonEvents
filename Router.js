@@ -21,9 +21,7 @@ export const MyEventsStack = StackNavigator({
     screen: EditScreen,
     navigationOptions: {
       header: null,
-      /*navigation: ({ navigation }) => ({
-      title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
-    }),*/
+
     },
   },
 

@@ -8,7 +8,7 @@ import {Tabs} from './Router';
 
 export default class MyEventsScreen extends Component {
   onViewMyEvent = (item) => {
-    this.props.navigation.navigate('Edit', {
+    this.props.navigation.navigate('MyEventsDetails', {
       ...item
     });
   };
