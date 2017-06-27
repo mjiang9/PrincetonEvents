@@ -32,7 +32,7 @@ export default class Edit extends Component {
               <Text style={styles.inputText}>Description</Text>
               <TextInput multiline={true} style={styles.descriptionInput}
                  placeholder={this.props.what}
-                 placeholderTextColor = 'grey'
+                 placeholderTextColor = '#C7C7CD'
                  textAlignVertical={'top'}/>
             </View>
         </KeyboardAwareScrollView>

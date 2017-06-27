@@ -19,7 +19,7 @@ export default class MyEventsScreen extends Component {
       tabBarLabel: 'MyEvents',
       tabBarIcon: ({tintColor}) => (
         <Icon
-          name = {'account circle'}
+          name = {'account-circle'}
           size = {26}
           style = {{color: tintColor}} />
       )
