@@ -78,7 +78,8 @@ export default class MyEventsScreen extends Component {
             borderTopWidth: 0,
             borderBottomWidth: 0
           }}>
-            <FlatList data={this.state.data} renderItem={({item}) => <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
+            <FlatList data={this.state.data} renderItem={({item}) =>
+              <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item, index) => index}/>
           </List>

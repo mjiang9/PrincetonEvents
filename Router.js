@@ -8,12 +8,49 @@ import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
 
+export const MyEventsStack = StackNavigator({
+
+  MyEvents: {
+    screen: MyEventsScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  MyEventsDetails: {
+    screen: EditScreen,
+    navigationOptions: {
+      header: null,
+
+    },
+  },
+
+});
+
+
+export const EventsStack = StackNavigator({
+
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+
+    },
+  },
+  Details: {
+    screen: DetailsScreen,
+    navigationOptions: {
+      header: null,
+
+    },
+  },
+
+});
 
 export const Tabs = TabNavigator({
-  Home: {screen: HomeScreen},
+  Home: {screen: EventsStack},
   EventMap: {screen: MapScreen},
   Input: {screen: InputScreen},
-  MyEvents:{screen: MyEventsScreen},
+  MyEvents:{screen: MyEventsStack},
 },{
     tabBarOptions: {
       activeTintColors: '#e91e63',
@@ -21,25 +58,7 @@ export const Tabs = TabNavigator({
     }
 });
 
-export const EventsStack = StackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      header: null
-    }
-  },
-  Details: {
-    screen: DetailsScreen,
-    navigationOptions: {
-      header: null,
-      /*navigation: ({ navigation }) => ({
-      title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
-    }),*/
-    }
-  }
-});
-
-export const HomeStack = StackNavigator({
+/*export const HomeStack = StackNavigator({
   Home: {
     screen: EventsStack,
     navigationOptions: {
@@ -69,12 +88,16 @@ export const HomeStack = StackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  TabNav: {
+    screen: Tabs,
   }
-});
+});*/
 
 export const Root = StackNavigator({
-  HomeStack: {
-    screen: HomeStack,
-    //screen: Tabs
+  TabNav: {
+    screen: Tabs,
   }
+
+
 }, {headerMode: 'none'});
