@@ -32,7 +32,7 @@ export default class Input extends Component {
               <Text style={styles.inputText}>Description</Text>
               <TextInput multiline={true} style={styles.descriptionInput}
                  placeholder="Include additional details here (e.g RSVP, cost, food...)"
-                 placeholderTextColor = 'grey'
+                 placeholderTextColor = '#C7C7CD'
                  textAlignVertical={'top'}/>
             </View>
         </KeyboardAwareScrollView>

@@ -23,7 +23,7 @@ export default class InputScreen extends Component {
       tabBarLabel: 'Input',
       tabBarIcon: ({tintColor}) => (
         <Icon
-          name = {'add circle '}
+          name = {'add-circle'}
           size = {26}
           style = {{color: tintColor}} />
       )

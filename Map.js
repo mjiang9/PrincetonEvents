@@ -22,7 +22,7 @@ export default class Map extends Component {
       tabBarLabel: 'Location',
       tabBarIcon: ({tintColor}) => (
         <Icon
-          name = {'location on'}
+          name = {'location-on'}
           size = {26}
           style = {{color: tintColor}} />
       )
