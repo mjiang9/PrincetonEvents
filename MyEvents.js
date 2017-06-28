@@ -16,10 +16,10 @@ export default class MyEventsScreen extends Component {
 
 
   static navigationOptions = {
-      tabBarLabel: 'MyEvents',
+      tabBarLabel: 'My Events',
       tabBarIcon: ({tintColor}) => (
         <Icon
-          name = {'account circle'}
+          name = {'account-circle'}
           size = {26}
           style = {{color: tintColor}} />
       )

@@ -7,6 +7,8 @@ import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
+import CreateAccountScreen from './CreateAccount';
+import LoginScreen from './Login';
 
 export const MyEventsStack = StackNavigator({
 
@@ -28,22 +30,18 @@ export const MyEventsStack = StackNavigator({
 
 
 export const EventsStack = StackNavigator({
-
   Home: {
     screen: HomeScreen,
     navigationOptions: {
       header: null,
-
     },
   },
   Details: {
     screen: DetailsScreen,
     navigationOptions: {
       header: null,
-
     },
   },
-
 });
 
 export const Tabs = TabNavigator({
@@ -54,8 +52,20 @@ export const Tabs = TabNavigator({
 },{
     tabBarOptions: {
       activeTintColors: '#e91e63',
-      //swipeEnabled: true,
     }
+});
+
+export const LoginNav = StackNavigator({
+  Login: { screen: LoginScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  CreateAccount: { screen: CreateAccountScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
 });
 
 /*export const HomeStack = StackNavigator({

@@ -26,7 +26,7 @@ export default class HomeScreen extends Component {
       tabBarLabel: 'Home',
       tabBarIcon: ({tintColor}) => (
         <Icon
-          name = {'Home'}
+          name = {'home'}
           size = {26}
           style = {{color: tintColor}} />
       )
