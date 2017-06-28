@@ -56,7 +56,7 @@ export default class InputScreen extends Component {
       where: inputWhere,
       who: inputWho
     }
-    let ref = firebaseApp.database().ref('items/' + inputDate);
+    let ref = firebaseApp.database().ref('items').child(inputDate);
     ref.push(data);
     this.props.navigation.navigate('Home');
   };

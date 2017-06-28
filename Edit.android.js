@@ -23,8 +23,8 @@ export default class Edit extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.saving) {
-    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput, this.state.timeInput, this.state.dateInput,
-      this.state.descriptionInput);
+    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput,
+      this.state.timeInput, this.state.dateInput, this.state.descriptionInput);
     }
     else if(nextProps.cancel != this.props.cancel) {
       this.setState({
@@ -37,6 +37,12 @@ export default class Edit extends Component {
       });
     }
 };
+
+componentWillUpdate(nextProps, nextState) {
+  if (nextState != this.state && nextProps.cancel == this.props.cancel) {
+    this.props.change();
+  }
+}
 
   render() {
     var styles = require('./Styles');
@@ -90,7 +96,6 @@ export default class Edit extends Component {
             <Text style={styles.inputText}>Where</Text>
             <TextInput
             autoCapitalize={'sentences'}
-            editable={this.props.editing}
             style={styles.normInput}
             value={this.state.whereInput}
             returnKeyType={'done'}
@@ -102,7 +107,6 @@ export default class Edit extends Component {
             <TextInput
               multiline={true}
               textAlignVertical={'top'}
-              editable={this.props.editing}
               autoCapitalize={'sentences'}
               style={styles.descriptionInput}
               value={this.state.descriptionInput}

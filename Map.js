@@ -49,7 +49,7 @@ export default class MapScreen extends Component {
                   "where": child.val().where,
                   "what": child.val().what,
                   "key": child.key,
-                  "description": parent.key + " " + child.val().when + " @ " + child.val().where,
+                  "description": child.val().when + " @ " + child.val().where,
                   "latlng": coords,
                 });
                 this.setState({

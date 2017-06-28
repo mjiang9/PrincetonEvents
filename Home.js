@@ -3,7 +3,6 @@ import {View, Text, TouchableHighlight,  SectionList} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {StackNavigator, TabNavigator} from 'react-navigation';
 import {Tabs} from './Router';
 
 export default class HomeScreen extends Component {
@@ -12,7 +11,7 @@ export default class HomeScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref('items');
+    this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
@@ -34,7 +33,7 @@ export default class HomeScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    itemsRef.on('value', (snap) => {
+    itemsRef.orderByKey().on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((parent) => {

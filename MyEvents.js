@@ -10,7 +10,7 @@ export default class MyEventsScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref('items');
+    this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
