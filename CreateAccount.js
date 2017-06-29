@@ -20,12 +20,15 @@ export default class CreateAccountScreen extends Component {
       passowrd: '',
       verifyPassword:'',
       status: ''
+
     }
 
     this.register = this.register.bind(this);
   }
 
   register(){
+
+    console.log("Creating Account");
     if(this.state.password == this.state.verifyPassword) {
       firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error){
         console.log(error.code);
@@ -35,13 +38,15 @@ export default class CreateAccountScreen extends Component {
       console.log("Passwords did not match.")
     }
 
+    /*firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error){
+      console.log(error.code);
+      console.log(error.message);
+    })*/
+
   }
 
-  /*onCreateAccount = (item) => {
-    this.props.navigation.navigate('CreateAccountScreen');
-  };*/
-
   render() {
+    console.log("Top of render");
     var styles = require('./Styles');
 
     return(
@@ -65,7 +70,7 @@ export default class CreateAccountScreen extends Component {
             onChangeText={(text) => this.setState({verifyPassword: text})}
             autoCapitalize='none'
             value={this.state.verifyPassword}/>
-        <TouchableOpacity style={styles.loginButton} onPress={() => {this.register}}>
+        <TouchableOpacity style={styles.loginButton} onPress={this.register}>
           <Text style={styles.loginText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
       </View>

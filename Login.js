@@ -29,6 +29,8 @@ export default class LoginScreen extends Component {
       console.log(error.code);
       console.log(error.message);
     })
+
+
   }
 
   render() {
@@ -53,10 +55,10 @@ export default class LoginScreen extends Component {
           autoCapitalize='none'
           returnKeyType='go'/>
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginText}>LOGIN</Text>
+          <Text style={styles.loginText} onPress={() => {this.register}}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginButton} onPress = {() => navigate('CreateAccount')}>
-          <Text style={styles.loginText} >CREATE ACCOUNT </Text>
+          <Text style={styles.loginText}> CREATE ACCOUNT </Text>
         </TouchableOpacity>
       </View>
     );
