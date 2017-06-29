@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight,  SectionList} from 'react-native';
+import {View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {StackNavigator, TabNavigator} from 'react-navigation';
 import {Tabs} from './Router';
 
 export default class HomeScreen extends Component {
@@ -12,7 +11,7 @@ export default class HomeScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref('items');
+    this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
@@ -22,6 +21,7 @@ export default class HomeScreen extends Component {
       ...item
     });
   };
+
   static navigationOptions = {
       tabBarLabel: 'Home',
       tabBarIcon: ({tintColor}) => (
@@ -29,10 +29,11 @@ export default class HomeScreen extends Component {
           name = {'home'}
           size = {26}
           style = {{color: tintColor}} />
-      )
+      ),
   }
+
   listenForItems(itemsRef) {
-    itemsRef.on('value', (snap) => {
+    itemsRef.orderByKey().on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((parent) => {
@@ -41,7 +42,8 @@ export default class HomeScreen extends Component {
         children.push({
           "key": child.key,
           "name": child.val().name,
-          "when": child.val().when,
+          "time": child.val().when, //change eventually to time
+          "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
           "what": child.val().what
@@ -67,12 +69,13 @@ export default class HomeScreen extends Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={{flex: 1}}>
+        <StatusBar hidden={true}/>
         <View style={styles.header}>
           <Text style={styles.title}>Princeton Events</Text>
         </View>
         <View style={styles.body}>
         <SectionList renderItem={({item}) => <ListItem style={styles.item}
-            title={item.name} subtitle={item.when}
+            title={item.name} subtitle={item.time}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}

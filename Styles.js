@@ -14,6 +14,12 @@ header: {
   backgroundColor: '#f9a56a',
   justifyContent: 'center',
 },
+
+headerTest: {
+  flex: 1,
+  height: 40,
+},
+
 title: {
   textAlign: 'center',
   fontSize: 28,

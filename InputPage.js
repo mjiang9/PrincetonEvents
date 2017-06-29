@@ -30,6 +30,7 @@ export default class InputScreen extends Component {
 
   }
 
+  // pushes input to firebase and stores in appropriate location
   submitData = (inputName, inputWho, inputWhere, inputDate, inputTime, inputWhat) => {
     if(inputName == '')
     inputName = 'TBD';
@@ -56,7 +57,7 @@ export default class InputScreen extends Component {
       where: inputWhere,
       who: inputWho
     }
-    let ref = firebaseApp.database().ref('items/' + inputDate);
+    let ref = firebaseApp.database().ref('items').child(inputDate);
     ref.push(data);
     this.props.navigation.navigate('Home');
   };

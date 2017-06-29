@@ -17,46 +17,66 @@ export const MyEventsStack = StackNavigator({
       header: null
     }
   },
+
   Edit: {
     screen: EditScreen,
     navigationOptions: {
-      header: null,
-
-    },
-  },
-
+      header: null
+    }
+  }
 });
 
+export const MapStack = StackNavigator({
+
+  EventMap: {
+    screen: MapScreen,
+    navigationOptions: {
+      header: null
+
+    }
+  },
+
+  Details: {
+    screen: DetailsScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
+});
 
 export const EventsStack = StackNavigator({
 
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      header: null,
-
-    },
+      header: null
+    }
   },
+
   Details: {
     screen: DetailsScreen,
     navigationOptions: {
-      header: null,
-
-    },
-  },
-
+      header: null
+    }
+  }
 });
 
 export const Tabs = TabNavigator({
-  Home: {screen: EventsStack},
-  EventMap: {screen: MapScreen},
-  Input: {screen: InputScreen},
-  MyEvents:{screen: MyEventsStack},
-},
-{
-tabBarPosition: 'bottom',
-},
-);
+  Home: {
+    screen: EventsStack
+  },
+  Location: {
+    screen: MapStack
+  },
+  Input: {
+    screen: InputScreen
+  },
+  MyEvents: {
+    screen: MyEventsStack
+  }
+}, {
+  tabBarPosition: 'bottom'
+},);
 
 /*export const HomeStack = StackNavigator({
   Home: {
@@ -96,8 +116,7 @@ tabBarPosition: 'bottom',
 
 export const Root = StackNavigator({
   TabNav: {
-    screen: Tabs,
+    screen: Tabs
   }
-
 
 }, {headerMode: 'none'});

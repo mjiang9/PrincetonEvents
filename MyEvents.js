@@ -10,7 +10,7 @@ export default class MyEventsScreen extends Component {
     this.state = {
       data: []
     };
-    this.itemsRef = firebaseApp.database().ref('items/today');
+    this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
@@ -24,21 +24,23 @@ export default class MyEventsScreen extends Component {
     itemsRef.on('value', (snap) => {
       // get children as an array
       var items = [];
-      snap.forEach((child) => {
+      snap.forEach((parent) => {
+        parent.forEach((child) => {
         items.push({
           "key": child.key,
           "name": child.val().name,
-          "when": child.val().when,
+          "time": child.val().when, //change eventually to time
+          "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
           "what": child.val().what
         });
       });
 
+      });
       this.setState({
         data: items
       });
-
     });
   }
 
@@ -74,7 +76,7 @@ export default class MyEventsScreen extends Component {
             borderBottomWidth: 0
           }}>
             <FlatList data={this.state.data} renderItem={({item}) =>
-              <ListItem style={styles.item} title={item.name} subtitle={item.when} containerStyle={{
+              <ListItem style={styles.item} title={item.name} subtitle={item.time} containerStyle={{
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>
           </List>
