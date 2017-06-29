@@ -30,6 +30,7 @@ export default class InputScreen extends Component {
 
   }
 
+  // pushes input to firebase and stores in appropriate location
   submitData = (inputName, inputWho, inputWhere, inputDate, inputTime, inputWhat) => {
     if(inputName == '')
     inputName = 'TBD';

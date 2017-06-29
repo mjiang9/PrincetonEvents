@@ -9,10 +9,28 @@ export default class Edit extends Component {
       titleInput: this.props.title,
       whoInput: this.props.who,
       whereInput: this.props.where,
-      descriptionInput: this.props.description,
-      whenInput: this.props.when
+      dateInput: this.props.date,
+      timeInput: this.props.time,
+      descriptionInput: this.props.description
     }
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.saving) {
+    this.props.pushData(this.state.titleInput, this.state.whoInput, this.state.whereInput,
+      this.state.timeInput, this.state.dateInput, this.state.descriptionInput);
+    }
+    else if(nextProps.cancel != this.props.cancel) {
+      this.setState({
+        titleInput: this.props.title,
+        whoInput: this.props.who,
+        whereInput: this.props.where,
+        timeInput: this.props.time,
+        dateInput: this.props.date,
+        descriptionInput: this.props.description
+      });
+    }
+};
 
 componentWillReceiveProps(nextProps){
     if(nextProps.saving) {

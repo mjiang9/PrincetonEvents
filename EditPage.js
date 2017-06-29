@@ -8,6 +8,18 @@ import Edit from './Edit';
 import EditingButtons from './EditingButtons';
 import NormalButtons from './NormalButtons';
 import {firebaseApp} from './App';
+import NavigationBar from 'react-native-navbar';
+var styles = require('./Styles');
+
+class Header extends Component {
+  render() {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.title}>Edit Event</Text>
+      </View>
+    );
+  }
+}
 
 export default class EditScreen extends Component {
   constructor(props){
@@ -28,10 +40,8 @@ export default class EditScreen extends Component {
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
-  componentWillUnmount() {
-    console.log(this.state);
-  }
-
+  // takes new data from Edit.ios and Edit.android to update locally and send
+  // updates to firebase
   pushNewData = (newName, newWho, newWhere, newTime, newDate, newWhat) => {
     this.setState({
       saving: false,
@@ -48,13 +58,23 @@ export default class EditScreen extends Component {
        what: newWhat.toString(),
        when: newTime.toString(),
        where: newWhere.toString(),
-       who: newWho.toString()
-}
-     let ref = firebaseApp.database().ref().child('items' + '/' + this.params.date + '/' + this.params.key);
-     ref.parent.update(newDate.toString());
-     ref.update(updateData);
-  };
+       who: newWho.toString(),
+     }
 
+     // updates the old event; if there is new date, deletes old event and
+     // moves event to under new date while retaining event key
+     let itemsRef = firebaseApp.database().ref('items');
+     let oldEventRef = itemsRef.child(this.params.date + '/' + this.params.key);
+     oldEventRef.update(updateData);
+
+     if (this.params.date != newDate) {
+     oldEventRef.remove();
+     itemsRef.child(newDate).child(this.params.key).update(updateData);
+  }
+}
+
+// basic functions for managing states; if changed true, then display cancel and
+// save button; if saving true, store data; if cancel true, reset to last saved data
   onSave = () => {
     this.setState({
       saving: true,
@@ -77,7 +97,6 @@ export default class EditScreen extends Component {
 
 
   render() {
-    var styles = require('./Styles');
      return (
        <View style={{
          flex: 1

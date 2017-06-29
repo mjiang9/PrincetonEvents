@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight,  SectionList} from 'react-native';
+import {View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -29,7 +29,7 @@ export default class HomeScreen extends Component {
           name = {'home'}
           size = {26}
           style = {{color: tintColor}} />
-      )
+      ),
   }
 
   listenForItems(itemsRef) {
@@ -69,6 +69,7 @@ export default class HomeScreen extends Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={{flex: 1}}>
+        <StatusBar hidden={true}/>
         <View style={styles.header}>
           <Text style={styles.title}>Princeton Events</Text>
         </View>
