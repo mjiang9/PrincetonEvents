@@ -8,7 +8,6 @@ import Edit from './Edit';
 import EditingButtons from './EditingButtons';
 import NormalButtons from './NormalButtons';
 import {firebaseApp} from './App';
-import NavigationBar from 'react-native-navbar';
 var styles = require('./Styles');
 
 class Header extends Component {
