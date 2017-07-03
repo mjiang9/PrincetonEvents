@@ -1,13 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-#import sys
-#import codecs
-#sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+import datetime
 from firebase.firebase import FirebaseApplication
 firebase = FirebaseApplication('https://princetonevents-3aeed.firebaseio.com/')
 
 r = requests.get("https://www.princeton.edu/events")
 soup = BeautifulSoup(r.content, "html.parser")
+
+end = datetime.date.today() + datetime.timedelta(days=7) # data for a week
+end = end.strftime("%B")[:3] + " " + str(int(end.strftime("%d")))
 
 for h3 in soup.find_all("h3"):
     eventName = h3.string # EVENT NAME
@@ -19,6 +20,10 @@ for h3 in soup.find_all("h3"):
         eventWhere = location.text # EVENT LOCATION
     eventWhen = location.next_sibling.strip() # EVENT TIME
     eventDate = " ".join(subheader.find_next().find_next().text.split()) # EVENT DATE
+    if (firebase.get('/items/' + eventDate, None) != None):
+        continue
+    if (eventDate == end):
+        break
     eventWhat = (subheader.next_sibling.strip() + "More information at "
            "princeton.edu" + h3.parent.get("href")) # EVENT DETAILS LINK
     event = {
@@ -28,6 +33,4 @@ for h3 in soup.find_all("h3"):
         "where": eventWhere,
         "who": "Princeton University Public Events"
     }
-    if (eventDate == "Jul 1"):
-        break
-    firebase.post("/items/" + eventDate, event)
+    firebase.post('/items/' + eventDate, event)
