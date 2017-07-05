@@ -9,7 +9,9 @@ import {
 import Input from './Input';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
-
+import {Tabs} from './Router';
+import {StackNavigator, TabNavigator} from 'react-navigation';
+import { Root } from './Router';
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -25,11 +27,16 @@ export default class LoginScreen extends Component {
   }
 
   login(){
+    console.log("Logging in");
+
     firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
       console.log(error.code);
       console.log(error.message);
     })
 
+    this.props.navigation.navigate('Home');
+
+    console.log("Navigate to Home");
 
   }
 
@@ -55,9 +62,11 @@ export default class LoginScreen extends Component {
           autoCapitalize='none'
           returnKeyType='go'/>
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginText} onPress={() => {this.register}}>LOGIN</Text>
+          <Text style={styles.loginText} onPress={this.login}>LOGIN</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress = {() => navigate('CreateAccount')}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress = {() => navigate('CreateAccount')}>
           <Text style={styles.loginText}> CREATE ACCOUNT </Text>
         </TouchableOpacity>
       </View>
