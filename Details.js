@@ -33,7 +33,7 @@ export default class DetailsScreen extends Component {
   }
   render() {
     const { navigate } = this.props.navigation;
-    const { name, who, what, when, where } =
+    const { name, who, what, time, date, where } =
      this.props.navigation.state.params;
     var styles = require('./Styles');
     return (
@@ -42,29 +42,43 @@ export default class DetailsScreen extends Component {
           <Text style={styles.title}>{name}</Text>
         </View>
         <View style={styles.body}>
-          <List>
-            <ListItem rightTitleStyle={s.right}
+          <List containerStyle={{
+            borderTopWidth: 0,
+            borderBottomWidth: 0
+          }}>
+            <ListItem
+              style={styles.item}
+              rightTitleStyle={s.right}
               title="Who:"
               rightTitle={who}
               hideChevron
             />
-          </List>
-          <List>
-            <ListItem rightTitleStyle={s.right}
-              title="When:"
-              rightTitle={when}
+            <ListItem
+              style={styles.item}
+              rightTitleStyle={s.right}
+              title="Date:"
+              rightTitle={date}
               hideChevron
             />
-            <ListItem rightTitleStyle={s.right}
+            <ListItem
+              style={styles.item}
+              rightTitleStyle={s.right}
+              title="Time:"
+              rightTitle={time}
+              hideChevron
+            />
+            <ListItem
+              style={styles.item}
+              rightTitleStyle={s.right}
               title="Where:"
               rightTitle={where}
               hideChevron
             />
-          </List>
-          <List>
-            <ListItem rightTitleStyle={s.right}
+            <ListItem
+              style={styles.item}
+              rightTitleStyle={s.right}
               rightTitleNumberOfLines={5}
-              title="What:"
+              title="Description:"
               rightTitle={what}
               hideChevron
             />
@@ -75,7 +89,7 @@ export default class DetailsScreen extends Component {
             <MapView.Marker
               coordinate={this.state.coords}
               title={name}
-              description={when + " @ " + where} />
+              description={date + " " + time + " @ " + where} />
           </MapView>
         </View>
        <View style={styles.footer}>

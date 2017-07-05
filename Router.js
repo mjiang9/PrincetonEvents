@@ -1,5 +1,6 @@
 import React from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
+import {TabView} from 'react-navigation'
 
 import InputScreen from './InputPage';
 import HomeScreen from './Home';
@@ -18,14 +19,32 @@ export const MyEventsStack = StackNavigator({
       header: null
     }
   },
-  MyEventsDetails: {
+
+  Edit: {
     screen: EditScreen,
     navigationOptions: {
-      header: null,
-    },
-  },
+      header: null
+    }
+  }
 });
 
+export const MapStack = StackNavigator({
+
+  EventMap: {
+    screen: MapScreen,
+    navigationOptions: {
+      header: null
+
+    }
+  },
+
+  Details: {
+    screen: DetailsScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
+});
 
 export const EventsStack = StackNavigator({
   Home: {
@@ -33,25 +52,33 @@ export const EventsStack = StackNavigator({
     navigationOptions: {
       header: null,
     },
+
   },
+
   Details: {
     screen: DetailsScreen,
     navigationOptions: {
-      header: null,
-    },
-  },
+      header: null
+    }
+  }
 });
 
 export const Tabs = TabNavigator({
-  Home: {screen: EventsStack},
-  EventMap: {screen: MapScreen},
-  Input: {screen: InputScreen},
-  MyEvents:{screen: MyEventsStack},
-},{
-    tabBarOptions: {
-      activeTintColors: '#e91e63',
-    }
-});
+  Home: {
+    screen: EventsStack
+  },
+  Location: {
+    screen: MapStack
+  },
+  Input: {
+    screen: InputScreen
+  },
+  MyEvents: {
+    screen: MyEventsStack
+  }
+}, {
+  tabBarPosition: 'bottom'
+},);
 
 export const LoginNav = StackNavigator({
   Login: { screen: LoginScreen,
@@ -82,6 +109,6 @@ export const SuccessLoginNav = StackNavigator({
 
 export const Root = StackNavigator({
   TabNav: {
-    screen: Tabs,
+    screen: Tabs
   }
 }, {headerMode: 'none'});
