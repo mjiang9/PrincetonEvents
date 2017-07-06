@@ -16,7 +16,7 @@ export default class MapScreen extends Component {
      ];
   }
   static navigationOptions = {
-      tabBarLabel: 'Location',
+      tabBarLabel: 'Map',
       tabBarIcon: ({tintColor}) => (
         <Icon
           name = {'location-on'}
@@ -78,8 +78,7 @@ export default class MapScreen extends Component {
             key={marker.key}
             coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
             title={marker.name}
-            description={marker.description}>
-            <MapView.Callout onPress={() => this.onLearnMore(marker)}/>
+            description={marker.description} onCalloutPress={() => this.onLearnMore(marker)}>
           </MapView.Marker> ))}
         </MapView>
         <View style={styles.footer}>
