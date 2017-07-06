@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
-import Input from './Input';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
 import {Tabs} from './Router';

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
 
 export default class DetailsScreen extends Component {
   constructor(props) {
@@ -14,10 +15,12 @@ export default class DetailsScreen extends Component {
      this.props.navigation.state.params;
     var styles = require('./Styles');
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{name}</Text>
-        </View>
+      <Container>
+        <Header>
+          <Body>
+          <Title>{name}</Title>
+          </Body>
+        </Header>
         <View style={styles.body}>
           <List containerStyle={{
             borderTopWidth: 0,
@@ -78,7 +81,7 @@ export default class DetailsScreen extends Component {
          <Text style={{color: 'white', fontSize: 20}}>Back</Text>
         </TouchableHighlight>
        </View>
-      </View>
+     </Container>
     );
   }
 }
