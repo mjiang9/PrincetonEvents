@@ -52,10 +52,6 @@ export const EventsStack = StackNavigator({
     navigationOptions: {
       header: null,
     },
-<<<<<<< HEAD
-=======
-
->>>>>>> 42df7e4165e70568df70b191910dfaa64ab8b8d1
   },
 
   Details: {

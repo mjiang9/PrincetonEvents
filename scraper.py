@@ -38,7 +38,6 @@ for h3 in soup.find_all("h3"):
         prev = eventDate
         if (firebase.get('/items/' + eventDate, None) != None):
             done = True
-            continue
         else:
             done = False
     if (done): # this date's events have already been added
