@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight, FlatList} from 'react-native';
+import {ActivityIndicator, View, Text, TouchableHighlight, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
@@ -8,7 +8,8 @@ export default class MyEventsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      loading: true
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
@@ -39,7 +40,8 @@ export default class MyEventsScreen extends Component {
 
       });
       this.setState({
-        data: items
+        data: items,
+        loading: false
       });
     });
   }
@@ -63,6 +65,17 @@ export default class MyEventsScreen extends Component {
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
+    if (this.state.loading) {
+      return (<View style={{flex: 1}}>
+        <View style={styles.header}>
+          <Text style={styles.title}>My Events</Text>
+        </View>
+        <View style={{flex: 10, backgroundColor: 'white',
+                      justifyContent: 'center', alignContent: 'center'}}>
+          <ActivityIndicator size='large'/>
+        </View>
+      </View>);
+    } else {
     return (
       <View style={{
         flex: 1
@@ -88,5 +101,6 @@ export default class MyEventsScreen extends Component {
         </View>
       </View>
     );
+  }
   }
 }

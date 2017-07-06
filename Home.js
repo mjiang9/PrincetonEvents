@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
+import {ActivityIndicator, View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -9,7 +9,8 @@ export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      loading: true
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
@@ -57,7 +58,8 @@ export default class HomeScreen extends Component {
       })
       });
       this.setState({
-        data: items
+        data: items,
+        loading: false
       });
     });
   }
@@ -69,6 +71,18 @@ export default class HomeScreen extends Component {
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
+    if (this.state.loading) {
+      return (<View style={{flex: 1}}>
+        <StatusBar hidden={true}/>
+        <View style={styles.header}>
+          <Text style={styles.title}>Princeton Events</Text>
+        </View>
+        <View style={{flex: 10, backgroundColor: 'white',
+                      justifyContent: 'center', alignContent: 'center'}}>
+          <ActivityIndicator size='large'/>
+        </View>
+      </View>);
+    } else {
     return (
       <View style={{flex: 1}}>
         <StatusBar hidden={true}/>
@@ -85,5 +99,6 @@ export default class HomeScreen extends Component {
         </View>
       </View>
     );
+  }
   }
 }
