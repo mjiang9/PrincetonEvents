@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
+import {ActivityIndicator, View, Text, TouchableHighlight,  SectionList} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Spinner} from 'native-base';
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      loading: true
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
@@ -47,7 +48,8 @@ export default class HomeScreen extends Component {
       })
       });
       this.setState({
-        data: items
+        data: items,
+        loading: false
       });
     });
   }
@@ -67,12 +69,13 @@ export default class HomeScreen extends Component {
           </Body>
         </Header>
       <Content>
-        <SectionList renderItem={({item}) => <ListItem style={styles.item}
+        {this.state.loading && <Spinner/>}
+        {!this.state.loading && <SectionList renderItem={({item}) => <ListItem style={styles.item}
             title={item.name} subtitle={item.time}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
-            sections={this.state.data} keyExtractor={(item) => item.key}/>
+            sections={this.state.data} keyExtractor={(item) => item.key}/>}
       </Content>
       <Footer>
         <TabBar navigate={navigate} screen='Home'/>

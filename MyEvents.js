@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import {FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      loading: true
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
@@ -40,7 +41,8 @@ export default class MyEventsScreen extends Component {
 
       });
       this.setState({
-        data: items
+        data: items,
+        loading: false
       });
     });
   }
@@ -60,10 +62,11 @@ export default class MyEventsScreen extends Component {
           </Body>
         </Header>
         <Content>
-            <FlatList data={this.state.data} renderItem={({item}) =>
+          {this.state.loading && <Spinner/>}
+            {!this.state.loading && <FlatList data={this.state.data} renderItem={({item}) =>
               <ListItem style={styles.item} title={item.name} subtitle={item.time} containerStyle={{
               borderBottomWidth: 0
-            }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>
+            }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>}
         </Content>
         <Footer>
           <TabBar navigate={navigate} screen='MyEvents'/>
