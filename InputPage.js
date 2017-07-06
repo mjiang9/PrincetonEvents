@@ -6,6 +6,8 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button,
 import { Keyboard, View} from 'react-native';
 import Geocoder from 'react-native-geocoding';
 
+Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
+
 export default class InputScreen extends Component {
   constructor(props){
     super(props);
@@ -39,6 +41,8 @@ export default class InputScreen extends Component {
     if(data.what == '')
     data.what = 'N/A'
 
+    // reference to new event
+    // gets location information and then adds event
     let ref = firebaseApp.database().ref('items').child(this.state.dateInput);
 
     Geocoder.getFromLocation(this.state.locationInput + " Princeton").then(
@@ -51,10 +55,11 @@ export default class InputScreen extends Component {
         alert(error);
       }
     );
-
+    // return to last page
     this.props.navigation.goBack();
   };
 
+  // checks if all input is filled out
   _submit = () => {
     this.setState({
       titleError: !this._inputChecker(this.state.titleInput),
@@ -68,11 +73,11 @@ export default class InputScreen extends Component {
     && !this.state.timeError && !this.state.locationError)
     this.submitData();
     else {
-
+        // toast goes here
     }
   };
 
-  // checks if input is valid or not
+  // checks if input is satisfactory or not
   _inputChecker = (item) => {
     return (item != '');
   };

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Root } from './Router';
 import * as firebase  from 'firebase';
 import { AppLoading, Font } from 'expo';
+import {LoginNav} from './Router';
+import Login from './Login';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbdjQNZ9IpoOmc5gWAVI4Doq224_JWUg",
@@ -35,7 +37,7 @@ class App extends Component {
         return <AppLoading />
       }
 
-      return <Root />;
+      return <LoginNav/>;
     }
 }
 

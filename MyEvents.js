@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
@@ -55,7 +55,9 @@ export default class MyEventsScreen extends Component {
     return (
       <Container>
         <Header>
+          <Body>
           <Title>My Events</Title>
+          </Body>
         </Header>
         <Content>
             <FlatList data={this.state.data} renderItem={({item}) =>

@@ -8,6 +8,8 @@ import DetailsScreen from './Details';
 import MyEventsScreen from './MyEvents';
 import EditScreen from './EditPage';
 import MapScreen from './Map';
+import CreateAccountScreen from './CreateAccount';
+import LoginScreen from './Login';
 
 export const MyEventsStack = StackNavigator({
 
@@ -44,13 +46,12 @@ export const MapStack = StackNavigator({
   }
 });
 
-export const EventsStack = StackNavigator({
-
+export const HomeStack = StackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      header: null
-    }
+      header: null,
+    },
   },
 
   Details: {
@@ -63,7 +64,7 @@ export const EventsStack = StackNavigator({
 
 export const Navigator = StackNavigator({
   Home: {
-    screen: EventsStack
+    screen: HomeStack
   },
   Map: {
     screen: MapStack
@@ -79,45 +80,35 @@ export const Navigator = StackNavigator({
   }
 });
 
-/*export const HomeStack = StackNavigator({
-  Home: {
-    screen: EventsStack,
+export const LoginNav = StackNavigator({
+  Login: { screen: LoginScreen,
     navigationOptions: {
-      header: null
+      header: null,
+    },
+  },
+  CreateAccount: { screen: CreateAccountScreen,
+    navigationOptions: {
+      header: null,
     }
   },
-  MyEvents: {
-    screen: MyEventsScreen,
+  Home: { screen: Navigator,
     navigationOptions: {
-      header: null
+      header: null,
     }
-  },
-  Input: {
-    screen: InputScreen,
-    navigationOptions: {
-      header: null
-    }
-  },
-  Edit: {
-    screen: EditScreen,
-    navigationOptions: {
-      header: null
-    }
-  },
-  Map: {
-    screen: MapScreen,
-    navigationOptions: {
-      header: null
-    }
-  },
-  TabNav: {
-    screen: Tabs,
   }
-});*/
+});
+
+export const SuccessLoginNav = StackNavigator({
+  Main: { screen: Navigator,
+    navigationOptions: {
+      header: null,
+    }
+  },
+});
+
 
 export const Root = StackNavigator({
   MainNav: {
     screen: Navigator
   }
-
 }, {headerMode: 'none'});

@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TouchableHighlight
-} from 'react-native';
 import TabBar from './Tab';
 import Edit from './Edit';
 import EditingButtons from './EditingButtons';
 import {firebaseApp} from './App';
 var styles = require('./Styles');
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
 import { Keyboard } from 'react-native';
 
 export default class EditScreen extends Component {
@@ -130,5 +125,3 @@ export default class EditScreen extends Component {
      );
   }
 }
-
-//{this.state.changed && <EditingButtons save={this.onSave} cancel={this.onCancel}/>}
