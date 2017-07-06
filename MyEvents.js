@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
+import TabBar from './Tab';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
@@ -48,45 +49,24 @@ export default class MyEventsScreen extends Component {
     this.listenForItems(this.itemsRef);
   }
 
-  static navigationOptions = {
-      tabBarLabel: 'MyEvents',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name = {'account-circle'}
-          size = {26}
-          style = {{color: tintColor}} />
-      )
-
-  }
-
-
   render() {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
     return (
-      <View style={{
-        flex: 1
-      }}>
-        <View style={styles.header}>
-          <Text style={styles.title}>My Events</Text>
-        </View>
-        <View style={styles.body}>
-          <List containerStyle={{
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          }}>
+      <Container>
+        <Header>
+          <Title>My Events</Title>
+        </Header>
+        <Content>
             <FlatList data={this.state.data} renderItem={({item}) =>
               <ListItem style={styles.item} title={item.name} subtitle={item.time} containerStyle={{
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>
-          </List>
-        </View>
-        <View style={styles.footer}>
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
+        </Content>
+        <Footer>
+          <TabBar navigate={navigate} screen='MyEvents'/>
+        </Footer>
+      </Container>
     );
   }
 }

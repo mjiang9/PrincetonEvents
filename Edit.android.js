@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon } from 'native-base';
 
 export default class Edit extends Component {
   constructor(props){
@@ -47,11 +48,7 @@ componentWillUpdate(nextProps, nextState) {
   render() {
     var styles = require('./Styles');
     return (
-      <KeyboardAvoidingView behavior='padding'>
-        <ScrollView>
-          <View style={styles.header}>
-            <Text style={styles.title}>Edit Event</Text>
-          </View>
+      <Container>
           <View style={styles.container}>
             <Text style={styles.inputText}>Title</Text>
             <TextInput
@@ -114,8 +111,7 @@ componentWillUpdate(nextProps, nextState) {
               onChangeText={(descriptionInput) => this.setState({descriptionInput})}
               underlineColorAndroid='white'/>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      </Container>
     );
   }
 }

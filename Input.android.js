@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 
 export default class Input extends Component {
   constructor(props){
@@ -36,15 +37,15 @@ export default class Input extends Component {
     }
 };
 
+componentWillUpdate(nextProps, nextState) {
+
+}
+
 
   render() {
     var styles = require('./Styles');
     return (
-      <KeyboardAvoidingView behavior='padding'>
-        <ScrollView>
-          <View style={styles.header}>
-            <Text style={styles.title}>Enter Info</Text>
-          </View>
+        <Container>
           <View style={styles.container}>
             <Text style={styles.inputText}>Title</Text>
             <TextInput
@@ -105,7 +106,7 @@ export default class Input extends Component {
             <TextInput
               multiline={true}
               style={styles.descriptionInput}
-              placeholder='Include additional details here (e.g RSVP, cost, food...)'
+              placeholder='(Optional) Include additional details here (e.g RSVP, cost, food...)'
               autoCapitalize={'sentences'}
               value={this.state.descriptionInput}
               returnKeyType={'done'}
@@ -113,8 +114,7 @@ export default class Input extends Component {
               underlineColorAndroid = 'white'
               textAlignVertical={'top'}/>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </Container>
     );
   }
 }

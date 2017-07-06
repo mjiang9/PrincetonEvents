@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import MapView from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
 import Geocoder from 'react-native-geocoding';
+import TabBar from './Tab';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 
 Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
@@ -17,15 +18,6 @@ export default class MapScreen extends Component {
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
-  }
-  static navigationOptions = {
-      tabBarLabel: 'Location',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name = {'location-on'}
-          size = {26}
-          style = {{color: tintColor}} />
-      )
   }
 
   listenForItems(itemsRef) {
@@ -79,10 +71,11 @@ export default class MapScreen extends Component {
     const { navigate } = this.props.navigation;
     var styles = require('./Styles');
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.header}>
+      <Container>
+        <Header>
           <Text style={styles.title}>Map</Text>
-        </View>
+        </Header>
+        <Content>
         <MapView style={{flex: 10}}
           initialRegion={{ latitude: 40.347695, longitude: -74.657995,
           latitudeDelta: .012, longitudeDelta: .012 }} >
@@ -95,12 +88,11 @@ export default class MapScreen extends Component {
             <MapView.Callout onPress={() => this.onLearnMore(marker)}/>
           </MapView.Marker> ))}
         </MapView>
-        <View style={styles.footer}>
-          <TouchableHighlight style={styles.button} onPress={() => navigate('Home')} underlayColor='#ffd199'>
-            <Text style={styles.buttonText}>Back</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
+        </Content>
+        <Footer>
+          <TabBar navigate={navigate} screen='Map'/>
+        </Footer>
+      </Container>
     );
   }
 }

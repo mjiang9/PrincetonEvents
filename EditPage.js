@@ -4,21 +4,13 @@ import {
   Text,
   TouchableHighlight
 } from 'react-native';
+import TabBar from './Tab';
 import Edit from './Edit';
 import EditingButtons from './EditingButtons';
-import NormalButtons from './NormalButtons';
 import {firebaseApp} from './App';
 var styles = require('./Styles');
-
-class Header extends Component {
-  render() {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.title}>Edit Event</Text>
-      </View>
-    );
-  }
-}
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { Keyboard } from 'react-native';
 
 export default class EditScreen extends Component {
   constructor(props){
@@ -96,17 +88,47 @@ export default class EditScreen extends Component {
 
 
   render() {
+    const {navigate} = this.props.navigation;
      return (
-       <View style={{
-         flex: 1
-       }}>
-         <View style={styles.body}>
+       <Container>
+       <Header>
+         <Left style={{flex:1}}>
+           {!this.state.changed && <Button onPress={() => {
+             navigate('MyEvents')
+             Keyboard.dismiss();
+           }}>
+             <Icon name='arrow-back'/>
+           </Button>}
+           {this.state.changed && <Button onPress={() => {
+             this.onCancel();
+             Keyboard.dismiss();
+           }}>
+             <Text>Cancel</Text>
+           </Button>}
+         </Left>
+         <Body style={{flex:1}}>
+           <Title>Edit Event</Title>
+          </Body>
+          <Right style={{flex:1}}>
+            {this.state.changed && <Button onPress={() => {
+              this.onSave();
+              Keyboard.dismiss();
+            }}>
+              <Text>Save</Text>
+            </Button>}
+          </Right>
+       </Header>
+         <Content>
            <Edit title={this.state.curTitle} who={this.state.curWho} description={this.state.curDescription}
              time={this.state.curTime} date={this.state.curDate} where={this.state.curWhere} change={this.onChanged}
              saving={this.state.saving} cancel={this.state.cancel} pushData={this.pushNewData}/>
-         </View>
-        {this.state.changed && <EditingButtons save={this.onSave} cancel={this.onCancel}/>}
-       </View>
+         </Content>
+         <Footer>
+           <TabBar navigate={navigate} screen='MyEvents'/>
+         </Footer>
+      </Container>
      );
   }
 }
+
+//{this.state.changed && <EditingButtons save={this.onSave} cancel={this.onCancel}/>}

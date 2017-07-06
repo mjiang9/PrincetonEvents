@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Root } from './Router';
 import * as firebase  from 'firebase';
-import {Tabs} from './Router';
-
+import { AppLoading, Font } from 'expo';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbdjQNZ9IpoOmc5gWAVI4Doq224_JWUg",
@@ -14,9 +13,30 @@ const firebaseConfig = {
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 class App extends Component {
-  render() {
-    return <Root />;
-  }
+  state = {
+      loaded: false
+    }
+
+    componentWillMount() {
+      this._loadFontsAsync();
+    }
+
+    _loadFontsAsync = async () => {
+      await Font.loadAsync({
+        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      });
+
+      this.setState({loaded: true});
+    }
+
+    render() {
+      if (!this.state.loaded) {
+        return <AppLoading />
+      }
+
+      return <Root />;
+    }
 }
 
 export default App;

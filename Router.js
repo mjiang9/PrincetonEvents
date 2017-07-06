@@ -1,6 +1,6 @@
 import React from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
-import {TabView} from 'react-navigation'
+import {TabView} from 'react-navigation';
 
 import InputScreen from './InputPage';
 import HomeScreen from './Home';
@@ -61,22 +61,23 @@ export const EventsStack = StackNavigator({
   }
 });
 
-export const Tabs = TabNavigator({
+export const Navigator = StackNavigator({
   Home: {
     screen: EventsStack
   },
-  Location: {
+  Map: {
     screen: MapStack
   },
   Input: {
-    screen: InputScreen
+    screen: InputScreen,
+    navigationOptions: {
+      header: null
+    }
   },
   MyEvents: {
     screen: MyEventsStack
   }
-}, {
-  tabBarPosition: 'bottom'
-},);
+});
 
 /*export const HomeStack = StackNavigator({
   Home: {
@@ -115,8 +116,8 @@ export const Tabs = TabNavigator({
 });*/
 
 export const Root = StackNavigator({
-  TabNav: {
-    screen: Tabs
+  MainNav: {
+    screen: Navigator
   }
 
 }, {headerMode: 'none'});

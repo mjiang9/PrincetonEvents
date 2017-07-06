@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {View, Text, TouchableHighlight,  SectionList, StatusBar} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Tabs} from './Router';
+import TabBar from './Tab';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class HomeScreen extends Component {
     });
   };
 
-  static navigationOptions = {
+  /*static navigationOptions = {
       tabBarLabel: 'Home',
       tabBarIcon: ({tintColor}) => (
         <Icon
@@ -30,7 +30,7 @@ export default class HomeScreen extends Component {
           size = {26}
           style = {{color: tintColor}} />
       ),
-  }
+  }*/
 
   listenForItems(itemsRef) {
     itemsRef.orderByKey().on('value', (snap) => {
@@ -68,20 +68,24 @@ export default class HomeScreen extends Component {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
     return (
-      <View style={{flex: 1}}>
-        <StatusBar hidden={true}/>
-        <View style={styles.header}>
-          <Text style={styles.title}>Princeton Events</Text>
-        </View>
-        <View style={styles.body}>
+      <Container>
+        <Header>
+          <Body>
+          <Title>Princeton Events</Title>
+          </Body>
+        </Header>
+      <Content>
         <SectionList renderItem={({item}) => <ListItem style={styles.item}
             title={item.name} subtitle={item.time}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>
-        </View>
-      </View>
+      </Content>
+      <Footer>
+        <TabBar navigate={navigate} screen='Home'/>
+      </Footer>
+      </Container>
     );
   }
 }
