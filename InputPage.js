@@ -7,7 +7,9 @@ import {
 import Input from './Input';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
+import Geocoder from 'react-native-geocoding';
 
+Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
 export default class InputScreen extends Component {
   constructor(props){
@@ -38,9 +40,6 @@ export default class InputScreen extends Component {
     if(inputWho == '')
     inputWho = 'TBD';
 
-    if(inputWhere == '')
-    inputWhere = 'TBD';
-
     if(inputDate == '')
     inputDate = 'TBD';
 
@@ -55,10 +54,28 @@ export default class InputScreen extends Component {
       what: inputWhat,
       when: inputTime,
       where: inputWhere,
-      who: inputWho
+      who: inputWho,
+      latitude: 40.3440, // defaults
+      longitude: -74.6514
     }
+
     let ref = firebaseApp.database().ref('items').child(inputDate);
-    ref.push(data);
+
+    if(inputWhere == '') {
+      data.where = 'TBD';
+      ref.push(data);
+    } else {
+      Geocoder.getFromLocation(inputWhere + " Princeton").then(
+      json => { var location = json.results[0].geometry.location;
+        data.latitude = location.lat;
+        data.longitude = location.lng;
+        ref.push(data);
+      },
+      error => {
+        alert(error);
+      }
+    );
+    }
     this.props.navigation.navigate('Home');
   };
 
