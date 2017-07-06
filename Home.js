@@ -46,7 +46,9 @@ export default class HomeScreen extends Component {
           "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
-          "what": child.val().what
+          "what": child.val().what,
+          "latitude": child.val().latitude,
+          "longitude": child.val().longitude
         });
       });
       items.push({

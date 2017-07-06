@@ -2,34 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
-import Geocoder from 'react-native-geocoding';
-
-Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
 export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      coords: {
-        latitude: 40.3440,
-        longitude: 74.6514
-      }
-    }
-  }
-  componentDidMount() {
-    Geocoder.getFromLocation(this.props.navigation.state.params.where + " Princeton").then(
-      json => { var location = json.results[0].geometry.location;
-        this.setState({
-          coords: {
-            latitude: location.lat,
-            longitude: location.lng
-          }
-        });
-    },
-      error => {
-        alert(error);
-      }
-    );
+    this.params = this.props.navigation.state.params;
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -77,7 +54,7 @@ export default class DetailsScreen extends Component {
             <ListItem
               style={styles.item}
               rightTitleStyle={s.right}
-              rightTitleNumberOfLines={5}
+              rightTitleNumberOfLines={4}
               title="Description:"
               rightTitle={what}
               hideChevron
@@ -87,7 +64,10 @@ export default class DetailsScreen extends Component {
             initialRegion={{ latitude: 40.347695, longitude: -74.657995,
             latitudeDelta: .01, longitudeDelta: .012 }} >
             <MapView.Marker
-              coordinate={this.state.coords}
+              coordinate={{
+                latitude: this.params.latitude,
+                longitude: this.params.longitude
+              }}
               title={name}
               description={date + " " + time + " @ " + where} />
           </MapView>

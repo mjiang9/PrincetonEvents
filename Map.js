@@ -3,9 +3,6 @@ import { Text, View, TouchableHighlight } from 'react-native';
 import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {firebaseApp} from './App';
-import Geocoder from 'react-native-geocoding';
-
-Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -35,33 +32,23 @@ export default class MapScreen extends Component {
       snap.forEach((parent) => {
         parent.forEach((child) => {
         var coords;
-          Geocoder.getFromLocation(child.val().where + " Princeton").then(
-            json => { var location = json.results[0].geometry.location;
-                coords = {
-                  latitude: location.lat,
-                  longitude: location.lng
-                };
-                items.push({
-                  "name": child.val().name,
-                  "time": child.val().when, //change eventually to time
-                  "date": parent.key,
-                  "who": child.val().who,
-                  "where": child.val().where,
-                  "what": child.val().what,
-                  "key": child.key,
-                  "description": child.val().when + " @ " + child.val().where,
-                  "latlng": coords,
-                });
-                this.setState({
-                  markers: items
-                });
-            },
-            error => {
-              alert(error);
-            }
-          );
+            items.push({
+              "name": child.val().name,
+              "time": child.val().when, //change eventually to time
+              "date": parent.key,
+              "who": child.val().who,
+              "where": child.val().where,
+              "what": child.val().what,
+              "key": child.key,
+              "description": child.val().when + " @ " + child.val().where,
+              "latitude": child.val().latitude,
+              "longitude": child.val().longitude
+            });
+            this.setState({
+              markers: items
+            });
+          });
       });
-    });
     });
   };
 
@@ -89,7 +76,7 @@ export default class MapScreen extends Component {
           {this.state.markers.map(marker => (
           <MapView.Marker
             key={marker.key}
-            coordinate={marker.latlng}
+            coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
             title={marker.name}
             description={marker.description}>
             <MapView.Callout onPress={() => this.onLearnMore(marker)}/>
