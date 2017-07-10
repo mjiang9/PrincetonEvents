@@ -1,16 +1,21 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, View, Text, TouchableHighlight,  SectionList} from 'react-native';
+import { View, Text, SectionList} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Spinner} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Input, Label,
+  Left, Right, Body, Icon, Spinner, Item} from 'native-base';
+import Search from 'react-native-search-box';
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dataSource: [],
       data: [],
-      loading: true
+      loading: true,
+      searchText: "",
+      searching: false,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
@@ -23,6 +28,37 @@ export default class HomeScreen extends Component {
     });
   };
 
+  firstSearch() {
+    this.searchEvents(this.itemsRef);
+  }
+  // only return events with names/descriptions containing search text
+  searchEvents(itemsRef) {
+    var searchText = this.state.searchText.toString().toLowerCase();
+    var results = [];
+    if (searchText == ""){
+      this.listenForItems(itemsRef);
+    } else {
+      items = this.state.dataSource;
+      items.forEach((parent) => {
+        var children = [];
+        parent.data.forEach((child) => {
+          if (child.name.toLowerCase().includes(searchText) ||
+              child.what.toLowerCase().includes(searchText) ||
+              child.who.toLowerCase().includes(searchText)) {
+                children.push(child);
+              }
+        });
+        if (children.length != 0) {
+        results.push({
+          data: children,
+          key: parent.key.toUpperCase()
+        })
+      }
+      });
+   }
+   this.setState({data: results});
+  }
+
   listenForItems(itemsRef) {
     itemsRef.orderByKey().on('value', (snap) => {
       // get children as an array
@@ -33,7 +69,7 @@ export default class HomeScreen extends Component {
         children.push({
           "key": child.key,
           "name": child.val().name,
-          "time": child.val().when, //change eventually to time
+          "startTime": child.val().startTime,
           "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
@@ -47,7 +83,15 @@ export default class HomeScreen extends Component {
         key: parent.key.toUpperCase(),
       })
       });
+      let sorted = items.sort((a, b) => {
+        if (parseInt(a.key.substring(4)) <= parseInt(b.key.substring(4))) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
       this.setState({
+        dataSource: items,
         data: items,
         loading: false
       });
@@ -63,15 +107,30 @@ export default class HomeScreen extends Component {
     const {navigate} = this.props.navigation;
     return (
       <Container>
-        <Header>
-          <Body>
-          <Title>Princeton Events</Title>
-          </Body>
-        </Header>
-      <Content>
+        {!this.state.searching &&
+          <Header>
+            <Body><Title>Princeton Events</Title></Body>
+            <Right><Button onPress={() => this.setState({searching: true})}>
+              <Icon name="ios-search"/></Button>
+            </Right>
+          </Header>
+        }
+        {this.state.searching && <Header searchBar rounded>
+          <Item>
+            <Icon name="ios-search"/>
+            <Input placeholder="Search..." returnKeyType='search'
+            onChangeText={(text) => {this.setState({searchText:text}); this.firstSearch();}}
+            onSearch={() => this.firstSearch()}/>
+            <Label transparent onPress={() => this.setState({data: this.state.dataSource, searching: false})}>
+              <Text>Cancel</Text>
+            </Label>
+          </Item>
+        </Header>}
+      <Content style={{backgroundColor: 'white'}}>
         {this.state.loading && <Spinner/>}
-        {!this.state.loading && <SectionList renderItem={({item}) => <ListItem style={styles.item}
-            title={item.name} subtitle={item.time}
+        {!this.state.loading && <SectionList renderItem={({item}) =>
+            <ListItem style={styles.item}
+            title={item.name} subtitle={item.startTime}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
