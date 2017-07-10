@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, View, Text, TouchableHighlight,  SectionList} from 'react-native';
+import {ActivityIndicator, SectionList, Text} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Spinner} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ export default class HomeScreen extends Component {
           </Body>
         </Header>
       <Content>
-        {this.state.loading && <Spinner/>}
+        {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
         {!this.state.loading && <SectionList renderItem={({item}) => <ListItem style={styles.item}
             title={item.name} subtitle={item.time}
             onPress={() => this.onLearnMore(item)}/>}
