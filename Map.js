@@ -26,13 +26,13 @@ export default class MapScreen extends Component {
         var coords;
             items.push({
               "name": child.val().name,
-              "time": child.val().when, //change eventually to time
+              "startTime": child.val().startTime,
               "date": parent.key,
               "who": child.val().who,
               "where": child.val().where,
               "what": child.val().what,
               "key": child.key,
-              "description": child.val().when + " @ " + child.val().where,
+              "description": child.val().startTime + " @ " + child.val().where,
               "latitude": child.val().latitude,
               "longitude": child.val().longitude
             });
@@ -72,8 +72,7 @@ export default class MapScreen extends Component {
                     key={marker.key}
                     coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
                     title={marker.name}
-                    description={marker.description}>
-                <MapView.Callout onPress={() => this.onLearnMore(marker)}/>
+                    description={marker.description} onCalloutPress={() => this.onLearnMore(marker)}>
               </MapView.Marker> ))}
             </MapView>
         <Footer>

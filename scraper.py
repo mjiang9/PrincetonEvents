@@ -22,9 +22,10 @@ for h3 in soup.find_all("h3"):
     subheader = h3.find_next()
     location = subheader.find_next()
     if (location.text == ""):
-        eventWhere = "See website for details"
-        latitude = 40.3440 # default
-        longitude = -74.6514 # default
+        continue # we don't want events that don't have a location
+        # eventWhere = "See website for details"
+        # latitude = 40.3440
+        # longitude = -74.6514
     else:
         eventWhere = location.text # EVENT LOCATION
         address = geolocator.geocode(eventWhere + " Princeton")
@@ -47,7 +48,8 @@ for h3 in soup.find_all("h3"):
     event = {
         "name": eventName,
         "what": eventWhat,
-        "when": eventWhen,
+        "startTime": eventWhen,
+        "endTime": "N",
         "where": eventWhere,
         "who": "Princeton University Public Events",
         "latitude": latitude,
