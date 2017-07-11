@@ -11,8 +11,8 @@ export default class DetailsScreen extends Component {
   }
   render() {
     const { goBack } = this.props.navigation;
-    const { name, who, what, time, date, where } =
-     this.props.navigation.state.params;
+    const { name, who, what, startTime, endTime, date, where } =
+     this.params;
     var styles = require('./Styles');
     return (
       <Container>

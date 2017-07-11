@@ -33,7 +33,8 @@ export default class HomeScreen extends Component {
         children.push({
           "key": child.key,
           "name": child.val().name,
-          "time": child.val().when, //change eventually to time
+          "startTime": child.val().startTime,
+          "endTime": child.val().endTime,
           "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
@@ -71,7 +72,7 @@ export default class HomeScreen extends Component {
       <Content>
         {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
         {!this.state.loading && <SectionList renderItem={({item}) => <ListItem style={styles.item}
-            title={item.name} subtitle={item.time}
+            title={item.name} subtitle={item.startTime}
             onPress={() => this.onLearnMore(item)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}

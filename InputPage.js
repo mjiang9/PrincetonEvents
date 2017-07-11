@@ -16,9 +16,9 @@ export default class InputScreen extends Component {
       titleInput: '',
       hostInput: '',
       locationInput: '',
-      dateInput:      'Date                   ',
-      startTimeInput: 'Start                  ',
-      endTimeInput:   'End (optional)         ',
+      dateInput: 'Date',
+      startTimeInput: 'Start',
+      endTimeInput: 'End (optional)',
       descriptionInput: '',
       titleError: false,
       hostError: false,
@@ -42,18 +42,19 @@ export default class InputScreen extends Component {
     let data = {
       name: this.state.titleInput,
       what: this.state.descriptionInput,
-      when: this.state.startTimeInput,
+      startTime: this.state.startTimeInput,
+      endTime: this.state.endTimeInput,
       where: this.state.locationInput,
       who: this.state.hostInput,
       latitude: 40.3440, // defaults
       longitude: -74.6514
     }
 
-    if(data.what == '')
+    if(this._inputChecker(data.what))
     data.what = 'N/A';
 
-    if(!this.state.endTimeEmpty)
-    data.when += ' - ' + this.state.endTimeInput;
+    if(this.state.endTimeEmpty)
+    data.endTime = 'N';
 
     // reference to new event
     // gets location information and then adds event
@@ -78,11 +79,11 @@ export default class InputScreen extends Component {
   _submit = () => {
     // checks for errors and if so, highlights the line
     let submission = {
-      titleError: !this._inputChecker(this.state.titleInput),
-      hostError: !this._inputChecker(this.state.hostInput),
+      titleError: this._inputChecker(this.state.titleInput),
+      hostError: this._inputChecker(this.state.hostInput),
       dateError: this.state.dateEmpty,
       startTimeError: this.state.startTimeEmpty,
-      locationError: !this._inputChecker(this.state.locationInput),
+      locationError: this._inputChecker(this.state.locationInput),
     }
 
     this.setState({
@@ -196,9 +197,9 @@ _handleDateTimePicked = (date) => {
   this._hideDateTimePicker();
 };
 
-  // checks if input is satisfactory or not
+  // checks if input is satisfactory or not, return true if input is blank
   _inputChecker = (item) => {
-    return (item != '');
+    return (!item.trim().length);
   };
 
   render() {
@@ -211,7 +212,7 @@ _handleDateTimePicked = (date) => {
       <Container>
         <Header>
           <Left>
-            <Button onPress={() => {
+            <Button transparent onPress={() => {
               Keyboard.dismiss();
               goBack();
             }}>
@@ -222,7 +223,7 @@ _handleDateTimePicked = (date) => {
             <Title>Add Event</Title>
            </Body>
            <Right >
-            <Button onPress={() => {
+            <Button transparent onPress={() => {
                Keyboard.dismiss();
                this._submit();
              }}>
@@ -244,7 +245,7 @@ _handleDateTimePicked = (date) => {
                 onChangeText={(titleInput) => {
                   this.setState({
                     titleInput,
-                    titleError: !this._inputChecker(titleInput)})
+                    titleError: this._inputChecker(titleInput)})
                   }}/>
             </Item>
             <Item inlineLabel
@@ -260,16 +261,16 @@ _handleDateTimePicked = (date) => {
               onChangeText={(hostInput) => {
                 this.setState({
                   hostInput,
-                  hostError: !this._inputChecker(hostInput)})
+                  hostError: this._inputChecker(hostInput)})
               }}/>
             </Item>
             <Item inlineLabel
               error={this.state.dateError ? true : false}>
                 <Icon name='calendar'/>
-                <Text style={{color: this.state.dateColor}} onPress={() => {
+                <Label style={{color: this.state.dateColor}} onPress={() => {
                   this._showDateTimePicker('date')}}>
                   {this.state.dateInput}
-                </Text>
+                </Label>
               <Input
                 style={{height: minHeight}}
                 editable={false}/>
@@ -308,7 +309,7 @@ _handleDateTimePicked = (date) => {
                 onChangeText={(locationInput) => {
                   this.setState({
                     locationInput,
-                    locationError: !this._inputChecker(locationInput)})
+                    locationError: this._inputChecker(locationInput)})
                 }}/>
             </Item>
             <Item inlineLabel>
@@ -333,6 +334,7 @@ _handleDateTimePicked = (date) => {
           onConfirm={this._handleDateTimePicked}
           onCancel={this._hideDateTimePicker}
           mode={this.state.dateTimeMode}
+          date={this.state.dateInput}
           is24Hour={false}/>
         </Content>
       </Container>
