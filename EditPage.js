@@ -96,9 +96,9 @@ export default class EditScreen extends Component {
        who: this.saved.hostInput,
      }
 
-     // if optional fields are filled in, adds them to the update data
-     if(!this._inputChecker(this.state.descriptionInput))
-     updateData.what = this.saved.descriptionInput;
+     // checks optional fields
+     if(this._inputChecker(this.state.descriptionInput))
+     updateData.what = 'N/A';
 
      if(!this.state.endTimeEmpty)
      updateData.endTime = this.saved.endTimeInput;
@@ -107,35 +107,48 @@ export default class EditScreen extends Component {
        json => { var location = json.results[0].geometry.location;
          updateData.latitude = location.lat;
          updateData.longitude = location.lng;
+         // updates the old event; if there is new date, deletes old event and
+         // moves event to under new date while retaining event key
+         try{
+         let itemsRef = firebaseApp.database().ref('items');
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+
+         if (oldDate != this.saved.dateInput) {
+           oldEventRef.remove();
+           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+         }
+         else {
+           oldEventRef.update(updateData);
+         }
+
+       }
+       catch(err) {
+         alert(err);
+       }
        },
        error => {
-         alert(error);
+         alert('No location Results');
+         updateData.latitude = 0;
+         updateData.longitude = 0;
+
+         try{
+         let itemsRef = firebaseApp.database().ref('items');
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+
+         if (oldDate != this.saved.dateInput) {
+           oldEventRef.remove();
+           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+         }
+         else {
+           oldEventRef.update(updateData);
+         }
+
+       }
+       catch(err) {
+         alert(err);
+       }
        }
      );
-
-     // updates the old event; if there is new date, deletes old event and
-     // moves event to under new date while retaining event key
-     try{
-     let itemsRef = firebaseApp.database().ref('items');
-     let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
-
-     if (oldDate != this.saved.dateInput) {
-       oldEventRef.remove();
-       itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
-     }
-     else {
-       oldEventRef.update(updateData);
-     }
-
-     Toast.show({
-         text: 'Saved!',
-         position: 'bottom',
-         duration: 3000,
-       })
-   }
-   catch(err) {
-     alert(err);
-   }
 }
 
 // basic functions for managing states; if changed true, then display cancel and

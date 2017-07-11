@@ -8,10 +8,18 @@ export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.params = this.props.navigation.state.params;
+
+    // if no valid location, does not display Marker
+    if(this.params.latitude == 0 && this.params.longitude == 0) {
+      this.state = {showMarker: false}
+    }
+    else {
+      this.state = {showMarker: true}
+    }
   }
   render() {
     const { goBack } = this.props.navigation;
-    const { name, who, what, startTime, endTime, date, where } =
+    const { name, who, what, startTime, endTime, date, where} =
      this.params;
     var styles = require('./Styles');
     return (
@@ -49,7 +57,7 @@ export default class DetailsScreen extends Component {
               style={styles.item}
               rightTitleStyle={s.right}
               title="Time:"
-              rightTitle={time}
+              rightTitle={startTime}
               hideChevron
             />
             <ListItem
@@ -71,13 +79,13 @@ export default class DetailsScreen extends Component {
           <MapView style={{flex: 1}}
             initialRegion={{ latitude: 40.347695, longitude: -74.657995,
             latitudeDelta: .01, longitudeDelta: .012 }} >
-            <MapView.Marker
+             {this.state.showMarker && <MapView.Marker
               coordinate={{
                 latitude: this.params.latitude,
                 longitude: this.params.longitude
               }}
               title={name}
-              description={date + " " + time + " @ " + where} />
+              description={date + " " + startTime + " @ " + where} /> }
           </MapView>
      </Container>
     );

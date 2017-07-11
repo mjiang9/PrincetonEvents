@@ -46,8 +46,8 @@ export default class InputScreen extends Component {
       endTime: this.state.endTimeInput,
       where: this.state.locationInput,
       who: this.state.hostInput,
-      latitude: 40.3440, // defaults
-      longitude: -74.6514
+      latitude: 0, // defaults
+      longitude: 0
     }
 
     if(this._inputChecker(data.what))
