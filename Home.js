@@ -5,7 +5,6 @@ import {firebaseApp} from './App';
 import TabBar from './Tab';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Input, Label,
   Left, Right, Body, Icon, Spinner, Item} from 'native-base';
-import Search from 'react-native-search-box';
 
 export default class HomeScreen extends Component {
   constructor(props) {
