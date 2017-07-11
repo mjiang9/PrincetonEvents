@@ -60,7 +60,7 @@ export default class EditScreen extends Component {
       titleError: false,
       hostError: false,
       locationError: false,
-      descriptionHeight: 0,
+      descriptionHeight: 100,
       showDatePicker: false,
       dateTimeMode: 'date',
       isStartTime: true,
