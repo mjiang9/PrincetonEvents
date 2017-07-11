@@ -459,6 +459,7 @@ _handleDateTimePicked = (date) => {
          onConfirm={this._handleDateTimePicked}
          onCancel={this._hideDateTimePicker}
          mode={this.state.dateTimeMode}
+         minimumDate={new Date()}
          is24Hour={false}/>
        </Content>
       </Container>
