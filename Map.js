@@ -18,30 +18,39 @@ export default class MapScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    itemsRef.on('value', (snap) => {
-      // get children as an array
-      var items = [];
-      snap.forEach((parent) => {
-        parent.forEach((child) => {
-        var coords;
-            items.push({
-              "name": child.val().name,
-              "startTime": child.val().startTime,
-              "date": parent.key,
-              "who": child.val().who,
-              "where": child.val().where,
-              "what": child.val().what,
-              "key": child.key,
-              "description": child.val().startTime + " @ " + child.val().where,
-              "latitude": child.val().latitude,
-              "longitude": child.val().longitude
-            });
-            this.setState({
-              markers: items
-            });
+    months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    today = new Date();
+    today = months[today.getMonth()] + " " + today.getDate();
+    var items = [];
+    itemsRef.child(today).orderByChild("latitude").on('value', (snap) => {
+      var prevLat = "";
+      var prevLon = "";
+      var count = 0;
+      snap.forEach((child) => {
+        if (child.val().latitude == prevLat && child.val().longitude == prevLon) {
+          count++;
+        } else { // new location
+          prevLat = child.val().latitude;
+          prevLon = child.val().longitude;
+          count = 0;
+        }
+          items.push({
+            "name": child.val().name,
+            "startTime": child.val().startTime,
+            "date": today,
+            "who": child.val().who,
+            "where": child.val().where,
+            "what": child.val().what,
+            "key": child.key,
+            "description": child.val().startTime + " @ " + child.val().where,
+            "latitude": child.val().latitude + .0002*count,
+            "longitude": child.val().longitude
           });
+          this.setState({
+            markers: items
+          });
+        });
       });
-    });
   };
 
   onLearnMore = (item) => {
