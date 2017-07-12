@@ -34,6 +34,7 @@
     "react-native-maps": "^0.15.2",
     "react-native-modal-datetime-picker": "^4.7.0",
     "react-native-router-flux": "^3.40.1",
+    "react-native-search-box": "0.0.9",
     "react-native-vector-icons": "^4.1.1",
     "react-navigation": "^1.0.0-beta.11",
     "shebang-command": "^1.2.0"
