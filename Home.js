@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, SectionList, Text} from 'react-native';
+import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -109,7 +109,7 @@ export default class HomeScreen extends Component {
         {!this.state.searching &&
           <Header>
             <Body><Title>Princeton Events</Title></Body>
-            <Right><Button onPress={() => this.setState({searching: true})}>
+            <Right><Button transparent onPress={() => this.setState({searching: true})}>
               <Icon name="ios-search"/></Button>
             </Right>
           </Header>
@@ -120,7 +120,9 @@ export default class HomeScreen extends Component {
             <Input placeholder="Search..." returnKeyType='search'
             onChangeText={(text) => {this.setState({searchText:text}); this.firstSearch();}}
             onSearch={() => this.firstSearch()}/>
-            <Label transparent onPress={() => this.setState({data: this.state.dataSource, searching: false})}>
+            <Label style={{color: 'black'}} onPress={() => {
+              Keyboard.dismiss();
+              this.setState({data: this.state.dataSource, searching: false})}}>
               <Text>Cancel</Text>
             </Label>
           </Item>

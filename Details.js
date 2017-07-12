@@ -38,7 +38,11 @@ export default class DetailsScreen extends Component {
           </Body>
           <Right/>
         </Header>
-          <List>
+        <View style={styles.body}>
+        <List containerStyle={{
+          borderTopWidth: 0,
+          borderBottomWidth: 0
+        }}>
             <ListItem
               style={styles.item}
               rightTitleStyle={s.right}
@@ -76,17 +80,18 @@ export default class DetailsScreen extends Component {
               hideChevron
             />
           </List>
-          <MapView style={{flex: 1}}
-            initialRegion={{ latitude: 40.347695, longitude: -74.657995,
-            latitudeDelta: .01, longitudeDelta: .012 }} >
-             {this.state.showMarker && <MapView.Marker
-              coordinate={{
-                latitude: this.params.latitude,
-                longitude: this.params.longitude
-              }}
-              title={name}
-              description={date + " " + startTime + " @ " + where} /> }
-          </MapView>
+          <MapView style={{height: 180, margin: 20 }}
+              initialRegion={{ latitude: 40.347695, longitude: -74.657995,
+              latitudeDelta: .01, longitudeDelta: .012 }} >
+              <MapView.Marker
+                coordinate={{
+                  latitude: this.params.latitude,
+                  longitude: this.params.longitude
+                }}
+                title={name}
+                description={date + " " + startTime + " @ " + where} />
+            </MapView>
+          </View>
      </Container>
     );
   }
