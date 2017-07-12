@@ -26,7 +26,7 @@ export default class DetailsScreen extends Component {
       <Container>
         <Header>
           <Left>
-            <Button onPress={() => {
+            <Button transparent onPress={() => {
               goBack();
               Keyboard.dismiss();
             }}>
@@ -36,7 +36,11 @@ export default class DetailsScreen extends Component {
           <Body>
           <Title>{name}</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent>
+              <Icon name='heart'/>
+            </Button>
+          </Right>
         </Header>
         <View style={styles.body}>
         <List containerStyle={{

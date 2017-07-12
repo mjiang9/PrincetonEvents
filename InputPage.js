@@ -12,13 +12,14 @@ Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 export default class InputScreen extends Component {
   constructor(props){
     super(props);
+    this.extraSpace = 75;
     this.state = {
       titleInput: '',
       hostInput: '',
       locationInput: '',
-      dateInput: 'Date',
-      startTimeInput: 'Start',
-      endTimeInput: 'End (optional)',
+      dateInput:      'Date' + ' '.repeat(this.extraSpace),
+      startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+      endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
       descriptionInput: '',
       titleError: false,
       hostError: false,
@@ -161,6 +162,7 @@ _handleDateTimePicked = (date) => {
     }
 
     let selectedDate = month + ' ' + date.getDate();
+    selectedDate += ' '.repeat(this.extraSpace);
 
     this.setState({
       dateInput: selectedDate,
@@ -176,6 +178,7 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
+    time += ' '.repeat(this.extraSpace);
 
     if(this.state.isStartTime) {
     this.setState({

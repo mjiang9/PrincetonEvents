@@ -12,6 +12,7 @@ Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 export default class EditScreen extends Component {
   constructor(props){
     super(props);
+    this.extraSpace = 75;
     const {navigate} = this.props.navigation;
     this.params = this.props.navigation.state.params;
     // checks if endTime or description were filled and changes them to match
@@ -19,7 +20,7 @@ export default class EditScreen extends Component {
     let endTime, endTimeColor, isEndTimeEmpty, description;
 
     if(this.params.endTime == 'N') {
-      endTime = 'End (optional)';
+      endTime = 'End (optional)' + ' '.repeat(this.extraSpace);
       endTimeColor = 'dimgrey';
       isEndTimeEmpty = true;
     }
@@ -256,7 +257,7 @@ _handleDateTimePicked = (date) => {
         month = "Dec";
     }
 
-    let selectedDate = month + ' ' + date.getDate();
+    let selectedDate = month + ' ' + date.getDate() + ' '.repeat(this.extraSpace);
 
     this.setState({
       dateInput: selectedDate,
@@ -275,7 +276,7 @@ _handleDateTimePicked = (date) => {
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
-    let time = hours + ':' + minutes + ' ' + ampm;
+    let time = hours + ':' + minutes + ' ' + ampm + ' '.repeat(this.extraSpace);
 
     if(this.state.isStartTime) {
     this.setState({
