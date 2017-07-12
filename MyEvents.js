@@ -3,7 +3,7 @@ import {ActivityIndicator, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Spinner} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
@@ -31,7 +31,8 @@ export default class MyEventsScreen extends Component {
         items.push({
           "key": child.key,
           "name": child.val().name,
-          "time": child.val().when, //change eventually to time
+          "startTime": child.val().startTime,
+          "endTime": child.val().endTime,
           "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
@@ -62,9 +63,9 @@ export default class MyEventsScreen extends Component {
           </Body>
         </Header>
         <Content>
-          {this.state.loading && <Spinner/>}
+          {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
             {!this.state.loading && <FlatList data={this.state.data} renderItem={({item}) =>
-              <ListItem style={styles.item} title={item.name} subtitle={item.time} containerStyle={{
+              <ListItem style={styles.item} title={item.name} subtitle={item.startTime} containerStyle={{
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>}
         </Content>

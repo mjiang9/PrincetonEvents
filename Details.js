@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableHighlight, Keyboard } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
@@ -8,24 +8,41 @@ export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
     this.params = this.props.navigation.state.params;
+
+    // if no valid location, does not display Marker
+    if(this.params.latitude == 0 && this.params.longitude == 0) {
+      this.state = {showMarker: false}
+    }
+    else {
+      this.state = {showMarker: true}
+    }
   }
   render() {
-    const { navigate } = this.props.navigation;
-    const { name, who, what, time, date, where } =
-     this.props.navigation.state.params;
+    const { goBack } = this.props.navigation;
+    const { name, who, what, startTime, endTime, date, where} =
+     this.params;
     var styles = require('./Styles');
     return (
       <Container>
         <Header>
+          <Left>
+            <Button onPress={() => {
+              goBack();
+              Keyboard.dismiss();
+            }}>
+              <Icon name='arrow-back'/>
+            </Button>
+          </Left>
           <Body>
           <Title>{name}</Title>
           </Body>
+          <Right/>
         </Header>
         <View style={styles.body}>
-          <List containerStyle={{
-            borderTopWidth: 0,
-            borderBottomWidth: 0
-          }}>
+        <List containerStyle={{
+          borderTopWidth: 0,
+          borderBottomWidth: 0
+        }}>
             <ListItem
               style={styles.item}
               rightTitleStyle={s.right}
@@ -44,7 +61,7 @@ export default class DetailsScreen extends Component {
               style={styles.item}
               rightTitleStyle={s.right}
               title="Time:"
-              rightTitle={time}
+              rightTitle={startTime}
               hideChevron
             />
             <ListItem
@@ -64,23 +81,17 @@ export default class DetailsScreen extends Component {
             />
           </List>
           <MapView style={{height: 180, margin: 20 }}
-            initialRegion={{ latitude: 40.347695, longitude: -74.657995,
-            latitudeDelta: .01, longitudeDelta: .012 }} >
-            <MapView.Marker
-              coordinate={{
-                latitude: this.params.latitude,
-                longitude: this.params.longitude
-              }}
-              title={name}
-              description={date + " " + time + " @ " + where} />
-          </MapView>
-        </View>
-       <View style={styles.footer}>
-        <TouchableHighlight style={styles.button}
-         onPress={() => navigate('Home')} underlayColor='#ffd199'>
-         <Text style={{color: 'white', fontSize: 20}}>Back</Text>
-        </TouchableHighlight>
-       </View>
+              initialRegion={{ latitude: 40.347695, longitude: -74.657995,
+              latitudeDelta: .01, longitudeDelta: .012 }} >
+              <MapView.Marker
+                coordinate={{
+                  latitude: this.params.latitude,
+                  longitude: this.params.longitude
+                }}
+                title={name}
+                description={date + " " + startTime + " @ " + where} />
+            </MapView>
+          </View>
      </Container>
     );
   }

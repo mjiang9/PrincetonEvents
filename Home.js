@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { View, Text, SectionList} from 'react-native';
+import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Input, Label,
-  Left, Right, Body, Icon, Spinner, Item} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -69,6 +68,7 @@ export default class HomeScreen extends Component {
           "key": child.key,
           "name": child.val().name,
           "startTime": child.val().startTime,
+          "endTime": child.val().endTime,
           "date": parent.key,
           "who": child.val().who,
           "where": child.val().where,
@@ -109,7 +109,7 @@ export default class HomeScreen extends Component {
         {!this.state.searching &&
           <Header>
             <Body><Title>Princeton Events</Title></Body>
-            <Right><Button onPress={() => this.setState({searching: true})}>
+            <Right><Button transparent onPress={() => this.setState({searching: true})}>
               <Icon name="ios-search"/></Button>
             </Right>
           </Header>
@@ -120,13 +120,15 @@ export default class HomeScreen extends Component {
             <Input placeholder="Search..." returnKeyType='search'
             onChangeText={(text) => {this.setState({searchText:text}); this.firstSearch();}}
             onSearch={() => this.firstSearch()}/>
-            <Label transparent onPress={() => this.setState({data: this.state.dataSource, searching: false})}>
+            <Label style={{color: 'black'}} onPress={() => {
+              Keyboard.dismiss();
+              this.setState({data: this.state.dataSource, searching: false})}}>
               <Text>Cancel</Text>
             </Label>
           </Item>
         </Header>}
       <Content style={{backgroundColor: 'white'}}>
-        {this.state.loading && <Spinner/>}
+        {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
         {!this.state.loading && <SectionList renderItem={({item}) =>
             <ListItem style={styles.item}
             title={item.name} subtitle={item.startTime}
