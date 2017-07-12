@@ -3,7 +3,7 @@ import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
-import { Keyboard } from 'react-native';
+import { Keyboard, Alert } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Geocoder from 'react-native-geocoding';
 
@@ -67,7 +67,7 @@ export default class InputScreen extends Component {
         ref.push(data);
       },
       error => {
-        alert(error);
+        Alert.alert('', 'No Geolocation Found.');
         ref.push(data);
       }
     );
@@ -205,7 +205,8 @@ _handleDateTimePicked = (date) => {
   render() {
     var styles = require('./Styles');
     const {goBack} = this.props.navigation;
-    const minHeight = 55; // min height for all inputs
+    const minHeight = 55; // min height for all normal inputs
+    const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
     const fieldLength = 35; // character limit for other fields
     return (
@@ -295,6 +296,14 @@ _handleDateTimePicked = (date) => {
               <Input
                 style={{height: minHeight}}
                 editable={false}/>
+              {!this.state.endTimeEmpty &&          // adds clear ability to endTimeInput
+                <Label style={{color: 'black'}} onPress={() => {
+                   this.setState({
+                     endTimeInput: 'End (optional)',
+                     endTimeColor: 'dimgrey',
+                     endTimeEmpty: true,
+                   })
+                 }}>Clear</Label>}
             </Item>
             <Item inlineLabel
               error={this.state.locationError ? true : false}>
@@ -318,7 +327,7 @@ _handleDateTimePicked = (date) => {
                 placeholder='Description (optional)'
                 placeholderTextColor='dimgrey'
                 style={{
-                  height: Math.max(minHeight, this.state.descriptionHeight)}} // autoresizes
+                  height: Math.max(descriptionHeight, this.state.descriptionHeight)}} // autoresizes
                 autoCapitalize={'sentences'}
                 maxLength={descriptionLength}
                 multiline

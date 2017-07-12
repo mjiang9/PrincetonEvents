@@ -3,7 +3,7 @@ import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
-import { Keyboard } from 'react-native';
+import { Keyboard, Alert } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Geocoder from 'react-native-geocoding';
 
@@ -43,6 +43,8 @@ export default class EditScreen extends Component {
       dateInput: this.params.date,
       startTimeInput: this.params.startTime,
       endTimeInput:  endTime,
+      endTimeEmpty: isEndTimeEmpty,
+      endTimeColor: endTimeColor,
       descriptionInput: description,
     }
 
@@ -60,7 +62,7 @@ export default class EditScreen extends Component {
       titleError: false,
       hostError: false,
       locationError: false,
-      descriptionHeight: 100,
+      descriptionHeight: 0,
       showDatePicker: false,
       dateTimeMode: 'date',
       isStartTime: true,
@@ -85,6 +87,8 @@ export default class EditScreen extends Component {
       dateInput: this.state.dateInput,
       descriptionInput: this.state.descriptionInput,
       locationInput: this.state.locationInput,
+      endTimeEmpty: this.state.endTimeEmpty,
+      endTimeColor: this.state.endTimeColor,
     }
 
     // required fields which we know will be filled
@@ -127,7 +131,7 @@ export default class EditScreen extends Component {
        }
        },
        error => {
-         alert('No location Results');
+         Alert.alert('', 'No Geolocation Found.');
          updateData.latitude = 0;
          updateData.longitude = 0;
 
@@ -166,7 +170,9 @@ export default class EditScreen extends Component {
       descriptionInput: this.saved.descriptionInput,
       titleError: false,
       hostError: false,
-      locationError: false
+      locationError: false,
+      endTimeEmpty: this.saved.endTimeEmpty,
+      endTimeColor: this.saved.endTimeColor,
     });
   };
 
@@ -307,9 +313,22 @@ _handleDateTimePicked = (date) => {
     return (!item.trim().length);
   };
 
+  // removes selected event
+  _delete = () => {
+  try {
+    let itemsRef = firebaseApp.database().ref('items');
+    let oldEventRef = itemsRef.child(this.saved.dateInput + '/' + this.params.key);
+    oldEventRef.remove();
+
+  } catch (err) {
+    alert(err);
+  }
+}
+
   render() {
     const {goBack} = this.props.navigation;
     const minHeight = 55; // min height for all inputs
+    const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
     const fieldLength = 35; // character limit for other fields
      return (
@@ -338,6 +357,24 @@ _handleDateTimePicked = (date) => {
               this._submit();
             }}>
               <Text>Save</Text>
+            </Button>}
+            {!this.state.changed && <Button transparent onPress={() => {
+              Keyboard.dismiss();
+              Alert.alert(
+                '',
+                'Are You Sure You Want To Remove This Event?',
+                [
+                  {text: 'Cancel', style: 'cancel'},
+                  {text: 'Yes', onPress: () => {
+                    this._delete();
+                    goBack();
+                  }},
+                ],
+                { cancelable: false }
+              )
+
+            }}>
+              <Icon name='trash'/>
             </Button>}
           </Right>
        </Header>
@@ -417,6 +454,21 @@ _handleDateTimePicked = (date) => {
              <Input
                style={{height: minHeight}}
                editable={false}/>
+             {!this.state.endTimeEmpty &&             // adds clear ability to endTimeInput
+                <Label style={{color: 'black'}} onPress={() => {
+                  this.setState({
+                    endTimeInput: 'End (optional)',
+                    endTimeColor: 'dimgrey',
+                    endTimeEmpty: true,
+                  })
+
+                  if(!this.saved.endTimeEmpty ) {
+                    this.setState({changed: true})
+                  }
+                  else {
+                    this.setState({changed: false})
+                  }
+                }}>Clear</Label>}
            </Item>
            <Item inlineLabel
              error={this.state.locationError ? true : false}>
@@ -447,7 +499,7 @@ _handleDateTimePicked = (date) => {
                placeholder='Description (optional)'
                placeholderTextColor='dimgrey'
                style={{
-                 height: Math.max(minHeight, this.state.descriptionHeight)}} // autoresizes
+                 height: Math.max(descriptionHeight, this.state.descriptionHeight)}} // autoresizes
                autoCapitalize={'sentences'}
                maxLength={descriptionLength}
                multiline
