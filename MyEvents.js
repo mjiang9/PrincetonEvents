@@ -48,8 +48,14 @@ export default class MyEventsScreen extends Component {
     });
   }
 
+  // autoupdates on event
   componentDidMount() {
     this.listenForItems(this.itemsRef);
+  }
+
+  // removes listener
+  componentWillUnmount() {
+    this.itemsRef.off();
   }
 
   render() {
@@ -69,9 +75,6 @@ export default class MyEventsScreen extends Component {
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>}
         </Content>
-        <Footer>
-          <TabBar navigate={navigate} screen='MyEvents'/>
-        </Footer>
       </Container>
     );
   }

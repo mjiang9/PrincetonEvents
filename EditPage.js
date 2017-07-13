@@ -3,7 +3,7 @@ import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
-import { Keyboard, Alert } from 'react-native';
+import { Keyboard, Alert, BackHandler } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Geocoder from 'react-native-geocoding';
 
@@ -73,6 +73,15 @@ export default class EditScreen extends Component {
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
+  // handles hardwar back button pressed on Android
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      const {indexBack} = this.params;
+      this.props.navigation.navigate('Tab', {indexBack});
+      return true;
+    });
+  }
+
   // takes new data from Edit.ios and Edit.android to update locally and send
   // updates to firebase
   pushNewData = () => {
@@ -130,6 +139,12 @@ export default class EditScreen extends Component {
        catch(err) {
          alert(err);
        }
+
+       Toast.show({
+           text: 'Saved!',
+           position: 'bottom',
+           duration: 2300,
+         })
        },
        error => {
          Alert.alert('', 'No Geolocation Found.');
@@ -152,6 +167,12 @@ export default class EditScreen extends Component {
        catch(err) {
          alert(err);
        }
+
+       Toast.show({
+           text: 'Saved!',
+           position: 'bottom',
+           duration: 2300,
+         })
        }
      );
 }
@@ -218,46 +239,9 @@ export default class EditScreen extends Component {
 // takes date input from DateTimePicker and formats it and updates state
 _handleDateTimePicked = (date) => {
   if (this.state.dateTimeMode == 'date') {
-    let month = '';
-    switch (date.getMonth()) {
-      case 0:
-        month = "Jan";
-        break;
-      case 1:
-        month = "Feb";
-        break;
-      case 2:
-        month = "Mar";
-        break;
-      case 3:
-        month = "Apr";
-        break;
-      case 4:
-        month = "May";
-        break;
-      case 5:
-        month = "Jun";
-        break;
-      case 6:
-        month = "Jul";
-        break;
-      case 7:
-        month = "Aug";
-        break;
-      case 8:
-        month = "Sep";
-        break;
-      case 9:
-        month = "Oct";
-        break;
-      case 10:
-        month = "Nov";
-        break;
-      case 11:
-        month = "Dec";
-    }
-
-    let selectedDate = month + ' ' + date.getDate() + ' '.repeat(this.extraSpace);
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let selectedDate = months[date.getMonth()] + ' ' + date.getDate();
+    selectedDate += ' '.repeat(this.extraSpace); // makes label longer
 
     this.setState({
       dateInput: selectedDate,
@@ -276,7 +260,8 @@ _handleDateTimePicked = (date) => {
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
-    let time = hours + ':' + minutes + ' ' + ampm + ' '.repeat(this.extraSpace);
+    let time = hours + ':' + minutes + ' ' + ampm;
+    time += ' '.repeat(this.extraSpace); // makes label longer
 
     if(this.state.isStartTime) {
     this.setState({
@@ -327,7 +312,7 @@ _handleDateTimePicked = (date) => {
 }
 
   render() {
-    const {goBack} = this.props.navigation;
+    const {navigate} = this.props.navigation;
     const minHeight = 55; // min height for all inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
@@ -338,7 +323,7 @@ _handleDateTimePicked = (date) => {
          <Left style={{flex:1}}>
            {!this.state.changed && <Button transparent onPress={() => {
              Keyboard.dismiss();
-             goBack();
+             navigate('Tab', {indexBack: 3});
            }}>
              <Icon name='arrow-back'/>
            </Button>}
@@ -368,7 +353,7 @@ _handleDateTimePicked = (date) => {
                   {text: 'Cancel', style: 'cancel'},
                   {text: 'Yes', onPress: () => {
                     this._delete();
-                    goBack();
+                    navigate('Tab', {indexBack: 3});
                   }},
                 ],
                 { cancelable: false }

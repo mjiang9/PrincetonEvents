@@ -14,6 +14,7 @@ export default class HomeScreen extends Component {
       loading: true,
       searchText: "",
       searching: false,
+      active: 'true'
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
@@ -22,7 +23,7 @@ export default class HomeScreen extends Component {
   }
   onLearnMore = (item) => {
     this.props.navigation.navigate('Details', {
-      ...item
+      ...item, indexBack: 0,
     });
   };
 
@@ -97,13 +98,18 @@ export default class HomeScreen extends Component {
     });
   }
 
+  // autoupdates on event
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
 
+  // removes listener
+  componentWillUnmount() {
+    this.itemsRef.off();
+  }
+
   render() {
     var styles = require('./Styles');
-    const {navigate} = this.props.navigation;
     return (
       <Container>
         {!this.state.searching &&
@@ -137,9 +143,6 @@ export default class HomeScreen extends Component {
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>}
       </Content>
-      <Footer>
-        <TabBar navigate={navigate} screen='Home'/>
-      </Footer>
       </Container>
     );
   }

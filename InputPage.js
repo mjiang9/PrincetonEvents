@@ -66,14 +66,55 @@ export default class InputScreen extends Component {
         data.latitude = location.lat;
         data.longitude = location.lng;
         ref.push(data);
+        this.setState({
+          titleInput: '',
+          hostInput: '',
+          locationInput: '',
+          dateInput:      'Date' + ' '.repeat(this.extraSpace),
+          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
+          descriptionInput: '',
+          startTimeColor: 'dimgrey',
+          endTimeColor: 'dimgrey',
+          dateColor: 'dimgrey',
+          dateEmpty: true,
+          startTimeEmpty: true,
+          endTimeEmpty: true,
+      });
+
+      Toast.show({
+          text: 'Submitted!',
+          position: 'bottom',
+          duration: 2300,
+        });
+
       },
       error => {
         Alert.alert('', 'No Geolocation Found.');
         ref.push(data);
+        this.setState({
+          titleInput: '',
+          hostInput: '',
+          locationInput: '',
+          dateInput:      'Date' + ' '.repeat(this.extraSpace),
+          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
+          descriptionInput: '',
+          startTimeColor: 'dimgrey',
+          endTimeColor: 'dimgrey',
+          dateColor: 'dimgrey',
+          dateEmpty: true,
+          startTimeEmpty: true,
+          endTimeEmpty: true,
+      });
+
+      Toast.show({
+          text: 'Submitted!',
+          position: 'bottom',
+          duration: 2300,
+        })
       }
     );
-    // return to last page
-    this.props.navigation.goBack();
   };
 
   // checks if all input is filled out
@@ -122,47 +163,9 @@ export default class InputScreen extends Component {
 // takes date input from DateTimePicker and formats it and updates state
 _handleDateTimePicked = (date) => {
   if (this.state.dateTimeMode == 'date') {
-    let month = '';
-    switch (date.getMonth()) {
-      case 0:
-        month = "Jan";
-        break;
-      case 1:
-        month = "Feb";
-        break;
-      case 2:
-        month = "Mar";
-        break;
-      case 3:
-        month = "Apr";
-        break;
-      case 4:
-        month = "May";
-        break;
-      case 5:
-        month = "Jun";
-        break;
-      case 6:
-        month = "Jul";
-        break;
-      case 7:
-        month = "Aug";
-        break;
-      case 8:
-        month = "Sep";
-        break;
-      case 9:
-        month = "Oct";
-        break;
-      case 10:
-        month = "Nov";
-        break;
-      case 11:
-        month = "Dec";
-    }
-
-    let selectedDate = month + ' ' + date.getDate();
-    selectedDate += ' '.repeat(this.extraSpace);
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let selectedDate = months[date.getMonth()] + ' ' + date.getDate();
+    selectedDate += ' '.repeat(this.extraSpace); // makes label longer
 
     this.setState({
       dateInput: selectedDate,
@@ -178,7 +181,7 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
-    time += ' '.repeat(this.extraSpace);
+    time += ' '.repeat(this.extraSpace); // makes label longer
 
     if(this.state.isStartTime) {
     this.setState({
@@ -207,7 +210,6 @@ _handleDateTimePicked = (date) => {
 
   render() {
     var styles = require('./Styles');
-    const {goBack} = this.props.navigation;
     const minHeight = 55; // min height for all normal inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
@@ -215,18 +217,11 @@ _handleDateTimePicked = (date) => {
     return (
       <Container>
         <Header>
-          <Left>
-            <Button transparent onPress={() => {
-              Keyboard.dismiss();
-              goBack();
-            }}>
-              <Icon name='arrow-back'/>
-            </Button>
-          </Left>
+          <Left/>
           <Body >
             <Title>Add Event</Title>
            </Body>
-           <Right >
+           <Right>
             <Button transparent onPress={() => {
                Keyboard.dismiss();
                this._submit();

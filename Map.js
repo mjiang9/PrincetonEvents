@@ -18,7 +18,7 @@ export default class MapScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     today = new Date();
     today = months[today.getMonth()] + " " + today.getDate();
     var items = [];
@@ -55,7 +55,7 @@ export default class MapScreen extends Component {
 
   onLearnMore = (item) => {
     this.props.navigation.navigate('Details', {
-      ...item
+      ...item, indexBack: 1,
     });
   };
 
@@ -64,7 +64,7 @@ export default class MapScreen extends Component {
   };
 
   render() {
-    const { navigate } = this.props.navigation;
+    //const { navigate } = this.props.navigation;
     var styles = require('./Styles');
     return (
       <Container>
@@ -84,9 +84,6 @@ export default class MapScreen extends Component {
                     description={marker.description} onCalloutPress={() => this.onLearnMore(marker)}>
               </MapView.Marker> ))}
             </MapView>
-        <Footer>
-          <TabBar navigate={navigate} screen='Map'/>
-        </Footer>
       </Container>
     );
   }

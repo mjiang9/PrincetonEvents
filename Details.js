@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, BackHandler, Keyboard } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
+import Tab from './Tab';
 
 export default class DetailsScreen extends Component {
   constructor(props) {
@@ -17,9 +18,19 @@ export default class DetailsScreen extends Component {
       this.state = {showMarker: true}
     }
   }
+
+// handles hardwar back button pressed on Android
+componentDidMount() {
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    const {indexBack} = this.params;
+    this.props.navigation.navigate('Tab', {indexBack});
+    return true;
+  });
+}
+
   render() {
-    const { goBack } = this.props.navigation;
-    const { name, who, what, startTime, endTime, date, where} =
+    const { navigate } = this.props.navigation;
+    const { name, who, what, startTime, endTime, date, where, indexBack} =
      this.params;
     var styles = require('./Styles');
     return (
@@ -27,8 +38,7 @@ export default class DetailsScreen extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => {
-              goBack();
-              Keyboard.dismiss();
+              navigate('Tab', {indexBack});
             }}>
               <Icon name='arrow-back'/>
             </Button>
