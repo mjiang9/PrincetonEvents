@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, BackHandler, Keyboard } from 'react-native';
+import { Text, View, StyleSheet, BackHandler, Keyboard, ScrollView } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
@@ -32,6 +32,8 @@ componentDidMount() {
     const { navigate } = this.props.navigation;
     const { name, who, what, startTime, endTime, date, where, indexBack} =
      this.params;
+    var time = startTime;
+    if (endTime != "N") { time = startTime + " - " + endTime;}
     var styles = require('./Styles');
     return (
       <Container>
@@ -44,7 +46,7 @@ componentDidMount() {
             </Button>
           </Left>
           <Body>
-          <Title>{name}</Title>
+          <Title>Event Details</Title>
           </Body>
           <Right>
             <Button transparent>
@@ -52,45 +54,56 @@ componentDidMount() {
             </Button>
           </Right>
         </Header>
-        <View style={styles.body}>
+        <ScrollView style={styles.body}>
         <List containerStyle={{
           borderTopWidth: 0,
           borderBottomWidth: 0
         }}>
+        <ListItem
+          style={styles.item}
+          title={<View style={{flexDirection: 'row'}}>
+                  <Text style={{fontSize: 18, fontWeight: 'bold', flexWrap: 'wrap'}}>{name}</Text>
+                 </View>}
+          hideChevron
+        />
             <ListItem
               style={styles.item}
-              rightTitleStyle={s.right}
-              title="Who:"
-              rightTitle={who}
+              title={<View style={{flexDirection: 'row'}}>
+                      <Icon name='person'/>
+                      <Text style={{paddingLeft: 20, paddingRight: 20, paddingTop: 5, flexWrap: 'wrap'}}>{who}</Text>
+                     </View>}
               hideChevron
             />
             <ListItem
               style={styles.item}
-              rightTitleStyle={s.right}
-              title="Date:"
-              rightTitle={date}
+              title={<View style={{flexDirection: 'row'}}>
+                      <Icon name='calendar'/>
+                      <Text style={{paddingLeft: 20, paddingRight: 20, paddingTop: 5, flexWrap: 'wrap'}}>{date}</Text>
+                     </View>}
               hideChevron
             />
             <ListItem
               style={styles.item}
-              rightTitleStyle={s.right}
-              title="Time:"
-              rightTitle={startTime}
+              title={<View style={{flexDirection: 'row'}}>
+                      <Icon name='time'/>
+                      <Text style={{paddingLeft: 20, paddingRight: 20, paddingTop: 5, flexWrap: 'wrap'}}>{time}</Text>
+                     </View>}
               hideChevron
             />
             <ListItem
               style={styles.item}
-              rightTitleStyle={s.right}
-              title="Where:"
-              rightTitle={where}
+              title={<View style={{flexDirection: 'row'}}>
+                      <Icon name='pin'/>
+                      <Text style={{paddingLeft: 20, paddingRight: 20, paddingTop: 5, flexWrap: 'wrap'}}>{where}</Text>
+                     </View>}
               hideChevron
             />
             <ListItem
               style={styles.item}
-              rightTitleStyle={s.right}
-              rightTitleNumberOfLines={4}
-              title="Description:"
-              rightTitle={what}
+              title={<View style={{flexDirection: 'row'}}>
+                      <Icon name='list'/>
+                      <Text style={{paddingLeft: 20, paddingRight: 20, flexWrap: 'wrap'}}>{what}</Text>
+                     </View>}
               hideChevron
             />
           </List>
@@ -105,15 +118,8 @@ componentDidMount() {
                 title={name}
                 description={date + " " + startTime + " @ " + where} />
             </MapView>
-          </View>
+          </ScrollView>
      </Container>
     );
   }
 }
-
-const s = StyleSheet.create({
-  right: {
-    color: 'black',
-    alignSelf: 'flex-start',
-  }
-})
