@@ -107,7 +107,7 @@ componentDidMount() {
               hideChevron
             />
           </List>
-          <MapView style={{height: 180, margin: 20 }}
+          <MapView style={{height: 180, margin: 20, marginBottom: 40 }}
               initialRegion={{ latitude: 40.347695, longitude: -74.657995,
               latitudeDelta: .01, longitudeDelta: .012 }} >
               <MapView.Marker
