@@ -45,8 +45,8 @@ def deleteOld():
         else:
             dates.add(item)
 
-def getNew():
-    r = requests.get("https://www.princeton.edu/events")
+def getNew(site):
+    r = requests.get(site)
     soup = BeautifulSoup(r.content, "html.parser")
 
     end = datetime.date.today() + datetime.timedelta(days=7) # data for a week
@@ -95,4 +95,5 @@ def getNew():
         firebase.post('/items/' + eventDate, event)
 
 deleteOld()
-getNew()
+getNew("https://www.princeton.edu/events")
+getNew("https://www.princeton.edu/events?page=1")

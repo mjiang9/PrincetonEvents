@@ -3,7 +3,9 @@ import {ActivityIndicator, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class MyEventsScreen extends Component {
   constructor(props) {
@@ -56,13 +58,14 @@ export default class MyEventsScreen extends Component {
     var styles = require('./Styles');
     const {navigate} = this.props.navigation;
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Body>
           <Title>My Events</Title>
           </Body>
         </Header>
-        <Content>
+        <Content style={{backgroundColor: 'white'}}>
           {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
             {!this.state.loading && <FlatList data={this.state.data} renderItem={({item}) =>
               <ListItem style={styles.item} title={item.name} subtitle={item.startTime} containerStyle={{
@@ -73,6 +76,7 @@ export default class MyEventsScreen extends Component {
           <TabBar navigate={navigate} screen='MyEvents'/>
         </Footer>
       </Container>
+      </StyleProvider>
     );
   }
 }
