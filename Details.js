@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Keyboard, ScrollView } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Subtitle } from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Footer,
+  FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class DetailsScreen extends Component {
   constructor(props) {
@@ -25,6 +28,7 @@ export default class DetailsScreen extends Component {
     if (endTime != "N") { time = startTime + " - " + endTime;}
     var styles = require('./Styles');
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Left>
@@ -40,7 +44,7 @@ export default class DetailsScreen extends Component {
           </Body>
           <Right/>
         </Header>
-        <ScrollView style={styles.body}>
+        <ScrollView style={{backgroundColor: 'white'}}>
         <List containerStyle={{
           borderTopWidth: 0,
           borderBottomWidth: 0
@@ -106,6 +110,7 @@ export default class DetailsScreen extends Component {
             </MapView>
           </ScrollView>
      </Container>
+     </StyleProvider>
     );
   }
 }

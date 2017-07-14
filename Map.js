@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
-
+import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class MapScreen extends Component {
   constructor(props) {
@@ -65,8 +66,8 @@ export default class MapScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    var styles = require('./Styles');
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Body>
@@ -88,6 +89,7 @@ export default class MapScreen extends Component {
           <TabBar navigate={navigate} screen='Map'/>
         </Footer>
       </Container>
+      </StyleProvider>
     );
   }
 }

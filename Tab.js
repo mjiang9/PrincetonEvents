@@ -5,8 +5,10 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import {Container, Content, Footer, FooterTab, Button, Icon, Text} from 'native-base';
-var styles = require('./Styles');
+import {StyleProvider, Container, Content, Footer, FooterTab, Button,
+  Icon, Text} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class MyComponent extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ export default class MyComponent extends Component {
 
   render() {
     return (
+      <StyleProvider style={getTheme(material)}>
         <Container>
           <Footer>
             <FooterTab>
@@ -42,11 +45,12 @@ export default class MyComponent extends Component {
               <Button vertical active={this.state.myEventsPressed} onPress={() => {
                 this.props.navigate('MyEvents')}}>
                 <Icon active={this.state.myEventsPressed} name='person' />
-                <Text>My Events</Text>
+                <Text style={{fontSize: 10}}>My Events</Text>
               </Button>
             </FooterTab>
           </Footer>
         </Container>
+      </StyleProvider>
     );
   }
 }
