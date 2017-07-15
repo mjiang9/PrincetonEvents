@@ -43,8 +43,8 @@ export default class InputScreen extends Component {
     let data = {
       name: this.state.titleInput,
       what: this.state.descriptionInput,
-      startTime: this.state.startTimeInput,
-      endTime: this.state.endTimeInput,
+      startTime: this.state.startTimeInput.trim(),
+      endTime: this.state.endTimeInput.trim(),
       where: this.state.locationInput,
       who: this.state.hostInput,
       latitude: 0, // defaults
@@ -59,7 +59,7 @@ export default class InputScreen extends Component {
 
     // reference to new event
     // gets location information and then adds event
-    let ref = firebaseApp.database().ref('items').child(this.state.dateInput);
+    let ref = firebaseApp.database().ref('items').child(this.state.dateInput.trim());
 
     Geocoder.getFromLocation(this.state.locationInput + " Princeton").then(
       json => { var location = json.results[0].geometry.location;
@@ -82,7 +82,7 @@ export default class InputScreen extends Component {
           endTimeEmpty: true,
       });
 
-      Toast.show({
+        Toast.show({
           text: 'Submitted!',
           position: 'bottom',
           duration: 2300,
@@ -108,7 +108,7 @@ export default class InputScreen extends Component {
           endTimeEmpty: true,
       });
 
-      Toast.show({
+        Toast.show({
           text: 'Submitted!',
           position: 'bottom',
           duration: 2300,
@@ -217,7 +217,6 @@ _handleDateTimePicked = (date) => {
     return (
       <Container>
         <Header>
-          <Left/>
           <Body >
             <Title>Add Event</Title>
            </Body>

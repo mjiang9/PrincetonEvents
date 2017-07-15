@@ -2,6 +2,7 @@ import Home from './Home';
 import MyEvents from './MyEvents'
 import Map from './Map';
 import Input from './InputPage';
+import {Root} from "native-base"; // allows for toasts
 
 import React, { Component } from 'react';
 import {
@@ -63,7 +64,9 @@ export default class MyComponent extends Component {
 
     return (
         <Container>
+          <Root>
           <AppComponent navigation={this.props.navigation}/>
+          </Root>
           <Footer>
             <FooterTab>
               <Button vertical active={this.state.homeActive} onPress={() => {this.changeScreen(0)}}>

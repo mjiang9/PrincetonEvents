@@ -13,36 +13,35 @@ export default class EditScreen extends Component {
   constructor(props){
     super(props);
     this.extraSpace = 75;
-    const {navigate} = this.props.navigation;
-    this.params = this.props.navigation.state.params;
     // checks if endTime or description were filled and changes them to match
     // input page
+    this.item = this.props.item;
     let endTime, endTimeColor, isEndTimeEmpty, description;
 
-    if(this.params.endTime == 'N') {
+    if(this.item.endTime == 'N') {
       endTime = 'End (optional)' + ' '.repeat(this.extraSpace);
       endTimeColor = 'dimgrey';
       isEndTimeEmpty = true;
     }
     else {
-      endTime = this.params.endTime;
+      endTime = this.item.endTime + ' '.repeat(this.extraSpace);
       endTimeColor = 'black';
       isEndTimeEmpty = false;
     }
 
-    if(this.params.what == 'N/A') {
+    if(this.item.what == 'N/A') {
       description = '';
     }
     else {
-      description = this.params.what;
+      description = this.item.what;
     }
 
     this.saved = {
-      titleInput: this.params.name,
-      hostInput: this.params.who,
-      locationInput: this.params.where,
-      dateInput: this.params.date,
-      startTimeInput: this.params.startTime,
+      titleInput: this.item.name,
+      hostInput: this.item.who,
+      locationInput: this.item.where,
+      dateInput: this.item.date + ' '.repeat(this.extraSpace),
+      startTimeInput: this.item.startTime + ' '.repeat(this.extraSpace),
       endTimeInput:  endTime,
       endTimeEmpty: isEndTimeEmpty,
       endTimeColor: endTimeColor,
@@ -53,11 +52,11 @@ export default class EditScreen extends Component {
       changed: false,
       saving: false,
       cancel: false,
-      titleInput: this.params.name,
-      hostInput: this.params.who,
-      locationInput: this.params.where,
-      dateInput: this.params.date,
-      startTimeInput: this.params.startTime,
+      titleInput: this.item.name,
+      hostInput: this.item.who,
+      locationInput: this.item.where,
+      dateInput: this.item.date + ' '.repeat(this.extraSpace),
+      startTimeInput: this.item.startTime + ' '.repeat(this.extraSpace),
       endTimeInput:  endTime,
       descriptionInput: description,
       titleError: false,
@@ -76,19 +75,18 @@ export default class EditScreen extends Component {
   // handles hardwar back button pressed on Android
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
-      const {indexBack} = this.params;
-      this.props.navigation.navigate('Tab', {indexBack});
+      this.props.goBack();
       return true;
     });
   }
 
-  // takes new data from Edit.ios and Edit.android to update locally and send
-  // updates to firebase
+  // takes new data from input and updates to firebase
   pushNewData = () => {
     this.setState({changed: false})
 
-    let oldDate = this.saved.dateInput;
+    let oldDate = this.saved.dateInput.trim();
 
+    // if user wants to continue changing even after submitting
     this.saved = {
       titleInput: this.state.titleInput,
       hostInput: this.state.hostInput,
@@ -105,7 +103,8 @@ export default class EditScreen extends Component {
     let updateData = {
        name: this.saved.titleInput,
        what: this.saved.descriptionInput,
-       startTime: this.saved.startTimeInput ,
+       startTime: this.saved.startTimeInput.trim(),
+       endTime: this.saved.endTimeInput.trim(),
        where: this.saved.locationInput,
        who: this.saved.hostInput,
      }
@@ -114,8 +113,8 @@ export default class EditScreen extends Component {
      if(this._inputChecker(this.state.descriptionInput))
      updateData.what = 'N/A';
 
-     if(!this.state.endTimeEmpty)
-     updateData.endTime = this.saved.endTimeInput;
+     if(this.state.endTimeEmpty)
+     updateData.endTime = 'N';
 
      Geocoder.getFromLocation(this.saved.locationInput + " Princeton").then(
        json => { var location = json.results[0].geometry.location;
@@ -125,11 +124,11 @@ export default class EditScreen extends Component {
          // moves event to under new date while retaining event key
          try{
          let itemsRef = firebaseApp.database().ref('items');
-         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.item.key);
 
-         if (oldDate != this.saved.dateInput) {
+         if (oldDate != this.saved.dateInput.trim()) {
            oldEventRef.remove();
-           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+           itemsRef.child(this.saved.dateInput.trim()).child(this.item.key).update(updateData);
          }
          else {
            oldEventRef.update(updateData);
@@ -153,11 +152,11 @@ export default class EditScreen extends Component {
 
          try{
          let itemsRef = firebaseApp.database().ref('items');
-         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.item.key);
 
-         if (oldDate != this.saved.dateInput) {
+         if (oldDate != this.saved.dateInput.trim()) {
            oldEventRef.remove();
-           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+           itemsRef.child(this.saved.dateInput.trim()).child(this.item.key).update(updateData);
          }
          else {
            oldEventRef.update(updateData);
@@ -303,7 +302,7 @@ _handleDateTimePicked = (date) => {
   _delete = () => {
   try {
     let itemsRef = firebaseApp.database().ref('items');
-    let oldEventRef = itemsRef.child(this.saved.dateInput + '/' + this.params.key);
+    let oldEventRef = itemsRef.child(this.saved.dateInput.trim() + '/' + this.item.key);
     oldEventRef.remove();
 
   } catch (err) {
@@ -312,7 +311,6 @@ _handleDateTimePicked = (date) => {
 }
 
   render() {
-    const {navigate} = this.props.navigation;
     const minHeight = 55; // min height for all inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
@@ -323,7 +321,7 @@ _handleDateTimePicked = (date) => {
          <Left style={{flex:1}}>
            {!this.state.changed && <Button transparent onPress={() => {
              Keyboard.dismiss();
-             navigate('Tab', {indexBack: 3});
+             this.props.goBack();
            }}>
              <Icon name='arrow-back'/>
            </Button>}
@@ -353,7 +351,7 @@ _handleDateTimePicked = (date) => {
                   {text: 'Cancel', style: 'cancel'},
                   {text: 'Yes', onPress: () => {
                     this._delete();
-                    navigate('Tab', {indexBack: 3});
+                    this.props.goBack();
                   }},
                 ],
                 { cancelable: false }

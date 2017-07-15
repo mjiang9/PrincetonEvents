@@ -8,10 +8,8 @@ import Tab from './Tab';
 export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
-    this.params = this.props.navigation.state.params;
-
     // if no valid location, does not display Marker
-    if(this.params.latitude == 0 && this.params.longitude == 0) {
+    if(this.props.item.latitude == 0 && this.props.item.longitude == 0) {
       this.state = {showMarker: false}
     }
     else {
@@ -22,16 +20,16 @@ export default class DetailsScreen extends Component {
 // handles hardwar back button pressed on Android
 componentDidMount() {
   BackHandler.addEventListener('hardwareBackPress', () => {
-    const {indexBack} = this.params;
-    this.props.navigation.navigate('Tab', {indexBack});
+    this.props.goBack();
     return true;
   });
 }
 
   render() {
-    const { navigate } = this.props.navigation;
+    // data fields from the selected item
     const { name, who, what, startTime, endTime, date, where, indexBack} =
-     this.params;
+     this.props.item;
+    // checks if an endTime exists, if so, appends it to startTime
     var time = startTime;
     if (endTime != "N") { time = startTime + " - " + endTime;}
     var styles = require('./Styles');
@@ -40,7 +38,7 @@ componentDidMount() {
         <Header>
           <Left>
             <Button transparent onPress={() => {
-              navigate('Tab', {indexBack});
+              this.props.goBack();
             }}>
               <Icon name='arrow-back'/>
             </Button>
@@ -112,11 +110,11 @@ componentDidMount() {
               latitudeDelta: .01, longitudeDelta: .012 }} >
               <MapView.Marker
                 coordinate={{
-                  latitude: this.params.latitude,
-                  longitude: this.params.longitude
+                  latitude: this.props.item.latitude,
+                  longitude: this.props.item.longitude
                 }}
                 title={name}
-                description={date + " " + startTime + " @ " + where} />
+                description={date + " " + time + " @ " + where} />
             </MapView>
           </ScrollView>
      </Container>
