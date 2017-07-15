@@ -10,8 +10,10 @@ import {
   StyleSheet,
   BackHandler,
 } from 'react-native';
-import {Container, Content, Footer, FooterTab, Button, Icon, Text} from 'native-base';
-var styles = require('./Styles');
+import {StyleProvider, Container, Content, Footer, FooterTab, Button,
+  Icon, Text} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class MyComponent extends Component {
   constructor(props) {
@@ -63,6 +65,7 @@ export default class MyComponent extends Component {
      }
 
     return (
+      <StyleProvider style={getTheme(material)}>
         <Container>
           <Root>
           <AppComponent navigation={this.props.navigation}/>
@@ -81,13 +84,15 @@ export default class MyComponent extends Component {
                 <Icon active={this.state.inputActive} name='create' />
                 <Text>Input</Text>
               </Button>
-              <Button vertical active={this.state.myEventsActive} onPress={() => {this.changeScreen(3)}}>
-                <Icon active={this.state.myEventsActive} name='person' />
-                <Text>My Events</Text>
+              <Button vertical active={this.state.myEventsPressed} onPress={() => {
+                this.props.navigate('MyEvents')}}>
+                <Icon active={this.state.myEventsPressed} name='person' />
+                <Text style={{fontSize: 10}}>My Events</Text>
               </Button>
             </FooterTab>
           </Footer>
         </Container>
+      </StyleProvider>
     );
   }
 }

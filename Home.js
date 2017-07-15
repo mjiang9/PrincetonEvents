@@ -3,8 +3,14 @@ import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
+<<<<<<< HEAD
 import Details from './Details';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
+=======
+import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
+>>>>>>> c29499c7e47af56dd2c56323450764d0f09fb03c
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -95,7 +101,7 @@ export default class HomeScreen extends Component {
       })
       });
       let sorted = items.sort((a, b) => {
-        if (parseInt(a.key.substring(4)) <= parseInt(b.key.substring(4))) {
+        if (parseInt(a.key.substring(4)) < parseInt(b.key.substring(4))) {
           return -1;
         } else {
           return 1;
@@ -123,6 +129,7 @@ export default class HomeScreen extends Component {
     var styles = require('./Styles');
     if(!this.state.viewDetails) {
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         {!this.state.searching &&
           <Header>
@@ -141,7 +148,7 @@ export default class HomeScreen extends Component {
             <Label style={{color: 'black'}} onPress={() => {
               Keyboard.dismiss();
               this.setState({data: this.state.dataSource, searching: false})}}>
-              <Text>Cancel</Text>
+              <Text style={{fontSize: 12}}>Cancel</Text>
             </Label>
           </Item>
         </Header>}
@@ -155,7 +162,8 @@ export default class HomeScreen extends Component {
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>}
       </Content>
-    </Container>
+      </Container>
+      </StyleProvider>
     );
   }
   else {

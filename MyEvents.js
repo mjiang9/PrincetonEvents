@@ -3,9 +3,10 @@ import {ActivityIndicator, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 import Edit from './EditPage';
-
 export default class MyEventsScreen extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +75,7 @@ export default class MyEventsScreen extends Component {
     if(!this.state.viewEdit) {
     const {navigate} = this.props.navigation;
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Body>
@@ -88,6 +90,7 @@ export default class MyEventsScreen extends Component {
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>}
         </Content>
       </Container>
+      </StyleProvider>
     );
   }
   else {

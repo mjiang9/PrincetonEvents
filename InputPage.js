@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import TabBar from './Tab';
 import {firebaseApp} from './App';
-import { Container, Header, Title, Content, Button,
+import { StyleProvider, Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
 import { Keyboard, Alert } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Geocoder from 'react-native-geocoding';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 
@@ -209,12 +211,12 @@ _handleDateTimePicked = (date) => {
   };
 
   render() {
-    var styles = require('./Styles');
     const minHeight = 55; // min height for all normal inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
     const fieldLength = 35; // character limit for other fields
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Body >
@@ -229,7 +231,7 @@ _handleDateTimePicked = (date) => {
              </Button>
            </Right>
         </Header>
-        <Content>
+        <Content style={{backgroundColor: 'white'}}>
           <Form>
             <Item inlineLabel
               error={this.state.titleError ? true : false}>
@@ -344,6 +346,7 @@ _handleDateTimePicked = (date) => {
           is24Hour={false}/>
         </Content>
       </Container>
+      </StyleProvider>
     );
   }
 }
