@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { StyleProvider, Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
@@ -14,13 +13,14 @@ Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 export default class InputScreen extends Component {
   constructor(props){
     super(props);
+    this.extraSpace = 75;
     this.state = {
       titleInput: '',
       hostInput: '',
       locationInput: '',
-      dateInput: 'Date',
-      startTimeInput: 'Start',
-      endTimeInput: 'End (optional)',
+      dateInput:      'Date' + ' '.repeat(this.extraSpace),
+      startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+      endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
       descriptionInput: '',
       titleError: false,
       hostError: false,
@@ -44,8 +44,8 @@ export default class InputScreen extends Component {
     let data = {
       name: this.state.titleInput,
       what: this.state.descriptionInput,
-      startTime: this.state.startTimeInput,
-      endTime: this.state.endTimeInput,
+      startTime: this.state.startTimeInput.trim(),
+      endTime: this.state.endTimeInput.trim(),
       where: this.state.locationInput,
       who: this.state.hostInput,
       latitude: 0, // defaults
@@ -60,21 +60,62 @@ export default class InputScreen extends Component {
 
     // reference to new event
     // gets location information and then adds event
-    let ref = firebaseApp.database().ref('items').child(this.state.dateInput);
+    let ref = firebaseApp.database().ref('items').child(this.state.dateInput.trim());
 
     Geocoder.getFromLocation(this.state.locationInput + " Princeton").then(
       json => { var location = json.results[0].geometry.location;
         data.latitude = location.lat;
         data.longitude = location.lng;
         ref.push(data);
+        this.setState({
+          titleInput: '',
+          hostInput: '',
+          locationInput: '',
+          dateInput:      'Date' + ' '.repeat(this.extraSpace),
+          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
+          descriptionInput: '',
+          startTimeColor: 'dimgrey',
+          endTimeColor: 'dimgrey',
+          dateColor: 'dimgrey',
+          dateEmpty: true,
+          startTimeEmpty: true,
+          endTimeEmpty: true,
+      });
+
+        Toast.show({
+          text: 'Submitted!',
+          position: 'bottom',
+          duration: 2300,
+        });
+
       },
       error => {
         Alert.alert('', 'No Geolocation Found.');
         ref.push(data);
+        this.setState({
+          titleInput: '',
+          hostInput: '',
+          locationInput: '',
+          dateInput:      'Date' + ' '.repeat(this.extraSpace),
+          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
+          descriptionInput: '',
+          startTimeColor: 'dimgrey',
+          endTimeColor: 'dimgrey',
+          dateColor: 'dimgrey',
+          dateEmpty: true,
+          startTimeEmpty: true,
+          endTimeEmpty: true,
+      });
+
+        Toast.show({
+          text: 'Submitted!',
+          position: 'bottom',
+          duration: 2300,
+        })
       }
     );
-    // return to last page
-    this.props.navigation.goBack();
   };
 
   // checks if all input is filled out
@@ -123,46 +164,9 @@ export default class InputScreen extends Component {
 // takes date input from DateTimePicker and formats it and updates state
 _handleDateTimePicked = (date) => {
   if (this.state.dateTimeMode == 'date') {
-    let month = '';
-    switch (date.getMonth()) {
-      case 0:
-        month = "Jan";
-        break;
-      case 1:
-        month = "Feb";
-        break;
-      case 2:
-        month = "Mar";
-        break;
-      case 3:
-        month = "Apr";
-        break;
-      case 4:
-        month = "May";
-        break;
-      case 5:
-        month = "Jun";
-        break;
-      case 6:
-        month = "Jul";
-        break;
-      case 7:
-        month = "Aug";
-        break;
-      case 8:
-        month = "Sep";
-        break;
-      case 9:
-        month = "Oct";
-        break;
-      case 10:
-        month = "Nov";
-        break;
-      case 11:
-        month = "Dec";
-    }
-
-    let selectedDate = month + ' ' + date.getDate();
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let selectedDate = months[date.getMonth()] + ' ' + date.getDate();
+    selectedDate += ' '.repeat(this.extraSpace); // makes label longer
 
     this.setState({
       dateInput: selectedDate,
@@ -178,6 +182,7 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
+    time += ' '.repeat(this.extraSpace); // makes label longer
 
     if(this.state.isStartTime) {
     this.setState({
@@ -205,7 +210,6 @@ _handleDateTimePicked = (date) => {
   };
 
   render() {
-    const {goBack} = this.props.navigation;
     const minHeight = 55; // min height for all normal inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
@@ -214,18 +218,10 @@ _handleDateTimePicked = (date) => {
       <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
-          <Left>
-            <Button transparent onPress={() => {
-              Keyboard.dismiss();
-              goBack();
-            }}>
-              <Icon name='arrow-back'/>
-            </Button>
-          </Left>
           <Body >
             <Title>Add Event</Title>
            </Body>
-           <Right >
+           <Right>
             <Button transparent onPress={() => {
                Keyboard.dismiss();
                this._submit();

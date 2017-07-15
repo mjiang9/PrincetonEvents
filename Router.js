@@ -1,6 +1,5 @@
 import React from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
-import {TabView} from 'react-navigation';
 
 import InputScreen from './InputPage';
 import HomeScreen from './Home';
@@ -10,6 +9,7 @@ import EditScreen from './EditPage';
 import MapScreen from './Map';
 import CreateAccountScreen from './CreateAccount';
 import LoginScreen from './Login';
+import Tab from './Tab';
 
 export const MyEventsStack = StackNavigator({
 
@@ -63,6 +63,12 @@ export const HomeStack = StackNavigator({
 });
 
 export const Navigator = StackNavigator({
+  Tab: {
+    screen: Tab,
+    navigationOptions: {
+      header: null
+    }
+  },
   Home: {
     screen: HomeStack
   },

@@ -6,23 +6,33 @@ import TabBar from './Tab';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
-
+import Edit from './EditPage';
 export default class MyEventsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      loading: true
+      loading: true,
+      viewEdit: false,
+      curItem: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
+  // manages whether to display edit page or not
   onViewMyEvent = (item) => {
-    this.props.navigation.navigate('Edit', {
-      ...item
-    });
+    this.setState({
+      viewEdit: true,
+      curItem: item,
+    })
   };
+
+  goBack = () => {
+    this.setState({
+      viewEdit: false
+    })
+  }
 
   listenForItems(itemsRef) {
     itemsRef.on('value', (snap) => {
@@ -50,12 +60,19 @@ export default class MyEventsScreen extends Component {
     });
   }
 
+  // autoupdates on new event
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
 
+  // removes listener
+  componentWillUnmount() {
+    this.itemsRef.off();
+  }
+
   render() {
     var styles = require('./Styles');
+    if(!this.state.viewEdit) {
     const {navigate} = this.props.navigation;
     return (
       <StyleProvider style={getTheme(material)}>
@@ -72,11 +89,14 @@ export default class MyEventsScreen extends Component {
               borderBottomWidth: 0
             }} onPress={() => this.onViewMyEvent(item)}/>} keyExtractor={(item) => item.key}/>}
         </Content>
-        <Footer>
-          <TabBar navigate={navigate} screen='MyEvents'/>
-        </Footer>
       </Container>
       </StyleProvider>
     );
   }
+  else {
+    return(
+    <Edit goBack={this.goBack} item={this.state.curItem}/>
+   );
+  }
+ }
 }

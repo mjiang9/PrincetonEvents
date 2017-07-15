@@ -3,9 +3,14 @@ import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import TabBar from './Tab';
+<<<<<<< HEAD
+import Details from './Details';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
+=======
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
+>>>>>>> c29499c7e47af56dd2c56323450764d0f09fb03c
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -16,17 +21,28 @@ export default class HomeScreen extends Component {
       loading: true,
       searchText: "",
       searching: false,
+      viewDetails: false,
+      curItem: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = [
          'Setting a timer'
      ];
   }
+
+// manages whether to display details of item or not
   onLearnMore = (item) => {
-    this.props.navigation.navigate('Details', {
-      ...item
-    });
+    this.setState({
+      viewDetails: true,
+      curItem: item,
+    })
   };
+
+  goBack = () => {
+    this.setState({
+      viewDetails: false
+    })
+  }
 
   firstSearch() {
     this.searchEvents(this.itemsRef);
@@ -60,7 +76,7 @@ export default class HomeScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    itemsRef.orderByKey().on('value', (snap) => {
+    itemsRef.on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((parent) => {
@@ -99,13 +115,19 @@ export default class HomeScreen extends Component {
     });
   }
 
+  // autoupdates on new event
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
 
+  // removes listener
+  componentWillUnmount() {
+    this.itemsRef.off();
+  }
+
   render() {
     var styles = require('./Styles');
-    const {navigate} = this.props.navigation;
+    if(!this.state.viewDetails) {
     return (
       <StyleProvider style={getTheme(material)}>
       <Container>
@@ -140,11 +162,14 @@ export default class HomeScreen extends Component {
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>}
       </Content>
-      <Footer>
-        <TabBar navigate={navigate} screen='Home'/>
-      </Footer>
       </Container>
       </StyleProvider>
     );
   }
+  else {
+    return(
+    <Details goBack={this.goBack} item={this.state.curItem}/>
+   );
+  }
+ }
 }

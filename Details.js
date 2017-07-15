@@ -10,20 +10,28 @@ import material from './native-base-theme/variables/material';
 export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
-    this.params = this.props.navigation.state.params;
-
     // if no valid location, does not display Marker
-    if(this.params.latitude == 0 && this.params.longitude == 0) {
+    if(this.props.item.latitude == 0 && this.props.item.longitude == 0) {
       this.state = {showMarker: false}
     }
     else {
       this.state = {showMarker: true}
     }
   }
+
+// handles hardwar back button pressed on Android
+componentDidMount() {
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    this.props.goBack();
+    return true;
+  });
+}
+
   render() {
-    const { goBack } = this.props.navigation;
-    const { name, who, what, startTime, endTime, date, where} =
-     this.params;
+    // data fields from the selected item
+    const { name, who, what, startTime, endTime, date, where, indexBack} =
+     this.props.item;
+    // checks if an endTime exists, if so, appends it to startTime
     var time = startTime;
     if (endTime != "N") { time = startTime + " - " + endTime;}
     var styles = require('./Styles');
@@ -32,9 +40,8 @@ export default class DetailsScreen extends Component {
       <Container>
         <Header>
           <Left>
-            <Button onPress={() => {
-              goBack();
-              Keyboard.dismiss();
+            <Button transparent onPress={() => {
+              this.props.goBack();
             }}>
               <Icon name='arrow-back'/>
             </Button>
@@ -42,7 +49,11 @@ export default class DetailsScreen extends Component {
           <Body>
           <Title>Event Details</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent>
+              <Icon name='heart'/>
+            </Button>
+          </Right>
         </Header>
         <ScrollView style={{backgroundColor: 'white'}}>
         <List containerStyle={{
@@ -97,16 +108,16 @@ export default class DetailsScreen extends Component {
               hideChevron
             />
           </List>
-          <MapView style={{height: 180, margin: 20 }}
+          <MapView style={{height: 180, margin: 20, marginBottom: 40 }}
               initialRegion={{ latitude: 40.347695, longitude: -74.657995,
               latitudeDelta: .01, longitudeDelta: .012 }} >
               <MapView.Marker
                 coordinate={{
-                  latitude: this.params.latitude,
-                  longitude: this.params.longitude
+                  latitude: this.props.item.latitude,
+                  longitude: this.props.item.longitude
                 }}
                 title={name}
-                description={date + " " + startTime + " @ " + where} />
+                description={date + " " + time + " @ " + where} />
             </MapView>
           </ScrollView>
      </Container>

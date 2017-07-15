@@ -3,7 +3,6 @@ import * as firebase from 'firebase';
 import {AppLoading, Font} from 'expo';
 import {LoginNav} from './Router';
 import Login from './Login';
-import {Root} from "native-base";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbdjQNZ9IpoOmc5gWAVI4Doq224_JWUg",
@@ -36,9 +35,7 @@ class App extends Component {
     }
 
     return (
-      <Root>
         <LoginNav/>
-      </Root>
     );
   }
 }

@@ -3,7 +3,7 @@ import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { StyleProvider, Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
-import { Keyboard, Alert } from 'react-native';
+import { Keyboard, Alert, BackHandler } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Geocoder from 'react-native-geocoding';
 import getTheme from './native-base-theme/components';
@@ -14,36 +14,36 @@ Geocoder.setApiKey('AIzaSyCWw2zAT2-MqdG7wP5LoCbw_BIfoFXg4l4');
 export default class EditScreen extends Component {
   constructor(props){
     super(props);
-    const {navigate} = this.props.navigation;
-    this.params = this.props.navigation.state.params;
+    this.extraSpace = 75;
     // checks if endTime or description were filled and changes them to match
     // input page
+    this.item = this.props.item;
     let endTime, endTimeColor, isEndTimeEmpty, description;
 
-    if(this.params.endTime == 'N') {
-      endTime = 'End (optional)';
+    if(this.item.endTime == 'N') {
+      endTime = 'End (optional)' + ' '.repeat(this.extraSpace);
       endTimeColor = 'dimgrey';
       isEndTimeEmpty = true;
     }
     else {
-      endTime = this.params.endTime;
+      endTime = this.item.endTime + ' '.repeat(this.extraSpace);
       endTimeColor = 'black';
       isEndTimeEmpty = false;
     }
 
-    if(this.params.what == 'N/A') {
+    if(this.item.what == 'N/A') {
       description = '';
     }
     else {
-      description = this.params.what;
+      description = this.item.what;
     }
 
     this.saved = {
-      titleInput: this.params.name,
-      hostInput: this.params.who,
-      locationInput: this.params.where,
-      dateInput: this.params.date,
-      startTimeInput: this.params.startTime,
+      titleInput: this.item.name,
+      hostInput: this.item.who,
+      locationInput: this.item.where,
+      dateInput: this.item.date + ' '.repeat(this.extraSpace),
+      startTimeInput: this.item.startTime + ' '.repeat(this.extraSpace),
       endTimeInput:  endTime,
       endTimeEmpty: isEndTimeEmpty,
       endTimeColor: endTimeColor,
@@ -54,11 +54,11 @@ export default class EditScreen extends Component {
       changed: false,
       saving: false,
       cancel: false,
-      titleInput: this.params.name,
-      hostInput: this.params.who,
-      locationInput: this.params.where,
-      dateInput: this.params.date,
-      startTimeInput: this.params.startTime,
+      titleInput: this.item.name,
+      hostInput: this.item.who,
+      locationInput: this.item.where,
+      dateInput: this.item.date + ' '.repeat(this.extraSpace),
+      startTimeInput: this.item.startTime + ' '.repeat(this.extraSpace),
       endTimeInput:  endTime,
       descriptionInput: description,
       titleError: false,
@@ -74,13 +74,21 @@ export default class EditScreen extends Component {
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
-  // takes new data from Edit.ios and Edit.android to update locally and send
-  // updates to firebase
+  // handles hardwar back button pressed on Android
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.goBack();
+      return true;
+    });
+  }
+
+  // takes new data from input and updates to firebase
   pushNewData = () => {
     this.setState({changed: false})
 
-    let oldDate = this.saved.dateInput;
+    let oldDate = this.saved.dateInput.trim();
 
+    // if user wants to continue changing even after submitting
     this.saved = {
       titleInput: this.state.titleInput,
       hostInput: this.state.hostInput,
@@ -97,7 +105,8 @@ export default class EditScreen extends Component {
     let updateData = {
        name: this.saved.titleInput,
        what: this.saved.descriptionInput,
-       startTime: this.saved.startTimeInput ,
+       startTime: this.saved.startTimeInput.trim(),
+       endTime: this.saved.endTimeInput.trim(),
        where: this.saved.locationInput,
        who: this.saved.hostInput,
      }
@@ -106,8 +115,8 @@ export default class EditScreen extends Component {
      if(this._inputChecker(this.state.descriptionInput))
      updateData.what = 'N/A';
 
-     if(!this.state.endTimeEmpty)
-     updateData.endTime = this.saved.endTimeInput;
+     if(this.state.endTimeEmpty)
+     updateData.endTime = 'N';
 
      Geocoder.getFromLocation(this.saved.locationInput + " Princeton").then(
        json => { var location = json.results[0].geometry.location;
@@ -117,11 +126,11 @@ export default class EditScreen extends Component {
          // moves event to under new date while retaining event key
          try{
          let itemsRef = firebaseApp.database().ref('items');
-         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.item.key);
 
-         if (oldDate != this.saved.dateInput) {
+         if (oldDate != this.saved.dateInput.trim()) {
            oldEventRef.remove();
-           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+           itemsRef.child(this.saved.dateInput.trim()).child(this.item.key).update(updateData);
          }
          else {
            oldEventRef.update(updateData);
@@ -131,6 +140,12 @@ export default class EditScreen extends Component {
        catch(err) {
          alert(err);
        }
+
+       Toast.show({
+           text: 'Saved!',
+           position: 'bottom',
+           duration: 2300,
+         })
        },
        error => {
          Alert.alert('', 'No Geolocation Found.');
@@ -139,11 +154,11 @@ export default class EditScreen extends Component {
 
          try{
          let itemsRef = firebaseApp.database().ref('items');
-         let oldEventRef = itemsRef.child(oldDate + '/' + this.params.key);
+         let oldEventRef = itemsRef.child(oldDate + '/' + this.item.key);
 
-         if (oldDate != this.saved.dateInput) {
+         if (oldDate != this.saved.dateInput.trim()) {
            oldEventRef.remove();
-           itemsRef.child(this.saved.dateInput).child(this.params.key).update(updateData);
+           itemsRef.child(this.saved.dateInput.trim()).child(this.item.key).update(updateData);
          }
          else {
            oldEventRef.update(updateData);
@@ -153,6 +168,12 @@ export default class EditScreen extends Component {
        catch(err) {
          alert(err);
        }
+
+       Toast.show({
+           text: 'Saved!',
+           position: 'bottom',
+           duration: 2300,
+         })
        }
      );
 }
@@ -219,46 +240,9 @@ export default class EditScreen extends Component {
 // takes date input from DateTimePicker and formats it and updates state
 _handleDateTimePicked = (date) => {
   if (this.state.dateTimeMode == 'date') {
-    let month = '';
-    switch (date.getMonth()) {
-      case 0:
-        month = "Jan";
-        break;
-      case 1:
-        month = "Feb";
-        break;
-      case 2:
-        month = "Mar";
-        break;
-      case 3:
-        month = "Apr";
-        break;
-      case 4:
-        month = "May";
-        break;
-      case 5:
-        month = "Jun";
-        break;
-      case 6:
-        month = "Jul";
-        break;
-      case 7:
-        month = "Aug";
-        break;
-      case 8:
-        month = "Sep";
-        break;
-      case 9:
-        month = "Oct";
-        break;
-      case 10:
-        month = "Nov";
-        break;
-      case 11:
-        month = "Dec";
-    }
-
-    let selectedDate = month + ' ' + date.getDate();
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let selectedDate = months[date.getMonth()] + ' ' + date.getDate();
+    selectedDate += ' '.repeat(this.extraSpace); // makes label longer
 
     this.setState({
       dateInput: selectedDate,
@@ -278,6 +262,7 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
+    time += ' '.repeat(this.extraSpace); // makes label longer
 
     if(this.state.isStartTime) {
     this.setState({
@@ -319,7 +304,7 @@ _handleDateTimePicked = (date) => {
   _delete = () => {
   try {
     let itemsRef = firebaseApp.database().ref('items');
-    let oldEventRef = itemsRef.child(this.saved.dateInput + '/' + this.params.key);
+    let oldEventRef = itemsRef.child(this.saved.dateInput.trim() + '/' + this.item.key);
     oldEventRef.remove();
 
   } catch (err) {
@@ -328,7 +313,6 @@ _handleDateTimePicked = (date) => {
 }
 
   render() {
-    const {goBack} = this.props.navigation;
     const minHeight = 55; // min height for all inputs
     const descriptionHeight = 100 // min height for description
     const descriptionLength = 100; // character limit for description
@@ -340,7 +324,7 @@ _handleDateTimePicked = (date) => {
          <Left style={{flex:1}}>
            {!this.state.changed && <Button transparent onPress={() => {
              Keyboard.dismiss();
-             goBack();
+             this.props.goBack();
            }}>
              <Icon name='arrow-back'/>
            </Button>}
@@ -370,7 +354,7 @@ _handleDateTimePicked = (date) => {
                   {text: 'Cancel', style: 'cancel'},
                   {text: 'Yes', onPress: () => {
                     this._delete();
-                    goBack();
+                    this.props.goBack();
                   }},
                 ],
                 { cancelable: false }
