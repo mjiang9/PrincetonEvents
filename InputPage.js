@@ -14,13 +14,14 @@ export default class InputScreen extends Component {
   constructor(props){
     super(props);
     this.extraSpace = 75;
+    this.extraSpaceEndTime = 50;
     this.state = {
       titleInput: '',
       hostInput: '',
       locationInput: '',
       dateInput:      'Date' + ' '.repeat(this.extraSpace),
       startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
-      endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
+      endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpaceEndTime),
       descriptionInput: '',
       titleError: false,
       hostError: false,
@@ -37,6 +38,7 @@ export default class InputScreen extends Component {
       dateEmpty: true,
       startTimeEmpty: true,
       endTimeEmpty: true,
+      disabled: false,
   }
 }
   // pushes input to firebase and stores in appropriate location
@@ -67,21 +69,7 @@ export default class InputScreen extends Component {
         data.latitude = location.lat;
         data.longitude = location.lng;
         ref.push(data);
-        this.setState({
-          titleInput: '',
-          hostInput: '',
-          locationInput: '',
-          dateInput:      'Date' + ' '.repeat(this.extraSpace),
-          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
-          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
-          descriptionInput: '',
-          startTimeColor: 'dimgrey',
-          endTimeColor: 'dimgrey',
-          dateColor: 'dimgrey',
-          dateEmpty: true,
-          startTimeEmpty: true,
-          endTimeEmpty: true,
-      });
+        this._clear();
 
         Toast.show({
           text: 'Submitted!',
@@ -93,21 +81,7 @@ export default class InputScreen extends Component {
       error => {
         Alert.alert('', 'No Geolocation Found.');
         ref.push(data);
-        this.setState({
-          titleInput: '',
-          hostInput: '',
-          locationInput: '',
-          dateInput:      'Date' + ' '.repeat(this.extraSpace),
-          startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
-          endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpace),
-          descriptionInput: '',
-          startTimeColor: 'dimgrey',
-          endTimeColor: 'dimgrey',
-          dateColor: 'dimgrey',
-          dateEmpty: true,
-          startTimeEmpty: true,
-          endTimeEmpty: true,
-      });
+        this._clear();
 
         Toast.show({
           text: 'Submitted!',
@@ -139,8 +113,10 @@ export default class InputScreen extends Component {
 
     // if all set, pushes data to server, else sends error toast
     if(!submission.titleError && !submission.hostError && !submission.dateError
-    && !submission.startTimeError && !submission.locationError)
+    && !submission.startTimeError && !submission.locationError) {
+    this.setState({disabled: true});
     this.submitData();
+  }
     else {
       Toast.show({
           text: 'Please Fill Out Required Fields',
@@ -182,11 +158,10 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
-    time += ' '.repeat(this.extraSpace); // makes label longer
 
     if(this.state.isStartTime) {
     this.setState({
-      startTimeInput: time,
+      startTimeInput: time + ' '.repeat(this.extraSpace),
       startTimeError: false,
       startTimeColor: 'black',
       startTimeEmpty: false,
@@ -194,7 +169,7 @@ _handleDateTimePicked = (date) => {
   }
     else {
       this.setState({
-        endTimeInput: time,
+        endTimeInput: time + ' '.repeat(this.extraSpaceEndTime),
         endTimeColor: 'black',
         endTimeEmpty: false,
       })
@@ -209,6 +184,26 @@ _handleDateTimePicked = (date) => {
     return (!item.trim().length);
   };
 
+  // resets fields to initial state
+  _clear = () => {
+    this.setState({
+      titleInput: '',
+      hostInput: '',
+      locationInput: '',
+      dateInput:      'Date' + ' '.repeat(this.extraSpace),
+      startTimeInput: 'Start' + ' '.repeat(this.extraSpace),
+      endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpaceEndTime),
+      descriptionInput: '',
+      startTimeColor: 'dimgrey',
+      endTimeColor: 'dimgrey',
+      dateColor: 'dimgrey',
+      dateEmpty: true,
+      startTimeEmpty: true,
+      endTimeEmpty: true,
+      disabled: false,
+  });
+}
+
   render() {
     const minHeight = 55; // min height for all normal inputs
     const descriptionHeight = 100 // min height for description
@@ -222,7 +217,7 @@ _handleDateTimePicked = (date) => {
             <Title>Add Event</Title>
            </Body>
            <Right>
-            <Button transparent onPress={() => {
+            <Button transparent disabled={this.state.disabled} onPress={() => {
                Keyboard.dismiss();
                this._submit();
              }}>
@@ -286,7 +281,7 @@ _handleDateTimePicked = (date) => {
                 editable={false}/>
             </Item>
             <Item inlineLabel>
-              <Icon name='time'/>
+             <Icon name='time'/>
              <Label style={{color: this.state.endTimeColor}} onPress={() => {
               this._showDateTimePicker('time', false)}}>
              {this.state.endTimeInput}
@@ -294,14 +289,12 @@ _handleDateTimePicked = (date) => {
               <Input
                 style={{height: minHeight}}
                 editable={false}/>
-              {!this.state.endTimeEmpty &&          // adds clear ability to endTimeInput
-                <Label style={{color: 'black'}} onPress={() => {
-                   this.setState({
-                     endTimeInput: 'End (optional)',
-                     endTimeColor: 'dimgrey',
-                     endTimeEmpty: true,
-                   })
-                 }}>Clear</Label>}
+             {!this.state.endTimeEmpty && <Icon name='close-circle' onPress={() => {
+                  this.setState({
+                    endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpaceEndTime),
+                    endTimeColor: 'dimgrey',
+                    endTimeEmpty: true,
+                })}}/>}
             </Item>
             <Item inlineLabel
               error={this.state.locationError ? true : false}>
@@ -325,6 +318,7 @@ _handleDateTimePicked = (date) => {
                 placeholder='Description (optional)'
                 placeholderTextColor='dimgrey'
                 style={{
+                  textAlignVertical: 'center',
                   height: Math.max(descriptionHeight, this.state.descriptionHeight)}} // autoresizes
                 autoCapitalize={'sentences'}
                 maxLength={descriptionLength}
