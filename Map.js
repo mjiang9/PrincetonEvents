@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import {firebaseApp} from './App';
-import TabBar from './Tab';
+import Details from './Details';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
@@ -21,7 +21,7 @@ export default class MapScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     today = new Date();
     today = months[today.getMonth()] + " " + today.getDate();
     var items = [];
@@ -79,7 +79,6 @@ export default class MapScreen extends Component {
   };
 
   render() {
-    var styles = require('./Styles');
     if(!this.state.viewDetails) {
     return (
       <StyleProvider style={getTheme(material)}>

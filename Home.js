@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
-import TabBar from './Tab';
 import Details from './Details';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 import getTheme from './native-base-theme/components';

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import TabBar from './Tab';
 import {firebaseApp} from './App';
 import { StyleProvider, Container, Header, Title, Content, Button,
   Left, Right, Body, Icon, Form, Item, Input, Text, Label, Toast} from 'native-base';
