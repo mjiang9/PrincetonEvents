@@ -79,7 +79,6 @@ export default class MapScreen extends Component {
   };
 
   render() {
-    var styles = require('./Styles');
     if(!this.state.viewDetails) {
     return (
       <StyleProvider style={getTheme(material)}>

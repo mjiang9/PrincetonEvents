@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Keyboard, ScrollView, BackHandler } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import { StyleProvider, Container, Header, Title, Content, Footer,
