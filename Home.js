@@ -7,7 +7,6 @@ import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Bu
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 
-
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);

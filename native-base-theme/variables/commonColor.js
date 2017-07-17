@@ -109,6 +109,7 @@ export default {
 
   // Color
   brandPrimary: "#f9a56a",
+  brandPrimary: "#2874F0",
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -120,7 +121,7 @@ export default {
   fontSizeBase: 15,
 
   get fontSizeH1() {
-    return this.fontSizeBase * 1.8;s
+    return this.fontSizeBase * 1.8;
   },
   get fontSizeH2() {
     return this.fontSizeBase * 1.6;
