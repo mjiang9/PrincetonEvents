@@ -35,7 +35,7 @@ loginContainer:{
   paddingTop: 150,
   paddingLeft: 15,
   paddingRight: 15,
-
+  justifyContent: 'center',
 },
 loginInput:{
   padding:5,

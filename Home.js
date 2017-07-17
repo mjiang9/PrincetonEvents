@@ -3,7 +3,7 @@ import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
 import Details from './Details';
-import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
+import {StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 
@@ -90,17 +90,32 @@ export default class HomeScreen extends Component {
           "longitude": child.val().longitude
         });
       });
+      children.sort((a, b) => { // sort children by time
+        timeA = this.time(a.startTime);
+        timeB = this.time(b.startTime);
+        return new Date('2017/01/01 ' + timeA) - new Date('2017/01/01 ' + timeB);
+      });
       items.push({
         data: children,
         key: parent.key.toUpperCase(),
       })
       });
-      let sorted = items.sort((a, b) => {
-        if (parseInt(a.key.substring(4)) < parseInt(b.key.substring(4))) {
-          return -1;
-        } else {
-          return 1;
+      let sorted = items.sort((a, b) => { // sort parents by date
+        var month = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
+                      "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12};
+        month1 = month[a.key.substring(0, 3)];
+        month2 = month[b.key.substring(0, 3)];
+        if (month1 - month2 > 10) { return -1; } // December, January
+        else if (month1 - month2 < -10){ return 1; } // January, December
+        else if (month1 < month2) { return -1; }
+        else if (month1 == month2) {
+          if (parseInt(a.key.substring(4)) < parseInt(b.key.substring(4))) {
+            return -1;
+          } else {
+            return 1;
+          }
         }
+        else { return 1; }
       });
       this.setState({
         dataSource: items,
@@ -108,6 +123,15 @@ export default class HomeScreen extends Component {
         loading: false
       });
     });
+  }
+  // transform time into a format that javascript can easily sort
+  time(time) {
+    var newTime = time;
+    if (time.charAt(1) == ':') newTime = '0' + time;
+    newTime = newTime.substring(0, 6);
+    if (time.charAt(6) == 'a') newTime = newTime + "am";
+    else newTime = newTime + "pm";
+    return newTime;
   }
 
   // autoupdates on new event
