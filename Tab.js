@@ -3,7 +3,6 @@ import MyEvents from './MyEvents'
 import Map from './Map';
 import Input from './InputPage';
 import {Root} from "native-base"; // allows for toasts
-
 import React, { Component } from 'react';
 import {
   View,
@@ -84,9 +83,8 @@ export default class MyComponent extends Component {
                 <Icon active={this.state.inputActive} name='create' />
                 <Text>Input</Text>
               </Button>
-              <Button vertical active={this.state.myEventsPressed} onPress={() => {
-                this.props.navigate('MyEvents')}}>
-                <Icon active={this.state.myEventsPressed} name='person' />
+              <Button vertical active={this.state.myEventsActive} onPress={() => {this.changeScreen(3)}}>
+                <Icon active={this.state.myEventsActive} name='person' />
                 <Text style={{fontSize: 10}}>My Events</Text>
               </Button>
             </FooterTab>

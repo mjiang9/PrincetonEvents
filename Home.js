@@ -2,15 +2,11 @@ import React, {Component} from 'react';
 import {ActivityIndicator, SectionList, Text, Keyboard} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {firebaseApp} from './App';
-import TabBar from './Tab';
-<<<<<<< HEAD
 import Details from './Details';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
-=======
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Item, Input, Label} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
->>>>>>> c29499c7e47af56dd2c56323450764d0f09fb03c
+
 
 export default class HomeScreen extends Component {
   constructor(props) {

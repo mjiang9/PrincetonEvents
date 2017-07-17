@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {ActivityIndicator, FlatList} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
-import TabBar from './Tab';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import Edit from './EditPage';
+
 export default class MyEventsScreen extends Component {
   constructor(props) {
     super(props);
