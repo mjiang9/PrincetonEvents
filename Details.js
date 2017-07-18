@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Keyboard, ScrollView, BackHandler } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import MapView from 'react-native-maps';
-import { StyleProvider, Container, Header, Title, Content, Footer,
+import { StyleProvider, Container, Header, Title, Content, Footer, Toast,
   FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
+import {firebaseApp} from './App';
 
 export default class DetailsScreen extends Component {
   constructor(props) {
@@ -27,9 +28,23 @@ componentDidMount() {
   });
 }
 
+save(date, key) {
+  uid = firebaseApp.auth().currentUser.uid;
+  userRef = firebaseApp.database().ref('users').child(uid).child('saved_events');
+  data = {
+    key,
+  }
+  userRef.child(date).push(data);
+  Toast.show({
+      text: 'Event saved!',
+      position: 'bottom',
+      duration: 2300,
+  })
+}
+
   render() {
     // data fields from the selected item
-    const { name, who, what, startTime, endTime, date, where, indexBack} =
+    const { key, name, who, what, startTime, endTime, date, where, indexBack} =
      this.props.item;
     // checks if an endTime exists, if so, appends it to startTime
     var time = startTime;
@@ -50,7 +65,9 @@ componentDidMount() {
           <Title>Event Details</Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={() => {
+              this.save(date, key);
+            }}>
               <Icon name='heart'/>
             </Button>
           </Right>
