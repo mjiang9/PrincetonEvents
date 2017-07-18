@@ -39,6 +39,9 @@ export default class InputScreen extends Component {
       startTimeEmpty: true,
       endTimeEmpty: true,
       disabled: false,
+      userEmail: null,
+      uid: null,
+      userName: null,
   }
 }
   // pushes input to firebase and stores in appropriate location
@@ -50,6 +53,7 @@ export default class InputScreen extends Component {
       endTime: this.state.endTimeInput.trim(),
       where: this.state.locationInput,
       who: this.state.hostInput,
+      uid: this.state.uid,
       latitude: 0, // defaults
       longitude: 0
     }
@@ -63,12 +67,14 @@ export default class InputScreen extends Component {
     // reference to new event
     // gets location information and then adds event
     let ref = firebaseApp.database().ref('items').child(this.state.dateInput.trim());
+    let userRef = firebaseApp.database().ref('users').child(this.state.uid).child('my_events').child(this.state.dateInput.trim());
 
     Geocoder.getFromLocation(this.state.locationInput + " Princeton").then(
       json => { var location = json.results[0].geometry.location;
         data.latitude = location.lat;
         data.longitude = location.lng;
-        ref.push(data);
+        let newKey = ref.push(data).key;
+        userRef.push({key: newKey});
         this._clear();
 
         Toast.show({
@@ -80,7 +86,8 @@ export default class InputScreen extends Component {
       },
       error => {
         Alert.alert('', 'No Geolocation Found.');
-        ref.push(data);
+        let newKey = ref.push(data).key;
+        userRef.push({key: newKey});
         this._clear();
 
         Toast.show({
@@ -204,6 +211,18 @@ _handleDateTimePicked = (date) => {
   });
 }
 
+  // gets user information
+  componentDidMount() {
+   firebaseApp.auth().onAuthStateChanged((user) => {
+    if (user) {
+      this.setState({userEmail: user.email, uid: user.uid});
+    } else {
+      // No user is signed in.
+      console.log('no user')
+     }
+   });
+  }
+
   render() {
     const minHeight = 55; // min height for all normal inputs
     const descriptionHeight = 100 // min height for description
@@ -318,7 +337,8 @@ _handleDateTimePicked = (date) => {
                 placeholder='Description (optional)'
                 placeholderTextColor='dimgrey'
                 style={{
-                  textAlignVertical: 'center',
+                  textAlignVertical: 'top',
+                  paddingTop: 15,
                   height: Math.max(descriptionHeight, this.state.descriptionHeight)}} // autoresizes
                 autoCapitalize={'sentences'}
                 maxLength={descriptionLength}
