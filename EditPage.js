@@ -14,18 +14,19 @@ export default class EditScreen extends Component {
   constructor(props){
     super(props);
     this.extraSpace = 75;
+    this.extraSpaceEndTime = 50;
     // checks if endTime or description were filled and changes them to match
     // input page
     this.item = this.props.item;
     let endTime, endTimeColor, isEndTimeEmpty, description;
 
     if(this.item.endTime == 'N') {
-      endTime = 'End (optional)' + ' '.repeat(this.extraSpace);
+      endTime = 'End (optional)' + ' '.repeat(this.extraSpaceEndTime);
       endTimeColor = 'dimgrey';
       isEndTimeEmpty = true;
     }
     else {
-      endTime = this.item.endTime + ' '.repeat(this.extraSpace);
+      endTime = this.item.endTime + ' '.repeat(this.extraSpaceEndTime);
       endTimeColor = 'black';
       isEndTimeEmpty = false;
     }
@@ -135,16 +136,15 @@ export default class EditScreen extends Component {
            oldEventRef.update(updateData);
          }
 
+         Toast.show({
+             text: 'Saved!',
+             position: 'bottom',
+             duration: 2300,
+           })
        }
        catch(err) {
          alert(err);
-       }
-
-       Toast.show({
-           text: 'Saved!',
-           position: 'bottom',
-           duration: 2300,
-         })
+         }
        },
        error => {
          Alert.alert('', 'No Geolocation Found.');
@@ -163,16 +163,15 @@ export default class EditScreen extends Component {
            oldEventRef.update(updateData);
          }
 
+         Toast.show({
+             text: 'Saved!',
+             position: 'bottom',
+             duration: 2300,
+           })
        }
        catch(err) {
          alert(err);
-       }
-
-       Toast.show({
-           text: 'Saved!',
-           position: 'bottom',
-           duration: 2300,
-         })
+         }
        }
      );
 }
@@ -261,14 +260,15 @@ _handleDateTimePicked = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let time = hours + ':' + minutes + ' ' + ampm;
-    time += ' '.repeat(this.extraSpace); // makes label longer
+    let startTime = time + ' '.repeat(this.extraSpace); // makes label longer
+    let endTime = time +  ' '.repeat(this.extraSpaceEndTime);
 
     if(this.state.isStartTime) {
     this.setState({
-      startTimeInput: time,
+      startTimeInput: startTime,
     })
 
-    if(time !== this.saved.startTimeInput) {
+    if(startTime !== this.saved.startTimeInput) {
       this.setState({changed: true})
     }
     else {
@@ -277,12 +277,12 @@ _handleDateTimePicked = (date) => {
   }
     else {
       this.setState({
-        endTimeInput: time,
+        endTimeInput: endTime,
         endTimeColor: 'black',
         endTimeEmpty: false,
       })
 
-      if(time !== this.saved.endTimeInput) {
+      if(endTime !== this.saved.endTimeInput) {
         this.setState({changed: true})
       }
       else {
@@ -440,21 +440,20 @@ _handleDateTimePicked = (date) => {
              <Input
                style={{height: minHeight}}
                editable={false}/>
-             {!this.state.endTimeEmpty &&             // adds clear ability to endTimeInput
-                <Label style={{color: 'black'}} onPress={() => {
+            {!this.state.endTimeEmpty && <Icon name='close-circle' onPress={() => {
                   this.setState({
-                    endTimeInput: 'End (optional)',
+                    endTimeInput: 'End (optional)' + ' '.repeat(this.extraSpaceEndTime),
                     endTimeColor: 'dimgrey',
                     endTimeEmpty: true,
-                  })
+                })
 
-                  if(!this.saved.endTimeEmpty ) {
-                    this.setState({changed: true})
-                  }
-                  else {
-                    this.setState({changed: false})
-                  }
-                }}>Clear</Label>}
+                if(!this.saved.endTimeEmpty ) {
+                  this.setState({changed: true})
+                }
+                else {
+                  this.setState({changed: false})
+                }
+              }}/>}
            </Item>
            <Item inlineLabel
              error={this.state.locationError ? true : false}>

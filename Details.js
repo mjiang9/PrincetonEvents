@@ -12,7 +12,7 @@ export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
     // if no valid location, does not display Marker
-    if(this.props.item.latitude == 0 && this.props.item.longitude == 0) {
+    if(this.props.item.latitude === 0 && this.props.item.longitude === 0) {
       this.state = {showMarker: false}
     }
     else {
@@ -48,7 +48,7 @@ save(date, key) {
      this.props.item;
     // checks if an endTime exists, if so, appends it to startTime
     var time = startTime;
-    if (endTime != "N") { time = startTime + " - " + endTime;}
+    if (endTime !== "N") { time = startTime + " - " + endTime;}
     var styles = require('./Styles');
     return (
       <StyleProvider style={getTheme(material)}>

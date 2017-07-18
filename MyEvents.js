@@ -15,6 +15,9 @@ export default class MyEventsScreen extends Component {
       loading: true,
       viewEdit: false,
       curItem: null,
+      userEmail: null,
+      uid: null,
+      userName: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
     console.ignoredYellowBox = ['Setting a timer'];
@@ -62,8 +65,16 @@ export default class MyEventsScreen extends Component {
 
   // autoupdates on new event
   componentDidMount() {
-    this.listenForItems(this.itemsRef);
-  }
+   this.listenForItems(this.itemsRef);
+   firebaseApp.auth().onAuthStateChanged((user) => {
+    if (user) {
+      this.setState({userEmail: user.email, uid: user.uid});
+    } else {
+      // No user is signed in.
+      console.log('no user')
+    }
+  });
+ }
 
   // removes listener
   componentWillUnmount() {
@@ -79,7 +90,7 @@ export default class MyEventsScreen extends Component {
       <Container>
         <Header>
           <Body>
-          <Title>My Events</Title>
+          <Title>{this.state.userEmail}</Title>
           </Body>
         </Header>
         <Content style={{backgroundColor: 'white'}}>
