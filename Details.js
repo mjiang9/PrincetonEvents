@@ -11,13 +11,22 @@ import {firebaseApp} from './App';
 export default class DetailsScreen extends Component {
   constructor(props) {
     super(props);
+    let showMarker = true;
+
     // if no valid location, does not display Marker
     if(this.props.item.latitude === 0 && this.props.item.longitude === 0) {
-      this.state = {showMarker: false}
+      showMarker = false;
     }
-    else {
-      this.state = {showMarker: true}
+
+    this.extraKey; // key created by firebase for when pushing new data
+
+    this.state = {
+      heartColor: 'white',
+      savedEvent: false,
+      showMarker: showMarker,
     }
+
+    console.ignoredYellowBox = ['Setting a timer'];
   }
 
 // handles hardwar back button pressed on Android
@@ -31,15 +40,25 @@ componentDidMount() {
 save(date, key) {
   uid = firebaseApp.auth().currentUser.uid;
   userRef = firebaseApp.database().ref('users').child(uid).child('saved_events');
-  data = {
-    key,
+
+  if(this.state.savedEvent) {
+    userRef.child(date).child(this.extraKey).remove();
+    this.setState({heartColor: 'white', savedEvent: false});
+    Toast.show({
+        text: 'Event Unsaved!',
+        position: 'bottom',
+        duration: 1800,
+    })
   }
-  userRef.child(date).push(data);
-  Toast.show({
-      text: 'Event saved!',
-      position: 'bottom',
-      duration: 2300,
-  })
+  else {
+    this.extraKey = userRef.child(date).push({key}).key;
+    this.setState({heartColor: 'red', savedEvent: true});
+    Toast.show({
+        text: 'Event Saved!',
+        position: 'bottom',
+        duration: 1800,
+    })
+  }
 }
 
   render() {
@@ -68,7 +87,7 @@ save(date, key) {
             <Button transparent onPress={() => {
               this.save(date, key);
             }}>
-              <Icon name='heart'/>
+              <Icon style={{color: this.state.heartColor}} name='heart'/>
             </Button>
           </Right>
         </Header>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList, BackHandler} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
@@ -20,6 +20,8 @@ export default class MyEventsScreen extends Component {
       userName: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
+    let uid = firebaseApp.auth().currentUser.uid;
+    this.userRef = firebaseApp.database().ref('users').child(uid).child("my_events");
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
@@ -33,14 +35,20 @@ export default class MyEventsScreen extends Component {
 
   goBack = () => {
     this.setState({
-      viewEdit: false
+      viewEdit: false,
     })
   }
 
-  listenForItems(itemsRef) {
-    uid = firebaseApp.auth().currentUser.uid;
-    userRef = firebaseApp.database().ref('users').child(uid);
-    userRef.child("my_events").once('value').then((snap) => {
+  // handles hardwar back button pressed on Android
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.goBack();
+      return true;
+    });
+  }
+
+  listenForItems = (itemsRef, userRef) => {
+    userRef.once('value').then((snap) => {
       var items = [];
       snap.forEach((parent) => {
         var children = [];
@@ -90,31 +98,24 @@ export default class MyEventsScreen extends Component {
 
   // autoupdates on new event
   componentDidMount() {
-   this.listenForItems(this.itemsRef);
-   firebaseApp.auth().onAuthStateChanged((user) => {
-    if (user) {
-      this.setState({userEmail: user.email, uid: user.uid});
-    } else {
-      // No user is signed in.
-      console.log('no user')
-    }
-  });
+   this.listenForItems(this.itemsRef, this.userRef);
  }
 
- componentWillUnmount() {
-     this.itemsRef.off();
-   }
 
   render() {
     var styles = require('./Styles');
     if(!this.state.viewEdit) {
-    const {navigate} = this.props.navigation;
     return (
       <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.goBack()}>
+              <Icon name='arrow-back'/>
+            </Button>
+          </Left>
           <Body>
-          <Title>{this.state.userEmail}</Title>
+          <Title>My Events</Title>
           </Body>
         </Header>
         <Content style={{backgroundColor: 'white'}}>
