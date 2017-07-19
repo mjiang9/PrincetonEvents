@@ -1,33 +1,26 @@
 import Home from './Home';
-import MyEvents from './MyEvents'
+import MyProfile from './MyProfile'
 import Map from './Map';
 import Input from './InputPage';
 import {Root} from "native-base"; // allows for toasts
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  BackHandler,
-} from 'react-native';
+import { BackHandler } from 'react-native';
 import {StyleProvider, Container, Content, Footer, FooterTab, Button,
   Icon, Text} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 
-export default class MyComponent extends Component {
+export default class Tabs extends Component {
   constructor(props) {
     super(props);
-    let index = 0;
-    if(typeof this.props.navigation.state.params !== 'undefined') {
-      index = this.props.navigation.state.params.indexBack;
-    }
     this.state = {
-      index: index,
-      homeActive: index === 0,
-      mapActive: index === 1,
-      inputActive: index === 2,
-      myEventsActive: index === 3,
+      index: 0,
+      homeActive: true,
+      mapActive: false,
+      inputActive: false,
+      myProfileActive: false,
     };
+    console.ignoredYellowBox = ['Setting a timer'];
   }
 
   changeScreen = (index) => {
@@ -36,7 +29,7 @@ export default class MyComponent extends Component {
         homeActive: index === 0,
         mapActive: index === 1,
         inputActive: index === 2,
-        myEventsActive: index === 3,
+        myProfileActive: index === 3,
       })
    }
 
@@ -60,7 +53,7 @@ export default class MyComponent extends Component {
         AppComponent = Input;
      }
      else {
-        AppComponent = MyEvents;
+        AppComponent = MyProfile;
      }
 
     return (
@@ -83,8 +76,8 @@ export default class MyComponent extends Component {
                 <Icon active={this.state.inputActive} name='create' />
                 <Text>Input</Text>
               </Button>
-              <Button vertical active={this.state.myEventsActive} onPress={() => {this.changeScreen(3)}}>
-                <Icon active={this.state.myEventsActive} name='person' />
+              <Button vertical active={this.state.myProfileActive} onPress={() => {this.changeScreen(3)}}>
+                <Icon active={this.state.myProfileActive} name='person' />
                 <Text style={{fontSize: 10}}>My Events</Text>
               </Button>
             </FooterTab>

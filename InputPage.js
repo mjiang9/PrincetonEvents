@@ -43,6 +43,8 @@ export default class InputScreen extends Component {
       uid: null,
       userName: null,
   }
+
+  console.ignoredYellowBox = ['Setting a timer'];
 }
   // pushes input to firebase and stores in appropriate location
   submitData = () => {

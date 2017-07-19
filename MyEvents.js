@@ -84,13 +84,17 @@ export default class MyEventsScreen extends Component {
   render() {
     var styles = require('./Styles');
     if(!this.state.viewEdit) {
-    const {navigate} = this.props.navigation;
     return (
       <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
+          <Left>
+            <Button transparent onPress={this.props.goBack()}>
+              <Icon name='arrow-back'/>
+            </Button>
+          </Left>
           <Body>
-          <Title>{this.state.userEmail}</Title>
+          <Title>My Events</Title>
           </Body>
         </Header>
         <Content style={{backgroundColor: 'white'}}>

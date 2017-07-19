@@ -18,6 +18,8 @@ export default class DetailsScreen extends Component {
     else {
       this.state = {showMarker: true}
     }
+
+    console.ignoredYellowBox = ['Setting a timer'];
   }
 
 // handles hardwar back button pressed on Android
