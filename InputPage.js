@@ -75,8 +75,8 @@ export default class InputScreen extends Component {
       json => { var location = json.results[0].geometry.location;
         data.latitude = location.lat;
         data.longitude = location.lng;
-        let newKey = ref.push(data).key;
-        userRef.push({key: newKey});
+        let key = ref.push(data).key;
+        userRef.push({key});
         this._clear();
 
         Toast.show({
@@ -88,8 +88,8 @@ export default class InputScreen extends Component {
       },
       error => {
         Alert.alert('', 'No Geolocation Found.');
-        let newKey = ref.push(data).key;
-        userRef.push({key: newKey});
+        let key = ref.push(data).key;
+        userRef.push({key});
         this._clear();
 
         Toast.show({

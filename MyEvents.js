@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList, BackHandler} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
@@ -37,6 +37,14 @@ export default class MyEventsScreen extends Component {
     this.setState({
       viewEdit: false,
     })
+  }
+
+  // handles hardwar back button pressed on Android
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.goBack();
+      return true;
+    });
   }
 
   listenForItems = (itemsRef, userRef) => {
