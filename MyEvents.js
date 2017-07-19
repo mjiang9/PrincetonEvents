@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {ActivityIndicator, FlatList, BackHandler} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
-import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import Edit from './EditPage';
@@ -33,20 +33,26 @@ export default class MyEventsScreen extends Component {
     })
   };
 
+  // takes the edit page back to the my events page
   goBack = () => {
     this.setState({
       viewEdit: false,
+      loading: true,
     })
+    this.listenForItems(this.itemsRef, this.userRef);
   }
 
-  // handles hardwar back button pressed on Android
+  // handles hardware back button pressed on Android
+  // gets events from users' my_events section
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
       this.props.goBack();
       return true;
     });
+    this.listenForItems(this.itemsRef, this.userRef);
   }
 
+  // grabs appropriate events
   listenForItems = (itemsRef, userRef) => {
     userRef.once('value').then((snap) => {
       var items = [];
@@ -78,7 +84,7 @@ export default class MyEventsScreen extends Component {
               });
             } else {
               let eventRef = userRef.child("my_events").child(item.date);
-              eventRef.on('value', (snap) => {
+              eventRef.once('value', (snap) => {
                 snap.forEach((child) => {
                   if (child.val().key == datum) {
                     eventRef.child(child.key).remove();
@@ -96,12 +102,6 @@ export default class MyEventsScreen extends Component {
     });
   }
 
-  // autoupdates on new event
-  componentDidMount() {
-   this.listenForItems(this.itemsRef, this.userRef);
- }
-
-
   render() {
     var styles = require('./Styles');
     if(!this.state.viewEdit) {
@@ -117,6 +117,7 @@ export default class MyEventsScreen extends Component {
           <Body>
           <Title>My Events</Title>
           </Body>
+          <Right/>
         </Header>
         <Content style={{backgroundColor: 'white'}}>
           {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}

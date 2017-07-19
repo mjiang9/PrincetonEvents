@@ -7,9 +7,10 @@ import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import MyEvents from './MyEvents';
 import Settings from './Settings';
+import MySavedEvents from './SavedEvents';
 
 
-export default class MyEventsScreen extends Component {
+export default class MyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,7 +46,7 @@ export default class MyEventsScreen extends Component {
      if (this.state.index === 1) {
         AppComponent = MyEvents;
      } else if (this.state.index === 2) {
-        AppComponent = MyEvents;  // placeholder for saved events
+        AppComponent = MySavedEvents;  // placeholder for saved events
      } else if (this.state.index === 3) {
         AppComponent = Settings;  // placeholder for update profile
      } else if (this.state.index === 4) {

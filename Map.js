@@ -42,6 +42,7 @@ export default class MapScreen extends Component {
           items.push({
             "name": child.val().name,
             "startTime": child.val().startTime,
+            "endTime": child.val().endTime,
             "date": today,
             "who": child.val().who,
             "where": child.val().where,
