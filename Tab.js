@@ -76,8 +76,8 @@ export default class Tabs extends Component {
                 <Icon active={this.state.inputActive} name='create' />
                 <Text>Input</Text>
               </Button>
-              <Button vertical active={this.state.myEventsActive} onPress={() => {this.changeScreen(3)}}>
-                <Icon active={this.state.myEventsActive} name='person' />
+              <Button vertical active={this.state.myProfileActive} onPress={() => {this.changeScreen(3)}}>
+                <Icon active={this.state.myProfileActive} name='person' />
                 <Text>Profile</Text>
               </Button>
             </FooterTab>

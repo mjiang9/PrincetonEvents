@@ -20,6 +20,8 @@ export default class MyEventsScreen extends Component {
       userName: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
+    let uid = firebaseApp.auth().currentUser.uid;
+    this.userRef = firebaseApp.database().ref('users').child(uid).child("my_events");
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
@@ -33,14 +35,12 @@ export default class MyEventsScreen extends Component {
 
   goBack = () => {
     this.setState({
-      viewEdit: false
+      viewEdit: false,
     })
   }
 
-  listenForItems(itemsRef) {
-    uid = firebaseApp.auth().currentUser.uid;
-    userRef = firebaseApp.database().ref('users').child(uid);
-    userRef.child("my_events").on('value', (snap) => {
+  listenForItems = (itemsRef, userRef) => {
+    userRef.on('value', (snap) => {
       var items = [];
       snap.forEach((parent) => {
         var children = [];
@@ -56,7 +56,7 @@ export default class MyEventsScreen extends Component {
       items.forEach((item) => {
         ref = itemsRef.child(item.date);
         item.data.forEach((datum) => {
-          child = ref.child(datum).on('value', (snap) => {
+          child = ref.child(datum).once('value', (snap) => {
             if (snap.val() != null) {
               events.push({
                 "key": snap.key,
@@ -81,16 +81,12 @@ export default class MyEventsScreen extends Component {
 
   // autoupdates on new event
   componentDidMount() {
-   this.setState({isMounted: true});
-   this.listenForItems(this.itemsRef);
-   firebaseApp.auth().onAuthStateChanged((user) => {
-    if (user) {
-      this.setState({userEmail: user.email, uid: user.uid});
-    } else {
-      // No user is signed in.
-      console.log('no user')
-    }
-  });
+   this.listenForItems(this.itemsRef, this.userRef);
+ }
+
+ // removes listener
+ componentWillUnmount() {
+   this.userRef.off();
  }
 
   render() {
@@ -101,7 +97,7 @@ export default class MyEventsScreen extends Component {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={this.props.goBack()}>
+            <Button transparent onPress={() => this.props.goBack()}>
               <Icon name='arrow-back'/>
             </Button>
           </Left>
