@@ -110,15 +110,19 @@ export default class SavedEventsScreen extends Component {
   render() {
     var styles = require('./Styles');
     if(!this.state.viewDetails) {
-    const {navigate} = this.props.navigation;
     return (
       <StyleProvider style={getTheme(material)}>
       <Container>
-        <Header>
-          <Body>
-          <Title>{this.state.userEmail}</Title>
-          </Body>
-        </Header>
+      <Header>
+        <Left>
+          <Button transparent onPress={() => this.props.goBack()}>
+            <Icon name='arrow-back'/>
+          </Button>
+        </Left>
+        <Body>
+        <Title>Saved Events</Title>
+        </Body>
+      </Header>
         <Content style={{backgroundColor: 'white'}}>
           {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
             {!this.state.loading && <FlatList data={this.state.data} renderItem={({item}) =>

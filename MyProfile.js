@@ -6,6 +6,7 @@ import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab,
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import MyEvents from './MyEvents';
+import SavedEvents from './SavedEvents';
 import Settings from './Settings';
 
 
@@ -45,7 +46,7 @@ export default class MyEventsScreen extends Component {
      if (this.state.index === 1) {
         AppComponent = MyEvents;
      } else if (this.state.index === 2) {
-        AppComponent = MyEvents;  // placeholder for saved events
+        AppComponent = SavedEvents;
      } else if (this.state.index === 3) {
         AppComponent = Settings;  // placeholder for update profile
      } else if (this.state.index === 4) {
