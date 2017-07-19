@@ -40,7 +40,7 @@ export default class MyEventsScreen extends Component {
   listenForItems(itemsRef) {
     uid = firebaseApp.auth().currentUser.uid;
     userRef = firebaseApp.database().ref('users').child(uid);
-    userRef.child("my_events").on('value', (snap) => {
+    userRef.child("my_events").once('value').then((snap) => {
       var items = [];
       snap.forEach((parent) => {
         var children = [];
@@ -56,7 +56,7 @@ export default class MyEventsScreen extends Component {
       items.forEach((item) => {
         ref = itemsRef.child(item.date);
         item.data.forEach((datum) => {
-          child = ref.child(datum).on('value', (snap) => {
+          child = ref.child(datum).once('value').then((snap) => {
             if (snap.val() != null) {
               events.push({
                 "key": snap.key,
@@ -67,6 +67,15 @@ export default class MyEventsScreen extends Component {
                 "who": snap.val().who,
                 "where": snap.val().where,
                 "what": snap.val().what
+              });
+            } else {
+              let eventRef = userRef.child("my_events").child(item.date);
+              eventRef.on('value', (snap) => {
+                snap.forEach((child) => {
+                  if (child.val().key == datum) {
+                    eventRef.child(child.key).remove();
+                  }
+                })
               });
             }
         });
@@ -81,7 +90,6 @@ export default class MyEventsScreen extends Component {
 
   // autoupdates on new event
   componentDidMount() {
-   this.setState({isMounted: true});
    this.listenForItems(this.itemsRef);
    firebaseApp.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -92,6 +100,10 @@ export default class MyEventsScreen extends Component {
     }
   });
  }
+
+ componentWillUnmount() {
+     this.itemsRef.off();
+   }
 
   render() {
     var styles = require('./Styles');
