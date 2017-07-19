@@ -45,6 +45,20 @@ def deleteOld():
         else:
             dates.add(item)
 
+    users = firebase.get('/users', None)
+    for user in users:
+        my_events = firebase.get('/users/' + user, 'my_events')
+        if (my_events != None):
+            for event in my_events:
+                if (timeCompare(event, today) < 0):
+                    firebase.delete('/users/' + user + '/my_events', event)
+        saved_events = firebase.get('/users/' + user, 'saved_events')
+        if (saved_events != None):
+            for event in saved_events:
+                if (timeCompare(event, today) < 0):
+                    firebase.delete('/users/' + user + '/saved_events', event)
+
+
 def getNew(site):
     r = requests.get(site)
     soup = BeautifulSoup(r.content, "html.parser")
