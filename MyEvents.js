@@ -38,26 +38,42 @@ export default class MyEventsScreen extends Component {
   }
 
   listenForItems(itemsRef) {
-    itemsRef.on('value', (snap) => {
-      // get children as an array
+    uid = firebaseApp.auth().currentUser.uid;
+    userRef = firebaseApp.database().ref('users').child(uid);
+    userRef.child("my_events").on('value', (snap) => {
       var items = [];
       snap.forEach((parent) => {
+        var children = [];
         parent.forEach((child) => {
+          children.push(child.val().key);
+        });
         items.push({
-          "key": child.key,
-          "name": child.val().name,
-          "startTime": child.val().startTime,
-          "endTime": child.val().endTime,
-          "date": parent.key,
-          "who": child.val().who,
-          "where": child.val().where,
-          "what": child.val().what
+          date: parent.key,
+          data: children,
+        })
+      });
+      var events = [];
+      items.forEach((item) => {
+        ref = itemsRef.child(item.date);
+        item.data.forEach((datum) => {
+          child = ref.child(datum).on('value', (snap) => {
+            if (snap.val() != null) {
+              events.push({
+                "key": snap.key,
+                "name": snap.val().name,
+                "startTime": snap.val().startTime,
+                "endTime": snap.val().endTime,
+                "date": item.date,
+                "who": snap.val().who,
+                "where": snap.val().where,
+                "what": snap.val().what
+              });
+            }
+        });
         });
       });
-
-      });
       this.setState({
-        data: items,
+        data: events,
         loading: false
       });
     });
@@ -65,6 +81,7 @@ export default class MyEventsScreen extends Component {
 
   // autoupdates on new event
   componentDidMount() {
+   this.setState({isMounted: true});
    this.listenForItems(this.itemsRef);
    firebaseApp.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -75,11 +92,6 @@ export default class MyEventsScreen extends Component {
     }
   });
  }
-
-  // removes listener
-  componentWillUnmount() {
-    this.itemsRef.off();
-  }
 
   render() {
     var styles = require('./Styles');

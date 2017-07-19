@@ -85,7 +85,7 @@ export default class MyComponent extends Component {
               </Button>
               <Button vertical active={this.state.myEventsActive} onPress={() => {this.changeScreen(3)}}>
                 <Icon active={this.state.myEventsActive} name='person' />
-                <Text style={{fontSize: 10}}>My Events</Text>
+                <Text>Profile</Text>
               </Button>
             </FooterTab>
           </Footer>
