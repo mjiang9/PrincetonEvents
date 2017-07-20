@@ -86,17 +86,6 @@ export default class MyProfile extends Component {
                    <Icon name="arrow-forward" />
                  </Right>
                </ListItem>
-               <ListItem icon onPress={() => this.setState({index: 3})}>
-                 <Left>
-                   <Icon name="person" />
-                 </Left>
-                 <Body>
-                   <Text>Update Profile</Text>
-                 </Body>
-                 <Right>
-                   <Icon name="arrow-forward" />
-                 </Right>
-               </ListItem>
                <ListItem icon onPress={() => this.setState({index: 4})}>
                  <Left>
                    <Icon name="settings" />
@@ -115,7 +104,7 @@ export default class MyProfile extends Component {
        );
      } else {
        return (
-         <AppComponent goBack={this.goBack}/>
+         <AppComponent goBack={this.goBack} navigation={this.props.navigation}/>
        );
      }
   }
