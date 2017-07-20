@@ -6,11 +6,11 @@ import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab,
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import MyEvents from './MyEvents';
-import SavedEvents from './SavedEvents';
 import Settings from './Settings';
+import SavedEvents from './SavedEvents';
 
 
-export default class MyEventsScreen extends Component {
+export default class MyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,5 +118,5 @@ export default class MyEventsScreen extends Component {
          <AppComponent goBack={this.goBack}/>
        );
      }
- }
+  }
 }

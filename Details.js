@@ -20,11 +20,20 @@ export default class DetailsScreen extends Component {
 
     this.extraKey; // key created by firebase for when pushing new data
 
+    if(this.props.isSaved) {
+    this.state = {
+      heartColor: 'red',
+      savedEvent: true,
+      showMarker: showMarker,
+    }
+  }
+  else {
     this.state = {
       heartColor: 'white',
       savedEvent: false,
       showMarker: showMarker,
     }
+  }
 
     let uid = firebaseApp.auth().currentUser.uid;
     this.userRef = firebaseApp.database().ref('users').child(uid).child("saved_events");
@@ -38,7 +47,6 @@ componentDidMount() {
     this.props.goBack();
     return true;
   });
-  this.listenForItems(this.userRef);
 }
 
 save(date, key) {
@@ -68,19 +76,6 @@ save(date, key) {
         duration: 1800,
     })
   }
-}
-// get key of event + check if it is in user's saved events. if it is, color=red
-listenForItems = (userRef) => {
-  key = this.props.item.key;
-  console.log(key);
-  userRef.child(this.props.item.date).once('value').then((snap) => {
-    snap.forEach((child) => {
-      console.log('key: ' + child.val().key)
-      if (child.val().key == key) {
-        this.setState({heartColor: 'red', savedEvent: true});
-      }
-    });
-  });
 }
 
   render() {

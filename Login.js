@@ -1,75 +1,84 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  TextInput
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Text } from 'react-native';
+import {StyleProvider, Container, Header, Title, Content, Footer, FooterTab,
+  Button, Left, Right, Body, Icon, Form, Item, Input, Label} from 'native-base';
 import {firebaseApp} from './App';
-import {Tabs} from './Router';
-import {StackNavigator, TabNavigator} from 'react-navigation';
-import { Root } from './Router';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       email: '',
       password: '',
-      status: ''
+      error: '',
     }
 
-    this.login = this.login.bind(this);
+    console.ignoredYellowBox = [
+         'Setting a timer'
+     ];
   }
 
-  login(){
-    console.log("Logging in");
-
-    firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-      console.log(error.code);
-      console.log(error.message);
+  login = () => {
+    firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+      console.log('tried Logging')
+      this.props.navigation.navigate('Home');
+    }).catch((error) => {
+       if (error.code == 'auth/invalid-email') {
+        this.setState({error: 'Invalid Email!'});
+      } else if (error.code == 'auth/wrong-password') {
+        this.setState({error: 'Wrong Password!'});
+      } else if (error.code == 'auth/user-not-found') {
+        this.setState({error: 'User Not Found!'});
+      } else if (error.code == 'auth/user-disabled') {
+        this.setState({error: 'User Account Disabled!'});
+      } else {
+        this.setState({error: error.code});
+      }
     })
-
-    this.props.navigation.navigate('Home');
-
-    console.log("Navigate to Home");
-
   }
 
   render() {
-    var styles = require('./Styles');
-    const {navigate} = this.props.navigation;
+  var styles = require('./Styles');
+  const {navigate} = this.props.navigation;
 
-    return(
-      <View style={styles.loginContainer}>
+  return (
+    <StyleProvider style={getTheme(material)}>
+    <Container>
+      <Content style={{backgroundColor: '#f9a56a'}}>
         <Text style={styles.loginHeader}>PRINCETON EVENTS</Text>
-        <TextInput
-          style={styles.loginInput}
-          placeholder="Email"
-          autoCapitalize='none'
-          onChangeText={(text) => this.setState({email: text})}
-          value={this.state.email}
-          returnKeyType='next'/>
-        <TextInput
+        <Form>
+          <Item floatingLabel>
+            <Label>Email</Label>
+          <Input
+            style={{marginLeft: 1, color: 'white'}}
+            autoCapitalize='none'
+            onChangeText={(email) => this.setState({email, error: ''})}
+            value={this.state.email}
+            returnKeyType='next'/>
+         </Item>
+         <Item floatingLabel>
+           <Label>Password</Label>
+          <Input
+          style={{marginLeft: 1, color: 'white'}}
           secureTextEntry
-          style={styles.loginInput} placeholder="Password"
-          onChangeText={(text) => this.setState({password: text})}
+          onChangeText={(password) => this.setState({password, error: ''})}
           value={this.state.password}
           autoCapitalize='none'
-          returnKeyType='go'/>
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginText} onPress={this.login}>LOGIN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress = {() => navigate('CreateAccount')}>
-          <Text style={styles.loginText}> CREATE ACCOUNT </Text>
-        </TouchableOpacity>
-      </View>
-    );
-
-}
+          returnKeyType='done'/>
+          </Item>
+        <Text style={styles.errorText}>{this.state.error}</Text>
+        </Form>
+      <Button transparent style={{margin:10, alignSelf: 'center'}} onPress={() => this.login()}>
+        <Text style={styles.loginText}>LOGIN</Text>
+      </Button>
+      <Button transparent style={{margin:10, alignSelf: 'center'}} onPress= {() => navigate('CreateAccount')}>
+        <Text style={styles.loginText}>CREATE ACCOUNT</Text>
+      </Button>
+      </Content>
+    </Container>
+  </StyleProvider>
+  );
+ }
 }

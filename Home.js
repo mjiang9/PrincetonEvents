@@ -18,19 +18,33 @@ export default class HomeScreen extends Component {
       searching: false,
       viewDetails: false,
       curItem: null,
+      isSaved: false,
     };
-    this.itemsRef = firebaseApp.database().ref().child('items');
-    console.ignoredYellowBox = [
-         'Setting a timer'
-     ];
+    this.itemsRef = firebaseApp.database().ref('items');
+    let uid = firebaseApp.auth().currentUser.uid;
+    this.userRef = firebaseApp.database().ref('users').child(uid).child("saved_events");
+    console.ignoredYellowBox = ['Setting a timer'];
   }
 
 // manages whether to display details of item or not
-  onLearnMore = (item) => {
-    this.setState({
-      viewDetails: true,
-      curItem: item,
-    })
+  onLearnMore = (item, userRef) => {
+    let isCurItemSaved = false;
+    // get key of event + check if it is in user's saved events. if it is, color=red
+      key = item.key;
+      console.log(key);
+      userRef.child(item.date).once('value').then((snap) => {
+        snap.forEach((child) => {
+          console.log('key: ' + child.val().key)
+          if (child.val().key === key) {
+            isCurItemSaved = true;
+          }
+        });
+        this.setState({
+          viewDetails: true,
+          curItem: item,
+          isSaved: isCurItemSaved,
+        })
+      });
   };
 
   goBack = () => {
@@ -176,7 +190,7 @@ export default class HomeScreen extends Component {
         {!this.state.loading && <SectionList renderItem={({item}) =>
             <ListItem style={styles.item}
             title={item.name} subtitle={item.startTime}
-            onPress={() => this.onLearnMore(item)}/>}
+            onPress={() => this.onLearnMore(item, this.userRef)}/>}
             renderSectionHeader={({section}) =>
             <Text style={styles.sectionHeader}>{section.key}</Text>}
             sections={this.state.data} keyExtractor={(item) => item.key}/>}
@@ -187,7 +201,7 @@ export default class HomeScreen extends Component {
   }
   else {
     return(
-    <Details goBack={this.goBack} item={this.state.curItem}/>
+    <Details goBack={this.goBack} item={this.state.curItem} isSaved={this.state.isSaved}/>
    );
   }
  }

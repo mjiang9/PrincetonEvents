@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList, BackHandler} from 'react-native';
 import {ListItem, List, ListView} from 'react-native-elements';
 import {firebaseApp} from './App';
-import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon} from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Button, Left, Right, Body, Icon} from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import Details from './Details';
@@ -13,13 +13,15 @@ export default class SavedEventsScreen extends Component {
     this.state = {
       data: [],
       loading: true,
-      viewEdit: false,
+      viewDetails: false,
       curItem: null,
       userEmail: null,
       uid: null,
       userName: null,
     };
     this.itemsRef = firebaseApp.database().ref().child('items');
+    let uid = firebaseApp.auth().currentUser.uid;
+    this.userRef = firebaseApp.database().ref('users').child(uid).child("saved_events");
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
@@ -31,16 +33,17 @@ export default class SavedEventsScreen extends Component {
     })
   };
 
+  // takes details page back to saved events
   goBack = () => {
     this.setState({
-      viewDetails: false
+      viewDetails: false,
+      loading: true,
     })
+    this.listenForItems(this.itemsRef, this.userRef);
   }
 
-  listenForItems(itemsRef) {
-    uid = firebaseApp.auth().currentUser.uid;
-    userRef = firebaseApp.database().ref('users').child(uid);
-    userRef.child("saved_events").once('value').then((snap) => {
+  listenForItems = (itemsRef, userRef) => {
+    userRef.once('value').then((snap) => {
       var items = [];
       snap.forEach((parent) => {
         var children = [];
@@ -72,7 +75,7 @@ export default class SavedEventsScreen extends Component {
               });
             } else {
               let eventRef = userRef.child("saved_events").child(item.date);
-              eventRef.on('value', (snap) => {
+              eventRef.once('value', (snap) => {
                 snap.forEach((child) => {
                   if (child.val().key == datum) {
                     eventRef.child(child.key).remove();
@@ -90,22 +93,16 @@ export default class SavedEventsScreen extends Component {
     });
   }
 
-  // autoupdates on new event
+  // handles hardware back button pressed on Android
+  // gets events from users' saved_events section
   componentDidMount() {
-   this.listenForItems(this.itemsRef);
-   firebaseApp.auth().onAuthStateChanged((user) => {
-    if (user) {
-      this.setState({userEmail: user.email, uid: user.uid});
-    } else {
-      // No user is signed in.
-      console.log('no user')
-    }
-  });
- }
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.goBack();
+      return true;
+    });
+    this.listenForItems(this.itemsRef, this.userRef);
+  }
 
- componentWillUnmount() {
-     this.itemsRef.off();
-   }
 
   render() {
     var styles = require('./Styles');
@@ -122,6 +119,7 @@ export default class SavedEventsScreen extends Component {
         <Body>
         <Title>Saved Events</Title>
         </Body>
+        <Right/>
       </Header>
         <Content style={{backgroundColor: 'white'}}>
           {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
@@ -136,7 +134,7 @@ export default class SavedEventsScreen extends Component {
   }
   else {
     return(
-    <Details goBack={this.goBack} item={this.state.curItem}/>
+    <Details goBack={this.goBack} item={this.state.curItem} isSaved={true}/>
    );
   }
  }
