@@ -15,10 +15,14 @@ export default class LoginScreen extends Component {
       error: '',
     }
 
+    console.ignoredYellowBox = [
+         'Setting a timer'
+     ];
   }
 
   login = () => {
     firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+      console.log('tried Logging')
       this.props.navigation.navigate('Home');
     }).catch((error) => {
        if (error.code == 'auth/invalid-email') {

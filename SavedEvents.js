@@ -110,17 +110,17 @@ export default class SavedEventsScreen extends Component {
     return (
       <StyleProvider style={getTheme(material)}>
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.goBack()}>
-              <Icon name='arrow-back'/>
-            </Button>
-          </Left>
-          <Body>
-          <Title>My Saved Events</Title>
-          </Body>
-          <Right/>
-        </Header>
+      <Header>
+        <Left>
+          <Button transparent onPress={() => this.props.goBack()}>
+            <Icon name='arrow-back'/>
+          </Button>
+        </Left>
+        <Body>
+        <Title>Saved Events</Title>
+        </Body>
+        <Right/>
+      </Header>
         <Content style={{backgroundColor: 'white'}}>
           {this.state.loading && <ActivityIndicator size="large" style={{marginTop: 200}}/>}
             {!this.state.loading && <FlatList data={this.state.data} renderItem={({item}) =>
@@ -134,7 +134,7 @@ export default class SavedEventsScreen extends Component {
   }
   else {
     return(
-    <Details goBack={this.goBack} item={this.state.curItem}/>
+    <Details goBack={this.goBack} item={this.state.curItem} isSaved={true}/>
    );
   }
  }

@@ -7,7 +7,7 @@ import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import MyEvents from './MyEvents';
 import Settings from './Settings';
-import MySavedEvents from './SavedEvents';
+import SavedEvents from './SavedEvents';
 
 
 export default class MyProfile extends Component {
@@ -46,7 +46,7 @@ export default class MyProfile extends Component {
      if (this.state.index === 1) {
         AppComponent = MyEvents;
      } else if (this.state.index === 2) {
-        AppComponent = MySavedEvents;  // placeholder for saved events
+        AppComponent = SavedEvents;
      } else if (this.state.index === 3) {
         AppComponent = Settings;  // placeholder for update profile
      } else if (this.state.index === 4) {
@@ -118,5 +118,5 @@ export default class MyProfile extends Component {
          <AppComponent goBack={this.goBack}/>
        );
      }
- }
+  }
 }

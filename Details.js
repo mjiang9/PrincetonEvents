@@ -20,11 +20,23 @@ export default class DetailsScreen extends Component {
 
     this.extraKey; // key created by firebase for when pushing new data
 
+    if(this.props.isSaved) {
+    this.state = {
+      heartColor: 'red',
+      savedEvent: true,
+      showMarker: showMarker,
+    }
+  }
+  else {
     this.state = {
       heartColor: 'white',
       savedEvent: false,
       showMarker: showMarker,
     }
+  }
+
+    let uid = firebaseApp.auth().currentUser.uid;
+    this.userRef = firebaseApp.database().ref('users').child(uid).child("saved_events");
 
     console.ignoredYellowBox = ['Setting a timer'];
   }
@@ -38,11 +50,16 @@ componentDidMount() {
 }
 
 save(date, key) {
-  uid = firebaseApp.auth().currentUser.uid;
-  userRef = firebaseApp.database().ref('users').child(uid).child('saved_events');
-
   if(this.state.savedEvent) {
-    userRef.child(date).child(this.extraKey).remove();
+    if (this.extraKey == null) {
+      this.userRef.child(date).on('value', (snap) => {
+        snap.forEach((child) => {
+          if (child.val().key == key) {
+            this.userRef.child(date).child(child.key).remove();
+          }
+        })
+      })
+    } else { this.userRef.child(date).child(this.extraKey).remove(); }
     this.setState({heartColor: 'white', savedEvent: false});
     Toast.show({
         text: 'Event Unsaved!',
@@ -51,7 +68,7 @@ save(date, key) {
     })
   }
   else {
-    this.extraKey = userRef.child(date).push({key}).key;
+    this.extraKey = this.userRef.child(date).push({key}).key;
     this.setState({heartColor: 'red', savedEvent: true});
     Toast.show({
         text: 'Event Saved!',

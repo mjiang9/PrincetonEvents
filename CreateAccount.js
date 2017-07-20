@@ -17,6 +17,9 @@ export default class CreateAccountScreen extends Component {
       verifyPassword:'',
       error: ''
     }
+    console.ignoredYellowBox = [
+         'Setting a timer'
+     ];
   }
 
   register = () => {
