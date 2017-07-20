@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  TextInput
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Text, BackHandler } from 'react-native';
+import {StyleProvider, Container, Header, Title, Content, Footer, FooterTab,
+  Button, Left, Right, Body, Icon, Form, Item, Input, Label} from 'native-base';
 import {firebaseApp} from './App';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 
 
 export default class CreateAccountScreen extends Component {
@@ -16,63 +13,98 @@ export default class CreateAccountScreen extends Component {
 
     this.state = {
       email: '',
-      passowrd: '',
+      password: '',
       verifyPassword:'',
-      status: ''
-
+      error: ''
     }
-
-    this.register = this.register.bind(this);
   }
 
-  register(){
+  register = () => {
 
     console.log("Creating Account");
-    if(this.state.password == this.state.verifyPassword) {
-      firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error){
-        console.log(error.code);
-        console.log(error.message);
+    if(this.state.password === this.state.verifyPassword) {
+      firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+          firebaseApp.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+            this.props.navigation.navigate('Home');
+          }).catch((error) => {
+            alert(error.message);
+          })
+      }).catch((error) => {
+         if (error.code == 'auth/invalid-email') {
+          this.setState({error: 'Invalid Email!'});
+        } else if (error.code == 'auth/email-already-in-use') {
+          this.setState({error: 'Email Already In Use!'});
+        } else if (error.code == 'auth/operation-not-allowed') {
+          this.setState({error: 'Account Creation Is Unavailable!'});
+        } else if (error.code == 'auth/weak-password') {
+          this.setState({error: 'Make Password Stronger!'});
+        } else {
+          this.setState({error: error.code});
+        }
       })
     } else {
-      console.log("Passwords did not match.")
+      this.setState({error: 'Passwords Do Not Match!'});
     }
+  }
 
-    /*firebaseApp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error){
-      console.log(error.code);
-      console.log(error.message);
-    })*/
-
+  // handles hardwar back button pressed on Android
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('Login');
+      return true;
+    });
   }
 
   render() {
-    console.log("Top of render");
     var styles = require('./Styles');
+    const {navigate} = this.props.navigation;
 
-    return(
-      <View style={styles.loginContainer}>
-        <Text style={styles.loginHeader}>PRINCETON EVENTS</Text>
-        <TextInput
-          style={styles.loginInput}
-          placeholder="Email"
-          autoCapitalize='none'
-          onChangeText={(text) => this.setState({email: text})}
-          value={this.state.email}/>
-        <TextInput
-          secureTextEntry
-          style={styles.loginInput} placeholder="Password"
-          onChangeText={(text) => this.setState({password: text})}
-          autoCapitalize='none'
-          value={this.state.password}/>
-          <TextInput
+    return (
+      <StyleProvider style={getTheme(material)}>
+      <Container>
+        <Content style={{backgroundColor: '#f9a56a'}}>
+          <Text style={styles.loginHeader}>PRINCETON EVENTS</Text>
+          <Form>
+            <Item floatingLabel>
+              <Label>Email</Label>
+            <Input
+              style={{marginLeft: 1, color: 'white'}}
+              autoCapitalize='none'
+              onChangeText={(email) => this.setState({email, error: ''})}
+              value={this.state.email}
+              returnKeyType='next'/>
+           </Item>
+           <Item floatingLabel>
+             <Label>Password</Label>
+            <Input
+            style={{marginLeft: 1, color: 'white'}}
             secureTextEntry
-            style={styles.loginInput} placeholder="Verify Password"
-            onChangeText={(text) => this.setState({verifyPassword: text})}
+            onChangeText={(password) => this.setState({password, error: ''})}
+            value={this.state.password}
             autoCapitalize='none'
-            value={this.state.verifyPassword}/>
-        <TouchableOpacity style={styles.loginButton} onPress={this.register}>
+            returnKeyType='next'/>
+            </Item>
+            <Item floatingLabel>
+              <Label>Verify Password</Label>
+             <Input
+             style={{marginLeft: 1, color: 'white'}}
+             secureTextEntry
+             onChangeText={(verifyPassword) => this.setState({verifyPassword, error: ''})}
+             value={this.state.verifyPassword}
+             autoCapitalize='none'
+             returnKeyType='done'/>
+             </Item>
+          <Text style={styles.errorText}>{this.state.error}</Text>
+          </Form>
+        <Button transparent style={{margin:10, alignSelf: 'center'}} onPress={() => this.register()}>
           <Text style={styles.loginText}>CREATE ACCOUNT</Text>
-        </TouchableOpacity>
-      </View>
+        </Button>
+        <Button transparent style={{margin:10, alignSelf: 'center'}} onPress= {() => navigate('Login')}>
+          <Text style={styles.loginText}>BACK</Text>
+        </Button>
+        </Content>
+      </Container>
+    </StyleProvider>
     );
   }
 }

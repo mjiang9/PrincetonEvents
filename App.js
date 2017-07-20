@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import {AppLoading, Font} from 'expo';
 import {LoginNav} from './Router';
 import Login from './Login';
+import {Root} from "native-base"; // allows for toasts
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEbdjQNZ9IpoOmc5gWAVI4Doq224_JWUg",

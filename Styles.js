@@ -26,13 +26,23 @@ sectionHeader: {
 loginHeader:{
   fontSize: 30,
   color: 'white',
-  paddingBottom: 100,
+  alignSelf: 'center',
+  fontFamily: 'Roboto',
+  marginTop: 40,
+  marginBottom: 100
+},
+errorText : {
+  fontSize: 15,
+  color: 'red',
+  alignSelf: 'center',
+  fontFamily: 'Roboto',
+  marginTop: 5,
 },
 loginContainer:{
   flex:1,
   backgroundColor: '#f9a56a',
   alignItems: 'center',
-  paddingTop: 150,
+  paddingTop: 40,
   paddingLeft: 15,
   paddingRight: 15,
   justifyContent: 'center',
@@ -40,10 +50,11 @@ loginContainer:{
 loginInput:{
   padding:5,
   fontSize:15,
-  height: 40,
+  height: 55,
   backgroundColor: 'rgba(255,255,255, .7)',
   margin: 5,
-  width: width*.8
+  width: width*.8,
+  fontFamily: 'Roboto',
 },
 loginButton:{
   backgroundColor:'gray',
@@ -52,6 +63,8 @@ loginButton:{
 },
 loginText:{
   color:'white',
+  fontSize: 18,
+  fontFamily: 'Roboto',
 }
 
 });
