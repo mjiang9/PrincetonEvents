@@ -59,7 +59,7 @@ export default class SavedEventsScreen extends Component {
       items.forEach((item) => {
         ref = itemsRef.child(item.date);
         item.data.forEach((datum) => {
-          child = ref.child(datum).once('value').then((snap) => {
+          child = ref.child(datum).on('value', (snap) => {
             if (snap.val() != null) {
               events.push({
                 "key": snap.key,
@@ -72,15 +72,6 @@ export default class SavedEventsScreen extends Component {
                 "what": snap.val().what,
                 "latitude": snap.val().latitude,
                 "longitude": snap.val().longitude,
-              });
-            } else {
-              let eventRef = userRef.child("saved_events").child(item.date);
-              eventRef.once('value', (snap) => {
-                snap.forEach((child) => {
-                  if (child.val().key == datum) {
-                    eventRef.child(child.key).remove();
-                  }
-                })
               });
             }
         });

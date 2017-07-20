@@ -70,7 +70,7 @@ export default class MyEventsScreen extends Component {
       items.forEach((item) => {
         ref = itemsRef.child(item.date);
         item.data.forEach((datum) => {
-          child = ref.child(datum).once('value').then((snap) => {
+          child = ref.child(datum).on('value', (snap) => {
             if (snap.val() != null) {
               events.push({
                 "key": snap.key,
