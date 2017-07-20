@@ -18,8 +18,6 @@ export default class DetailsScreen extends Component {
       showMarker = false;
     }
 
-    this.extraKey; // key created by firebase for when pushing new data
-
     if(this.props.isSaved) {
     this.state = {
       heartColor: 'red',
@@ -51,7 +49,6 @@ componentDidMount() {
 
 save(date, key) {
   if(this.state.savedEvent) {
-    if (this.extraKey == null) {
       this.userRef.child(date).on('value', (snap) => {
         snap.forEach((child) => {
           if (child.val().key == key) {
@@ -59,7 +56,6 @@ save(date, key) {
           }
         })
       })
-    } else { this.userRef.child(date).child(this.extraKey).remove(); }
     this.setState({heartColor: 'white', savedEvent: false});
     Toast.show({
         text: 'Event Unsaved!',
@@ -68,7 +64,7 @@ save(date, key) {
     })
   }
   else {
-    this.extraKey = this.userRef.child(date).push({key}).key;
+    this.userRef.child(date).push({key: key});
     this.setState({heartColor: 'red', savedEvent: true});
     Toast.show({
         text: 'Event Saved!',
